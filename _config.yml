@@ -225,3 +225,9 @@ jekyll-archives:
     tag: /tags/:name/
     category: /categories/:name/
 
+mathjax:
+  enable: true
+  config:
+    tex:
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
