@@ -24,7 +24,7 @@ This is my first blog, just for test whether everything gets in the way.
 
 The below is an image
 
-![an image](/Users/zhenghanbin/own/hanbinzheng.github.io/assets/img/first_test.png)
+![an image](/assets/img/first_test.png)
 
 
 
