@@ -61,8 +61,6 @@ As STEM students, we’re often trained to maximize performance and optimize eff
 
 
 
-## Reference
-
-<a id="kao"></a>
+## Reference {#kao}
 
 [1] Kao, Vivian. "Science, Technology, and the Human: Integrating STEM and the Introductory Humanities Course." Interdisciplinary Humanities, vol. 33, no. 1, 2016, pp. 7-21. 
