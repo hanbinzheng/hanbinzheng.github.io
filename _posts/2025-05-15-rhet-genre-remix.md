@@ -45,11 +45,11 @@ In engineering, we’re trained to solve problems. But in the real world, the fi
 
 Through interdisciplinary learning, we gain the ability to move freely across different fields, connect diverse knowledge, and integrate ideas for creative solutions. It equips us not only with critical thinking, but also with the ability to integrate multiple sources and perspectives for problem-solving. Feedback from [Kao](#kao)’s interdisciplinary course showed that students became more aware of how different perspectives interact, as well as how to blend them. 
 
-<img src="/assets/img/2025-05-15-rhet-genre-remix/image2.jpeg" style="zoom:50%;" />
+<img src="/assets/img/2025-05-15-rhet-genre-remix/image2.jpeg" style="zoom:50%;" alt="Interdisciplinary teamwork" />
 
 ## 4. Real Solutions Must be Human-Centered
 
-As STEM students, we’re often trained to maximize performance and optimize efficiency. But in real-world, this approach alone is not enough. Real-world challenges like climate change require more than technologies—they require an understanding of humans, cultures, values, and some long-term consequences. That’s where humanities step in. Interdisciplinary education helps us develop a human-centered mindset. We'll learn to ask ourselves after trained with interdisciplinary methods: *Who is this solution for? What are the social and ethical trade-offs? Interdisciplinary education equips us with not just skills to build, but the wisdom and responsibility to build inclusively, comprehensively and empathetically for human beings.
+As STEM students, we’re often trained to maximize performance and optimize efficiency. But in real-world, this approach alone is not enough. Real-world challenges like climate change require more than technologies—they require an understanding of humans, cultures, values, and some long-term consequences. That’s where humanities step in. Interdisciplinary education helps us develop a human-centered mindset. We'll learn to ask ourselves after trained with interdisciplinary methods: *Who is this solution for? What are the social and ethical trade-offs?* Interdisciplinary education equips us with not just skills to build, but the wisdom and responsibility to build inclusively, comprehensively and empathetically for human beings.
 
 <div align="center">
   <img src="/assets/img/2025-05-15-rhet-genre-remix/image1.jpg" style="zoom:80%;" alt="Illustration of humanities and STEM equality" />
