@@ -43,7 +43,7 @@ In engineering, we’re trained to solve problems. But in the real world, the fi
 
 ## 3. Interdisciplinary Methods Lead to Better Source Integration
 
-Through interdisciplinary learning, we gain the ability to move freely across different fields, connect diverse knowledge, and integrate ideas for creative solutions. It equips us not only with critical thinking, but also with the ability to integrate multiple sources and perspectives for problem-solving. Feedback from [Kao](#kao)’s interdisciplinary course showed that students became more aware of how different perspectives interact, as well as how to blend them. 
+Through interdisciplinary learning, we gain the ability to move freely across different fields, connect diverse knowledge, and integrate ideas for creative solutions. It equips us not only with critical thinking, but also with the ability to integrate multiple sources and perspectives for problem-solving. Feedback from [Kao's interdisciplinary course](#kao) showed that students became more aware of how different perspectives interact, as well as how to blend them. 
 
 <img src="/assets/img/2025-05-15-rhet-genre-remix/image2.jpeg" style="zoom:50%;" alt="Interdisciplinary teamwork" />
 
