@@ -4,6 +4,7 @@ date: 2025-05-15 +0800
 author: Hanbin Zheng
 categories: [Math, Probability]
 tags: [Probability, Math, CLT]
+math: true
 ---
 
 > Thanks to [子预](https://www.zhihu.com/people/thegenius-16). [His article](https://zhuanlan.zhihu.com/p/85233692) helped me a lot in understanding this topic. 
