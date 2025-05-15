@@ -57,7 +57,7 @@ To ensure both clarity and completeness, let’s first outline the proof strateg
 > 1. There's a one-to-one mapping relationship between characteristic function and pdf/distribution.
 > 2. If the characteristic functions of $$Z_n$$ and $$\mathcal{N}(0,1)$$ are equal for all $$t$$, then their distributions are identical, which completes the proof.
 
-For the **one-to-one mapping relationship**, we should turn to **Fourier Transform**. I will add this part if available in the future. In this blog, we assume that the previous relationship holds. For the definition and some properties of **Characteristic Function**, see [Appendix](#appendix-characteristic-unctions) for reference.
+For the **one-to-one mapping relationship**, we should turn to **Fourier Transform**. I will add this part if available in the future. In this blog, we assume that the previous relationship holds. For the definition and some properties of **Characteristic Function**, see [Appendix](#appendix-characteristic-functions) for reference.
 
 ---
 
