@@ -94,7 +94,7 @@ For $$\frac{1}{\sqrt{2 \pi}} \int_{- \infty}^{+\infty} e^{- \frac{1}{2}(x - it)^
 Let us define standardized variables:
 
 $$
-Y_j = \frac{X_j - \mu}{\sigma}, \quad \text{so that } \mathbb{E}[Y_j] = 0, \quad \operatorname{Var}(Y_j) = 1
+Y_j = \frac{X_j - \mu}{\sigma}, \quad \text{so that } \mathbb{E}[Y_j] = 0, \quad \mathrm{Var}(Y_j) = 1
 $$
 
 Then:
@@ -127,8 +127,8 @@ $$
 
 Here are two properties of **Characteristic Function**:
 
-> $$\text{1. Linearity}: \;\varphi_{aX + b}(t) = e^{ibt} \cdot \varphi_X(at)$$
-> $$\text{2. Independence}: \;  \text{If r.v.} X \, \text{  and  r.v.} Y \text{ are independent },\; \varphi_{X + Y}(t) = \varphi_X(t) \cdot \varphi_Y(t)$$
+> $$1.\text{ Linearity}: \;\varphi_{aX + b}(t) = e^{ibt} \cdot \varphi_X(at)$$
+> $$2.\text{ Independence}: \;  \text{If r.v.} X \, \text{  and  r.v.} Y \text{ are independent },\; \varphi_{X + Y}(t) = \varphi_X(t) \cdot \varphi_Y(t)$$
 
 The proof for this two properites can be seen in the [Appendix](#appendix-characteristic-functions) for reference.
 
@@ -162,8 +162,8 @@ This completes the proof of the Central Limit Theorem under the assumptions of i
 We only use 2 properities of Characteristic Functions. For more detailed description, please check [this article] (I will write this if available).
 
 
-> $$\text{1. Linearity}: \;\varphi_{aX + b}(t) = e^{ibt} \cdot \varphi_X(at)$$
-> $$\text{2. Independence}: \;  \text{If r.v.} X \, \text{  and  r.v.} Y \text{ are independent },\; \varphi_{X + Y}(t) = \varphi_X(t) \cdot \varphi_Y(t)$$
+> 1.$$\text{ Linearity}: \;\varphi_{aX + b}(t) = e^{ibt} \cdot \varphi_X(at)$$
+> 2.$$\text{ Independence}: \;  \text{If r.v.} X \, \text{  and  r.v.} Y \text{ are independent },\; \varphi_{X + Y}(t) = \varphi_X(t) \cdot \varphi_Y(t)$$
 
 $$\text{Proof for Linearity}$$:
 
