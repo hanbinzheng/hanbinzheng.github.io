@@ -50,7 +50,7 @@ $$
 
 
 
-## Code Bolcks
+## Code Blocks
 
 ```python
 print("hello world")
