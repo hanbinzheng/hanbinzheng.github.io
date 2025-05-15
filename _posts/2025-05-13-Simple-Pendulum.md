@@ -4,7 +4,6 @@ date: 2025-05-13 +0800
 categories: [Physics, Mechanics]
 math: true
 pin: false
-comments: true
 ---
 
 This is a very basic summary of simple pendulum. I wrote this only for a brief review of LaTeX syntax. For more serious one, refer to [this article](https://zhuanlan.zhihu.com/p/138339027).
