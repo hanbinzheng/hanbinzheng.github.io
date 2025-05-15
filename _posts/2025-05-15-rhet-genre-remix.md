@@ -34,7 +34,7 @@ Climate change, AI ethics and Pandemic Prevention—none of these challenges can
 In engineering, we’re trained to solve problems. But in the real world, the first and probably the hardest part isn’t solving it, but *defining* what the problem actually is. Like hunting a rabbit––you can't catch it before you've found it. Real-world problems are often ill-structured. Here's a simple example: reminding the elderly to take the medication. A STEM student might develop a high-tech device. However, if they thoroughly investigate the problem, they might find that what really works is just a clear, carefully-labeled pill box. Humanities train us to think critically and empathetically to discover the essence of a problem.
 
 <div align="center">
-  <img src="/assets/img/2025-05-15-rhet-genre-remix/image3.jpg" style="zoom:80%;" alt="Pill Box" />
+  <img src="/assets/img/2025-05-15-rhet-genre-remix/image3.jpg" style="zoom:60%;" alt="Pill Box" />
   <p style="font-size:0.9em;">
     Image from <a href="https://www.homewatchcaregivers.com/blog/caregivers/the-importance-of-medication-reminders/" target="_blank">
     The Importance of Medication Reminders</a>
@@ -45,14 +45,14 @@ In engineering, we’re trained to solve problems. But in the real world, the fi
 
 Through interdisciplinary learning, we gain the ability to move freely across different fields, connect diverse knowledge, and integrate ideas for creative solutions. It equips us not only with critical thinking, but also with the ability to integrate multiple sources and perspectives for problem-solving. Feedback from [Kao's interdisciplinary course](#kao) showed that students became more aware of how different perspectives interact, as well as how to blend them. 
 
-<img src="/assets/img/2025-05-15-rhet-genre-remix/image2.jpeg" style="zoom:50%;" alt="Interdisciplinary teamwork" />
+<img src="/assets/img/2025-05-15-rhet-genre-remix/image2.jpeg" style="zoom:30%;" alt="Interdisciplinary teamwork" />
 
 ## 4. Real Solutions Must be Human-Centered
 
 As STEM students, we’re often trained to maximize performance and optimize efficiency. But in real-world, this approach alone is not enough. Real-world challenges like climate change require more than technologies—they require an understanding of humans, cultures, values, and some long-term consequences. That’s where humanities step in. Interdisciplinary education helps us develop a human-centered mindset. We'll learn to ask ourselves after trained with interdisciplinary methods: *Who is this solution for? What are the social and ethical trade-offs?* Interdisciplinary education equips us with not just skills to build, but the wisdom and responsibility to build inclusively, comprehensively and empathetically for human beings.
 
 <div align="center">
-  <img src="/assets/img/2025-05-15-rhet-genre-remix/image1.jpg" style="zoom:80%;" alt="Illustration of humanities and STEM equality" />
+  <img src="/assets/img/2025-05-15-rhet-genre-remix/image1.jpg" style="zoom:50%;" alt="Illustration of humanities and STEM equality" />
   <p style="font-size:0.9em;">
     Image from <a href="https://ulmhawkeyeonline.com/25706/opinion/humanities-degrees-are-equal-to-stem-degrees/" target="_blank">
     Humanities degrees are equal to STEM degrees</a>
