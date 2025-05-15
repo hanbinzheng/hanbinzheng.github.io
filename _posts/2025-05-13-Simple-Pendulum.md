@@ -7,7 +7,7 @@ pin: false
 comments: true
 ---
 
-This is a very basic summary of simple pendulum. I wrote this only for a brief review of LaTeX format. For more serious one, refer to [this article](https://zhuanlan.zhihu.com/p/138339027).
+This is a very basic summary of simple pendulum. I wrote this only for a brief review of LaTeX syntax. For more serious one, refer to [this article](https://zhuanlan.zhihu.com/p/138339027).
 
 ## Torsion Pendulum
 
