@@ -1,7 +1,6 @@
 ---
 title: The Central Limit Theorem
 date: 2025-05-15 +0800
-author: Hanbin Zheng
 categories: [Math, Probability]
 tags: [Probability, Math, CLT]
 math: true
