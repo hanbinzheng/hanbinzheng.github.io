@@ -5,7 +5,7 @@ date: 2025-05-15 +0800
 author: Hanbin Zheng
 ---
 
-If you’re a STEM student, you might be already sick of those mandatory humanities classes. *“Why should an ECE student care about ‘What is art’?”* *“Why do I need to remember when William conquered the Normans?”* Hold on hold on. Maybe it’s time to step outside the world of science. Humanities are actually more useful than you think. In fact, they could be the missing piece that helps us solve those complicated real-world problems. Here are four reasons why STEM students should give humanities a chance, and how interdisciplinary learning can better prepare you for your future career. 
+If you’re a STEM student, you might be already sick of those mandatory humanities classes. *“Why should an ECE student care about ‘What is art’?”* *“Why do I need to remember when William conquered the Normans?”* Well well well, hold on hold on. Maybe it’s time to step outside the world of science. Humanities are actually more useful than you think. In fact, they could be the missing piece that helps us solve those complicated real-world problems. Here are four reasons why STEM students should give humanities a chance, and how interdisciplinary learning can better prepare us for our future career. 
 
 <div align="center">
   <img src="/assets/img/2025-05-15-rhet-genre-remix/image4.jpg" style="zoom:80%;" alt="Humanities in STEM image" />
