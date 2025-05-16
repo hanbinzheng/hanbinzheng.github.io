@@ -105,7 +105,7 @@ $$
 
 This reformulates the normalized sum into a simpler form, preparing it for the characteristic function method.
 
-### Step 2: Characteristic Function of $Y_k$
+### Step 2: Characteristic Function of $$Y_k$$
 
 The characteristic function of $Y_k$ is:
 
@@ -123,7 +123,7 @@ $$
 \end{align*}
 $$
 
-### Step 3: Characteristic Function of $Z_n$
+### Step 3: Characteristic Function of $$Z_n$$
 
 Here are two properties of **Characteristic Function**:
 
@@ -181,7 +181,7 @@ $$
 
 $$
 \begin{align*}
-E(\alpha(X)\beta(Y)) &= \iint_{D_{X, Y}} f_{X, Y}(x, y) \cdot \alpha(x) \beta(y) \;dx \, dy \\
+\mathbb{E}[\alpha(X)\beta(Y)] &= \iint_{D_{X, Y}} f_{X, Y}(x, y) \cdot \alpha(x) \beta(y) \;dx \, dy \\
 &= \iint_{D_{X, Y}} f_X(x) \, f_Y(y) \cdot \alpha(x) \beta(y) \;dx \, dy \\
 &= \int_{D_X} f_X(x) \, \alpha(x) \, dx \; \cdot \; \int_{D_Y} f_Y(y)\, \beta(y) \, dy \\
 &= \mathbb{E}[\alpha(X)] \, \cdot \, \mathbb{E}[\beta(Y)]
