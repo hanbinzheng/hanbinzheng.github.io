@@ -63,13 +63,13 @@ For the **one-to-one mapping relationship**, we should turn to **Fourier Transfo
 
 ## 2. Characteristic Function of $$\mathcal{N}(0, 1)$$
 
-The definition of **Characteristic Function** for $$ \,r.v. \, X\, $$ is defined as follows:
+The definition of **Characteristic Function** for $$ \text{ random variable } X\, $$ is defined as follows:
 
 $$
 \varphi_X(t) = \mathbb{E}[e^{itX}]
 $$
 
-For standard Gaussian $$ \, r.v. \; N \sim \mathcal{N}(0, 1) $$, we can obtain the **Characteristic Function** below:
+For standard Gaussian $$ \text{ random variable }  N \sim \mathcal{N}(0, 1) $$, we can obtain the **Characteristic Function** below:
 
 $$
 \begin{align*}
@@ -107,7 +107,7 @@ This reformulates the normalized sum into a simpler form, preparing it for the c
 
 ### Step 2: Characteristic Function of $$Y_j$$
 
-The characteristic function of $Y_j$ is:
+The characteristic function of $$Y_j$$ is:
 
 $$
 \varphi_{Y_j}(t) = \mathbb{E}[e^{itY_j}]
