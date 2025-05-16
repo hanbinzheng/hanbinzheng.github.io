@@ -25,7 +25,7 @@ Let $$X_1, X_2, \dots, X_n$$ be i.i.d. random variables with $$\mathbb{E}(X_j) =
 Define:
 
 $$
-Z_n = \frac{\sum_{k=1}^n X_k - n\mu}{\sqrt{n} \cdot \sigma}
+Z_n = \frac{\sum_{j=1}^n X_j - n\mu}{\sqrt{n} \cdot \sigma}
 $$
 
 Then for all $$\tau \in \mathbb{R}$$,
