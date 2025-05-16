@@ -20,7 +20,7 @@ For application of CLT and some advanced understanding, I will add this part if 
 
 # The CLT Statement
 
-Let $$X_1, X_2, \dots, X_n$$ be i.i.d. random variables with $$\mathbb{E}(X_j) = \mu$$ and $$\mathrm{Var}(X_j) = \sigma^2 < \infty$$.
+Let $$X_1, X_2, \dots, X_n$$ be i.i.d. (independent and identically distributed) random variables with $$\mathbb{E}(X_j) = \mu$$ and $$\mathrm{Var}(X_j) = \sigma^2 < \infty$$.
 
 Define:
 
