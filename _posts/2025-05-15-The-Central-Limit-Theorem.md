@@ -20,7 +20,7 @@ For application of CLT and some advanced understanding, I will add this part if 
 
 # The CLT Statement
 
-Let $$X_1, X_2, \dots, X_n$$ be i.i.d. random variables with $$\mathbb{E}(X_k) = \mu$$ and $$\mathrm{Var}(X_k) = \sigma^2 < \infty$$.
+Let $$X_1, X_2, \dots, X_n$$ be i.i.d. random variables with $$\mathbb{E}(X_j) = \mu$$ and $$\mathrm{Var}(X_j) = \sigma^2 < \infty$$.
 
 Define:
 
@@ -91,7 +91,7 @@ For $$\frac{1}{\sqrt{2 \pi}} \int_{- \infty}^{+\infty} e^{- \frac{1}{2}(x - it)^
 
 ### Step 1: Standardize Variables
 
-Let us define standardized variables:
+Let's define standardized variables:
 
 $$
 Y_j = \frac{X_j - \mu}{\sigma}, \quad \text{so that } \mathbb{E}[Y_j] = 0, \quad \mathrm{Var}(Y_j) = 1
@@ -105,9 +105,9 @@ $$
 
 This reformulates the normalized sum into a simpler form, preparing it for the characteristic function method.
 
-### Step 2: Characteristic Function of $$Y_k$$
+### Step 2: Characteristic Function of $$Y_j$$
 
-The characteristic function of $Y_k$ is:
+The characteristic function of $Y_j$ is:
 
 $$
 \varphi_{Y_j}(t) = \mathbb{E}[e^{itY_j}]
@@ -117,7 +117,7 @@ Using Taylor expansion:
 
 $$
 \begin{align*}
-\varphi_{Y_k}(t) &= \mathbb{E}[\sum_{k=0}^{\infty} \frac{(itY_j)^k}{k !}]\\ \\
+\varphi_{Y_j}(t) &= \mathbb{E}[\sum_{k=0}^{\infty} \frac{(itY_j)^k}{k !}]\\ \\
  &= \sum_{k=0}^{\infty} \frac{(it)^k}{k!} \mathbb{E}[Y_j^k] \\ \\
  &= 1 - \frac{1}{2} t^2 + o(t^2) \\
 \end{align*}
@@ -130,7 +130,7 @@ Here are two properties of **Characteristic Function**:
 > 1. Linearity: $$\text{ Linearity}: \;\varphi_{aX + b}(t) = e^{ibt} \cdot \varphi_X(at)$$
 > 2. Independence $$\text{If random variable } X \text{  and  } Y \text{ are independent }, \; \varphi_{X + Y}(t) = \varphi_X(t) \cdot \varphi_Y(t)$$
 
-The proof for this two properites can be seen in the [Appendix](#appendix-characteristic-functions) for reference.
+The proof for this two properites can be seen in the [Appendix](#appendix-characteristic-functions).
 
 $$
 \begin{align*}
