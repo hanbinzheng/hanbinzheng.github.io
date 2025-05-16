@@ -168,7 +168,7 @@ We only use 2 properities of Characteristic Functions. For more detailed descrip
 $$\text{Proof for Linearity}$$:
 
 $$
-\varphi_{aX+b} = \mathbb{E}[e^{it(aX+b)}] = e^{itb} \mathbb{E}[e^{itaX}] =e^{itb} \varphi_X(at)
+\varphi_{aX+b}(t) = \mathbb{E}[e^{it(aX+b)}] = e^{itb} \mathbb{E}[e^{itaX}] =e^{itb} \varphi_X(at)
 $$
 
 $$\text{Proof for Independence}$$:
