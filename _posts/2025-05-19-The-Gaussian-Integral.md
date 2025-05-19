@@ -303,7 +303,7 @@ So,
 
 $$
 \begin{align*}
-\int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^T A (\boldsymbol{x} - \boldsymbol{b}) \right) \, d\boldsymbol{x} \\[2ex]
+&\int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^T A (\boldsymbol{x} - \boldsymbol{b}) \right) \, d\boldsymbol{x} \\[2ex]
 =
 &\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \boldsymbol{y}^T \Lambda \boldsymbol{y} \right) \, d \boldsymbol{y} \\[2ex]
 =
