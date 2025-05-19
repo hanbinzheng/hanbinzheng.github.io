@@ -353,7 +353,7 @@ $$
 \begin{equation*}
 \begin{aligned}
 \text{Let a Gaussian random vector } \boldsymbol{X} &\sim \mathcal{N} (\boldsymbol{\mu}, \, \Sigma), \text{then:} \\
-\int_{\mathbb{R}} f_{\boldsymbol{X}}(\boldsymbol{x}) \; d \boldsymbol{x} &= \int_{\mathbb{R}} \frac{1}{\sqrt{\left(2\pi \right)^n \cdot \det(\Sigma)}} 
+\int_{\mathbb{R}^n} f_{\boldsymbol{X}}(\boldsymbol{x}) \; d \boldsymbol{x} &= \int_{\mathbb{R}} \frac{1}{\sqrt{\left(2\pi \right)^n \cdot \det(\Sigma)}} 
 \exp \left( -\frac{1}{2} (\boldsymbol{x}-\boldsymbol{\mu})^T \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu})\right) \; d \boldsymbol{x} = 1
 \end{aligned}
 \end{equation*}
