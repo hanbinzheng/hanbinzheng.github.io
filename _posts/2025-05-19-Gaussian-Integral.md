@@ -363,7 +363,7 @@ We focus on the variable transformation that simplifies the quadratic form in th
 
 ---
 
-### (1) **Diagonalizing $$\Sigma^{-1}$$: PCA Perspective**
+#### (1) **Diagonalizing $$\Sigma^{-1}$$: PCA Perspective**
 
 ### $$\Sigma^{-1} = Q^T \Lambda Q,$$
 
@@ -375,7 +375,7 @@ And, the principal axed are **uncorrelated**.
 
 ---
 
-### (2) **Variable Transform**
+#### (2) **Variable Transform**
 
 We apply the transform of variable:
 
@@ -399,7 +399,7 @@ From $$\boldsymbol{x}$$ to $$\boldsymbol{y}$$, we decouple correlated  $$\boldsy
 
 ---
 
-### (3) **Uncorelation and Independence**
+#### (3) **Uncorelation and Independence**
 
 For general distributions, uncorrelated variables are not necessarily independent.
 
