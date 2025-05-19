@@ -220,13 +220,13 @@ Therefore,
 
 $$
 \begin{align*}
-\int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^T A^{-1} (\boldsymbol{x} - \boldsymbol{b}) \right) \, d\boldsymbol{x} 
-&=
-\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^T Q^T \Lambda Q (\boldsymbol{x} - \boldsymbol{b}) \right) \, d \boldsymbol{x} \\[2ex]
-&= 
-\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \left(Q (\boldsymbol{x} - \boldsymbol{b}) \right)^T \Lambda \left(Q (\boldsymbol{x} - \boldsymbol{b}) \right) \right) \, d \boldsymbol{x} \\[2ex]
-&=
-\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \boldsymbol{y}^T \Lambda \boldsymbol{y} \right) \, d \boldsymbol{y}.
+&\int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^T A^{-1} (\boldsymbol{x} - \boldsymbol{b}) \right) \, d\boldsymbol{x} \\[2ex]
+=
+&\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^T Q^T \Lambda Q (\boldsymbol{x} - \boldsymbol{b}) \right) \, d \boldsymbol{x} \\[2ex]
+= 
+&\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \left(Q (\boldsymbol{x} - \boldsymbol{b}) \right)^T \Lambda \left(Q (\boldsymbol{x} - \boldsymbol{b}) \right) \right) \, d \boldsymbol{x} \\[2ex]
+=
+&\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \boldsymbol{y}^T \Lambda \boldsymbol{y} \right) \, d \boldsymbol{y}.
 \end{align*}
 $$
 
@@ -256,15 +256,15 @@ So ,
 
 $$
 \begin{align*}
-\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \boldsymbol{y}^T \Lambda \boldsymbol{y} \right) \, d \boldsymbol{y} 
-&= 
-\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \sum_{i=1}^{n}\lambda_i y_i^2 \right) \, d \boldsymbol{y} \\[2ex]
-&=
-\idotsint_{y_1, \dots , y_n \in \mathbb{R}}  \exp \left( -\frac{1}{2} \sum_{i=1}^{n}\lambda_i y_i^2 \right) \,dy_1 \cdots dy_n \\[2ex]
-&=
-\idotsint_{y_1, \dots , y_n \in \mathbb{R}} \prod_{i=1}^{n} \exp \left( -\frac{1}{2} \lambda_i y_i^2 \right) \,dy_1 \cdots dy_n \\[2ex]
-&=
-\prod_{i=1}^{n} \int_{y_i \in \mathbb{R}}\exp \left( -\frac{1}{2} \lambda_i y_i^2 \right) \, d y_i
+&\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \boldsymbol{y}^T \Lambda \boldsymbol{y} \right) \, d \boldsymbol{y} \\[2ex]
+= 
+&\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \sum_{i=1}^{n}\lambda_i y_i^2 \right) \, d \boldsymbol{y} \\[2ex]
+=
+&\idotsint_{y_1, \dots , y_n \in \mathbb{R}}  \exp \left( -\frac{1}{2} \sum_{i=1}^{n}\lambda_i y_i^2 \right) \,dy_1 \cdots dy_n \\[2ex]
+=
+&\idotsint_{y_1, \dots , y_n \in \mathbb{R}} \prod_{i=1}^{n} \exp \left( -\frac{1}{2} \lambda_i y_i^2 \right) \,dy_1 \cdots dy_n \\[2ex]
+=
+&\prod_{i=1}^{n} \int_{y_i \in \mathbb{R}}\exp \left( -\frac{1}{2} \lambda_i y_i^2 \right) \, d y_i
 \end{align*}
 $$
 
@@ -303,15 +303,15 @@ So,
 
 $$
 \begin{align*}
-\int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^T A (\boldsymbol{x} - \boldsymbol{b}) \right) \, d\boldsymbol{x} 
-&=
-\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \boldsymbol{y}^T \Lambda \boldsymbol{y} \right) \, d \boldsymbol{y} \\[2ex]
-&=
-\prod_{i=1}^{n} \int_{y_i \in \mathbb{R}}\exp \left( -\frac{1}{2} \lambda_i y_i^2 \right) \, d y_i  \\[2ex]
-&=
-\frac{\left( \sqrt{2 \pi} \right)^n}{\sqrt{\det (\Lambda)}} \\[2ex]
-&= \sqrt{ \left( 2 \pi \right) ^n \cdot \det (A) }
-
+\int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^T A (\boldsymbol{x} - \boldsymbol{b}) \right) \, d\boldsymbol{x} \\[2ex]
+=
+&\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \boldsymbol{y}^T \Lambda \boldsymbol{y} \right) \, d \boldsymbol{y} \\[2ex]
+=
+&\prod_{i=1}^{n} \int_{y_i \in \mathbb{R}}\exp \left( -\frac{1}{2} \lambda_i y_i^2 \right) \, d y_i  \\[2ex]
+=
+&\frac{\left( \sqrt{2 \pi} \right)^n}{\sqrt{\det (\Lambda)}} \\[2ex]
+= 
+&\sqrt{ \left( 2 \pi \right) ^n \cdot \det (A) }
 \end{align*}
 $$
 
