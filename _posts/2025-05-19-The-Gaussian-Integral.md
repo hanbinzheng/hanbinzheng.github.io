@@ -3,7 +3,7 @@ layout: post
 title: The Gaussian Integral
 date: 2025-05-19 +0800
 categories: [Math, Probability]
-tags: [Math, Probability, PCA, Gaussian, Integral]
+tags: [Math, Probability, PCA, Gaussian]
 ---
 
 > This post introduces the Gaussian integral, starting from basic integration and gradually building towards a probabilistic and linear algebraic perspective.
