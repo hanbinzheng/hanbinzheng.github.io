@@ -2,7 +2,7 @@
 title: "The Central Limit Theorem"
 date: 2025-05-15 +0800
 categories: [Math, Probability]
-tags: [Probability, Math, CLT]
+tags: [Probability, Math, CLT, Gaussian]
 ---
 
 > Thanks to [子预](https://www.zhihu.com/people/thegenius-16). [His article](https://zhuanlan.zhihu.com/p/85233692) helped me a lot in understanding this topic. 
