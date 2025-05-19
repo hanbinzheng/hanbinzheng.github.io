@@ -1,5 +1,5 @@
 ---
-title: "Simple Pendulum"
+title: "The Simple Pendulum"
 date: 2025-05-13 +0800
 categories: [Physics, Mechanics]
 ---
