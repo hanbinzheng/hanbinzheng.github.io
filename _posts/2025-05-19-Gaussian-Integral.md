@@ -365,7 +365,7 @@ We focus on the variable transformation that simplifies the quadratic form in th
 
 #### (1) **Diagonalizing $$\Sigma^{-1}$$: PCA Perspective**
 
-### $$\Sigma^{-1} = Q^T \Lambda Q,$$
+$$\Sigma^{-1} = Q^T \Lambda Q,$$
 
 where $$Q$$ is an orthogonal matrix whose rows are the eigenvectors of $$\Sigma^{-1}$$, and $$\Lambda$$ is a diagonal matrix of corresponding eigenvalues. 
 
