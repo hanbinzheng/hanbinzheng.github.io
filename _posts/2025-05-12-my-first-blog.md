@@ -2,7 +2,6 @@
 layout: post       # 固定为post，表示这是博客文章
 title: "My First Blog"      # 文章标题（引号内可包含特殊字符）
 date: 2025-05-13 +0800  # 发布时间（+0800表示东八区北京时间）
-math: true               # 可选：启用数学公式支持（KaTeX）
 ---
 
 ## Abstract
