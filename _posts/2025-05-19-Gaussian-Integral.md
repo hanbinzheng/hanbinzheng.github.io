@@ -344,7 +344,7 @@ Firstly, clarify some notation:
 $$
 \boldsymbol{X} = \begin{bmatrix} X_1 \\ \vdots \\ X_n \end{bmatrix}, \boldsymbol{X} 
 \in \mathbb{R}^n, \quad 
-\text{where } X_i \in \mathbb{R}, \quad i = 1, \dots, n \\[1.5ex]
+\text{where } X_i \in \mathbb{R}, \quad i = 1, \dots, n
 $$
 
 The **bold** and captial $$\boldsymbol{X}$$ are **random vector** whose elements (i.e. **Captial** $$X_i \quad i = 1, \dots, n$$ )are **random variables**.
