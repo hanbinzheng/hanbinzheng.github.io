@@ -1,16 +1,14 @@
 ---
 layout: post
+title: The Gaussian Integral
 date: 2025-05-19 +0800
 categories: [Math, Probability]
 tags: [Math, Probability, PCA, Gaussian, Integral]
-math: true
 ---
 
-# Gaussian Integral
+> This post introduces the Gaussian integral, starting from basic integration and gradually building towards a probabilistic and linear algebraic perspective.
 
-This blog introduce the Gaussian Integral. The first and second part are just integral calculations. The third part is an explanation from the perspective of **probability** and **linear algebra**.
-
-The logic of this article is from pure mathematical structure to intuitive understanding.
+> The exposition proceeds from a purely mathematical derivation to a more intuitive understanding grounded in probability and linear algebra.
 
 ## I. The Fundamental Theorem
 
@@ -114,7 +112,7 @@ $$
 
 ## II. From Univariate to Multivariate
 
-This section will expand the **Gaussian Integral** From **univariate** into **multivariate**.
+We now generalize the **univariate Gaussian Integral** into **multivariate** cases.
 
 Firstly, clarify some notation:
 
@@ -415,4 +413,4 @@ greatly simplifying the integral.
 
 ---
 
-> Thanks to Chat GPT. My English is childish and she helps to organise my words.
+> Thanks to Chat GPT. My Chinglish is childish and she helps to organise my words.
