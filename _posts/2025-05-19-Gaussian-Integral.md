@@ -1,6 +1,6 @@
 ---
 layout: post
-date: 2025-05-19T00:00:00+08:00
+date: 2025-05-19 +0800
 categories: [Math, Probability]
 tags: [Math, Probability, PCA, Gaussian, Integral]
 math: true
