@@ -339,6 +339,18 @@ This normalization condition is straightforward: the mean $$\mu$$ and variance $
 
 ### 2. Multivariate Gaussian Distribution
 
+Firstly, clarify some notation:
+
+$$
+\begin{align*}
+&\text{(1)} \quad 
+\boldsymbol{X} = \begin{bmatrix} X_1 \\ \vdots \\ X_n \end{bmatrix}, \boldsymbol{X} 
+\in \mathbb{R}^n, \quad 
+\text{where } X_i \in \mathbb{R}, \quad i = 1, \dots, n \\[1.5ex]
+$$
+
+The **bold** and captial $$\boldsymbol{X}$$ are **random vector** whose elements (i.e. $$X_i \quad i = 1, \dots, n$$ )are **random variables**.
+
 $$
 \begin{equation*}
 \begin{aligned}
@@ -373,6 +385,12 @@ $$
 \boldsymbol{y} = Q (\boldsymbol{x} - \boldsymbol{\mu}),
 $$
 
+or equivalently, 
+
+$$
+\boldsymbol{Y} = Q (\boldsymbol{X} - \boldsymbol{\mu}).
+$$
+
 which rotates and centers the coordinate system. Under this transformation, the quadratic form becomes:
 
 $$
@@ -392,7 +410,7 @@ However, **in the case of multivariate gaussian, uncorrelatedness does imply ind
 This allows the joint distribution to be factored into a porduct of 1-D Gaussian densities:
 
 $$
-f_{\boldsymbol{y}}(\boldsymbol{y}) = \prod_{i=1}^n \mathcal{N}(y_i; 0, \lambda_i^{-1}),
+f_{\boldsymbol{Y}}(\boldsymbol{y}) = \prod_{i=1}^n \mathcal{N}(y_i; 0, \lambda_i^{-1}),
 $$
 
 greatly simplifying the integral.
