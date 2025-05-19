@@ -2,7 +2,8 @@
 layout: post
 date: 2025-05-19T00:00:00+08:00
 categories: [Math, Probability]
-tags: [Gaussian]
+tags: [Math, Probability, PCA, Gaussian, Integral]
+math: true
 ---
 
 # Gaussian Integral
