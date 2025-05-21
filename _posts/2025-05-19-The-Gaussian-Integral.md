@@ -196,7 +196,7 @@ $$
 \in \mathbb{R}^{n \times n}.
 $$
 
-Since $$y_i = \sum_{j = 0}^{n} Q_{ij} (x_i - b_i)$$ and $$\frac{\partial f_i}{\partial x_k} = \frac{\partial y_i}{\partial x_k} = Q_{ik}$$ , 
+Since $$y_i = \sum_{j = 1}^{n} Q_{ij} (x_i - b_i)$$ and $$\frac{\partial f_i}{\partial x_k} = \frac{\partial y_i}{\partial x_k} = Q_{ik}$$ , 
 
 $$
 \mathrm{J}
