@@ -181,6 +181,12 @@ f_2(x_1, \dots, x_n) \\
 \vdots \\
 f_n(x_1, \dots, x_n)
 \end{bmatrix}
+= \begin{bmatrix}
+y_1 \\
+y_2 \\
+\vdots \\
+y_n
+\end{bmatrix}
 \in \mathbb{R}^n,
 $$
 
