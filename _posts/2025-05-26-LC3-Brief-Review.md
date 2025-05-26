@@ -42,7 +42,7 @@ This program serves as a review for:
 
 #### (2) Tree Structure of Folders (testcase emample)
 
-```text
+```plaintext
                       root
                /                 \
          projects                media
@@ -95,7 +95,7 @@ void print_folder(int depth, folder_node* folder);
 
 ### 4. Desired Output
 
-```txt
+```plaintext
 root
     file: config.sys
     projects
@@ -152,7 +152,7 @@ These conventions are based on my understanding and memory of run-time stack imp
 
 ### 1. main() function
 
-```assembly
+```asm
 
 ;;; --------------------mian_function-------------------------------------
 ;;; int main() {
@@ -189,7 +189,7 @@ STACK_BOTTOM
 
  ### 2. print_folder() function
 
-```assembly
+```asm
 
 ;;; ----------------------PRINT_FOLDER------------------------------------
 ;;; void print_folder(int depth, folder_node* node) {
@@ -348,7 +348,7 @@ PRINT_FOLDER_SAVE_R2
 
 ### 3. print_file() function
 
-```assembly
+```asm
 
 ;;; ----------------------PRINT_FILE--------------------------------------
 ;;; void print_file(int num, file_node * file) {
@@ -432,7 +432,7 @@ PRINT_FILE_SAVE_R0
 
 ### 4. print_space() function
 
-```assembly
+```asm
 
 ;;; ---------------------PRINT_SPACE------------------------------------
 ;;; void print_space(int n) {
@@ -492,7 +492,7 @@ PRINT_SPACE_SAVE_R0
 
 ## III. PRINT_A_CHAR and PRINT_A_STRING System Call
 
-```assembly
+```asm
 ;;; -------------------------PRINT_A_CHAR---------------------------------
 ;;; The same as "OUT". See lc3 memory form x0450 to x0455 for details.
 PRINT_A_CHAR
@@ -547,7 +547,7 @@ PRINT_A_STRING_SAVE_R7
 
 ## IV. Data
 
-```assembly
+```asm
 ;;; -------------------------folder_info-----------------------------------
 FOLDER_root
     .FILL FOLDER_projects       ; left
