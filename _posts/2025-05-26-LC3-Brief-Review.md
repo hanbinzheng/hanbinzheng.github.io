@@ -5,8 +5,8 @@ categories: [ECE, Assembly]
 tags: [lc3, assembly, recursion, data-structures]
 ---
 
-This is a brief review for some topics of ECE220. Click [here](https://github.com/hanbinzheng/hanbinzheng.github.io/blob/main/assets/file/2025-05-26-LC3-Brief-Review/print_folder.asm) for complete asm file.
-
+> This is a brief review for some topics of ECE220. Click [here](https://github.com/hanbinzheng/hanbinzheng.github.io/blob/main/assets/file/2025-05-26-LC3-Brief-Review/print_folder.asm) for complete asm file.
+> Since this website cannot render asm code blocks properly, I used nasm instead — though this is actually LC-3 assembly code.
 ## I. Purpose and Description
 
 ### 1. Purpose
