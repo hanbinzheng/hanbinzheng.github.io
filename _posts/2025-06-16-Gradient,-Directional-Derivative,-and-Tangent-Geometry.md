@@ -1,7 +1,8 @@
 ---
 title: Gradient, Directional Derivative, and Tangent Geometry — A Complete Guide
-date: 2025-06-16
-tags: [mathematics, multivariable calculus, gradient, vector calculus]
+date: 2025-06-16 +80000
+categories: [Math, Calculus]
+tags: [Math, Vector Calculus]
 ---
 
 This article develops a rigorous and coherent understanding of the **directional derivative**, **gradient**, and their geometric and analytic interpretations. Starting from first principles, we build up the theory from the definitions of **partial derivatives** and **directional derivatives**, through the notion of differentiability, to the consequences: the **existence and meaning of the gradient**, the **direction of steepest ascent**, and the **orthogonality between the gradient and level sets**.
