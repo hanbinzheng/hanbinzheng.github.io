@@ -73,7 +73,7 @@ tags: [System, RM]
 
      在linux里，所有东西都被组织成一棵**统一的目录树**，以 / 为根：
 
-     ```txt
+     ```terminal
      /
      ├── bin/           # 系统基本命令（如 ls, cp, mv）
      ├── boot/          # 启动加载器用的文件（如 vmlinuz, grub）
@@ -181,9 +181,8 @@ tags: [System, RM]
    * 回到桌面，点击Ubuntu安装器的图标，进入安装器 (名字叫`Install Ubuntu 22.04.5 LTS`，图标位于右下角`Home`文件夹的上方，或者最左上角)。这个可能点了不一定有用，要等一小会儿，如果没出来不要害怕。他会询问你一些默认设置，比如语言，键盘布局，要不要联网什么的，在碰到`Installation type`之前可以随意选择。但是个人建议选上`Install third-party software for graphics and WiFi hardware and additional media format`。在你进行操作的时候，他可能会跳出来说
 
      ```
-     											Unmount partitions that are in use?
+     Unmount partitions that are in use?
      The installer has detected that the following disks have mounted partitions:/dev/nvme0n1
-     
      Do you want the installer to try to unmount the partitions on these disks before continuing? If you leave them mounted, you will not be able to create, delete, or resize partitions on these disks, but you may be able to install to existing partitions there.
      																																						Yes / No
      ```
@@ -196,9 +195,11 @@ tags: [System, RM]
 
      在这个界面，找到你刚刚分出来的`free space`，选中这一行，然后点击左下角的`+`按钮。在出现的对话框里，进行如下设置：
 
+
      | Size | Type for the new partition | Location for the new partition | Use as | Mount point |
      | ---- | -------------------------- | ------------------------------ | ------ | ----------- |
      | 默认 | Primary                    | Beginning of this space        | Ext4   | /           |
+
 
      完成设置后，检查是否存在类似于`/dev/nvme0n1p1 `的内容。它如果被正常识别为`efi`或`esp`，就不需要改动。
 
@@ -262,20 +263,19 @@ tags: [System, RM]
 
      的内容，那么说明找到了Ubuntu24.04
 
-   *  编辑配置文件(我用的是vim，如果你从未用过vim，nano简单一点，把下面指令的vim改成nano)，
-
-     ```
+   * 编辑配置文件(我用的是vim，如果你从未用过vim，nano简单一点，把下面指令的vim改成nano)，
+     ```terminal
      sudo vim /etc/default/grub
      ```
 
-     找到这几行，修改成如下形式：
-
-     ```
+      然后把这里面改成下面的格式：
+     
+     ```terminal
      GRUB_TIMEOUT=5
      GRUB_TIMEOUT_STYLE=menu
      ```
 
-   *  然后重新生成GRUB
+   * 然后重新生成GRUB
 
      ```terminal
      sudo update-grub
