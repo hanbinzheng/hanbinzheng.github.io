@@ -1,5 +1,5 @@
 ---
-title: "Install Ubuntu"
+title: "Ubuntu双系统安装"
 date: 2025-07-05 +0800
 categories: [RM]
 tags: [System, RM]
