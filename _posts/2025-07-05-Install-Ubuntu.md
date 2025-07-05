@@ -5,7 +5,7 @@ categories: [RM]
 tags: [System, RM]
 ---
 
-> 这个是我在原有Ubuntu24.04上安装Ubuntu24.04+Ubuntu22.04双系统经历。windows可以看`2. 安装双系统`部分。
+> 这个是我在原有Ubuntu24.04上安装Ubuntu24.04+Ubuntu22.04双系统经历。其中`2. 准备启动盘`这一部分部分跟原先系统有关（Ubuntu），其余部分也适用于Windows
 
 ---
 
