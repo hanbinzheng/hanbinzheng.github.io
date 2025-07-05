@@ -61,8 +61,8 @@ tags: [System, RM]
 
      ```terminal
      NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
-     sda      8:0    1   32G  0  disk       										# ← 这就是你的 U 盘
-     └─sda1   8:1    1   32G  0  part /media/zhb/UBUNTU 24_0		# zhb是你的用户名，UBUNTU 24_0是某文件夹
+     sda      8:0    1   32G  0  disk                           # ← 这就是你的 U 盘
+     └─sda1   8:1    1   32G  0  part /media/zhb/UBUNTU 24_0    # zhb是你的用户名，UBUNTU 24_0是某文件夹
      ```
 
      找到那个大小为32G(这里是指你U盘实际的大小)的sda(sdb, sdc, ...不要看错，一定要找对)
@@ -110,7 +110,7 @@ tags: [System, RM]
      你需要执行以下指令来卸载U盘：
 
      ```terminal
-     sudo umount /dev/sda1				# 将其中的 /dev/sda1 替换为你刚才找到的那个 U 盘设备名
+     sudo umount /dev/sda1    # 将其中的 /dev/sda1 替换为你刚才找到的那个 U 盘设备名
      ```
 
      在卸载完之后，重新执行`lsblk`, 确认`/media/zhb/UBUNTU 24_0`的` MOUNTPOINT`这一栏的输出为空(没有` /media/...`)，那么说明卸载成功。因为`lsblk`会列出所有分区信息，不管是否挂载，所以`/media/zhb/UBUNTU 24_0`不会消失。除了这个办法，你也可以通过`mount | grep sda`指令来检测。如果这个执行这个指令后没有输出，说明卸载成功。如果有输出，说明卸载失败。
@@ -239,7 +239,7 @@ tags: [System, RM]
 
    ```
    Ubuntu 22.04
-   Ubuntu 24.04 (我是Ubuntu 24.04，你可能是Windows)
+   Ubuntu 24.04 # (我是Ubuntu 24.04，你可能是Windows)
    Advanced options for Ubuntu ...
    ```
 
