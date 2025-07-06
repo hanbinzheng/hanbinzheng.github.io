@@ -231,7 +231,7 @@ tags: [System, RM]
    Enroll hash from disk
    ```
 
-   来给你选。这个是**MOK（Machine Owner Key）管理界面**，这是 Ubuntu 安装了**安全引导（Secure Boot）签名的第三方驱动**（比如 Wi-Fi、NVIDIA）时，系统 UEFI 要求你做出的信任授权，否则系统会拒绝加载那些驱动。你需要选`Enroll MOK`。
+   来给你选。这个是**MOK（Machine Owner Key）管理界面**，这是 Ubuntu 安装了**安全引导（Secure Boot）签名的第三方驱动**（比如 Wi-Fi、NVIDIA）时，系统 UEFI 要求你做出的信任授权，否则系统会拒绝加载那些驱动。你需要选`Continue`。
 
    
 
@@ -239,6 +239,7 @@ tags: [System, RM]
 
    ```
    Ubuntu 22.04
+   Advanced options for Ubuntu ...
    Ubuntu 24.04 # (我是Ubuntu 24.04，你可能是Windows)
    Advanced options for Ubuntu ...
    ```
