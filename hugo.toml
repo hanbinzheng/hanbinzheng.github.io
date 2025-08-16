@@ -1,0 +1,46 @@
+baseURL = "https://hanbinzheng222.github.io/"
+title = "Hanbin Zheng"
+languageCode = 'en-us'
+theme = "PaperMod"
+publishDir = "docs"
+
+[pagination]
+  pagerSize = 10
+
+[params]
+  defaultTheme = "auto"
+  ShowReadingTime = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowToc = true
+  math = true
+
+  [params.profileMode]
+    enabled = true
+    title = "Hanbin Zheng"
+    subtitle = "ECE • ML/Systems • Marathon"
+    imageUrl = "avatar.jpg"
+    imageWidth = 160
+    imageHeight = 160
+    buttons = [
+      { name = "Blog", url = "/posts/" },
+      { name = "Projects", url = "/projects/" },
+      { name = "About", url = "/about/" }
+    ]
+  
+  [params.social]
+  github = "hanbinzheng222"
+
+[[menu.main]]
+  name = "Blog"
+  url = "/posts/"
+  weight = 10
+[[menu.main]]
+  name = "Projects"
+  url = "/projects/"
+  weight = 20
+[[menu.main]]
+  name = "About"
+  url = "/about/"
+  weight = 30
+
