@@ -1,5 +1,6 @@
 name: Deploy Hugo site to Pages
 
+# 当 main 分支有 push 时触发
 on:
   push:
     branches: ["main"]
@@ -8,23 +9,29 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # 1. 拉取仓库代码及子模块（Hugo 主题通常是子模块）
       - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
 
+      # 2. 安装 Hugo
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: "latest"
           extended: true
 
+      # 3. 构建静态网站
       - name: Build
         run: hugo --minify
 
+      # 4. 部署到 gh-pages
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./public        # Hugo 输出目录
+          force_orphan: true           # 第一次部署会新建 gh-pages 分支
+          commit_message: "Deploy site: ${{ github.sha }}"
 
