@@ -1,8 +1,8 @@
 baseURL = "https://hanbinzheng.github.io/"
 title = "Hanbin Zheng"
-languageCode = 'en-us'
+languageCode = "en-us"
 theme = "PaperMod"
-publishDir = "docs"
+publishDir = "public"
 
 [pagination]
   pagerSize = 10
@@ -20,25 +20,27 @@ publishDir = "docs"
     title = "Hanbin Zheng"
     subtitle = "ECE • ML/Systems • Marathon"
     imageUrl = "avatar.jpg"
-    imageWidth = 160
-    imageHeight = 160
+    imageWidth = 120
+    imageHeight = 120
     buttons = [
       { name = "Blog", url = "/posts/" },
       { name = "Projects", url = "/projects/" },
       { name = "About", url = "/about/" }
     ]
-  
+
   [params.social]
-  github = "hanbinzheng222"
+    github = "hanbinzheng"
 
 [[menu.main]]
   name = "Blog"
   url = "/posts/"
   weight = 10
+
 [[menu.main]]
   name = "Projects"
   url = "/projects/"
   weight = 20
+
 [[menu.main]]
   name = "About"
   url = "/about/"
