@@ -1,0 +1,35 @@
+name: Hugo Deploy
+
+on:
+  push:
+    branches:
+      - main  # 当 main 分支有更新时触发
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 检出仓库源码
+    - uses: actions/checkout@v3
+      with:
+        submodules: true  # 如果你用 theme 作为 git submodule
+
+    # 安装 Hugo
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v3
+      with:
+        hugo-version: "0.116.0"  # 换成你本地 Hugo 版本
+
+    # 构建网站
+    - name: Build
+      run: hugo --minify
+
+    # 部署到 gh-pages
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
+        publish_branch: gh-pages
+
