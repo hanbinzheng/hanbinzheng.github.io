@@ -19,7 +19,7 @@ jobs:
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v3
       with:
-        hugo-version: "0.116.0"  # 换成你本地 Hugo 版本
+        hugo-version: "0.149.0" 
 
     # 构建网站
     - name: Build
