@@ -5,6 +5,9 @@ on:
     branches:
       - main  # 当 main 分支有更新时触发
 
+permissions:
+  contents: write  # 给 Actions 写 gh-pages 权限
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
