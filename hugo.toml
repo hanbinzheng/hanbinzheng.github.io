@@ -1,0 +1,95 @@
+# Hugo site configuration
+baseURL = "https://hanbinzheng.github.io/"
+languageCode = "en-us"
+title = "Hanbin Zheng"
+theme = "PaperMod"
+enableRSS = true
+
+
+[params.profileMode]
+enabled = true
+title = "Hanbin Zheng"
+subtitle = "A rough timber, unsuitable for carving"
+imageUrl = "images/avatar.png"
+imageWidth = 180
+imageHeight = 180
+
+  [[params.profileMode.buttons]]
+  name = "About"
+  url = "/about"
+
+  [[params.profileMode.buttons]]
+  name = "Academic"
+  url = "/academic"
+
+  [[params.profileMode.buttons]]
+  name = "Blog"
+  url = "/blog"
+
+  [[params.profileMode.buttons]]
+  name = "Else"
+  url = "/else"
+
+
+# [[params.socialIcons]]
+# name = "github"
+# url = "https://github.com/hanbinzheng"
+
+# [[params.socialIcons]]
+# name = "linkedin"
+# url = "https://www.linkedin.com/in/hanbin-zheng-aaa05b376/"
+
+# [[params.socialIcons]]
+# name = "x"
+# url = "https://x.com/hanbinzheng222"
+
+
+# right top menu
+[menu]
+  [[menu.main]]
+    identifier = "home page"
+    name = "Home"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    identifier = "academic"
+    name = "Academic"
+    url = "/academic"
+    weight = 2
+
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about"
+    weight = 3
+
+  [[menu.main]]
+    identifier = "blog"
+    name = "Blog"
+    url = "/blog"
+    weight = 4
+
+  [[menu.main]]
+    identifier = "archive"
+    name = "Archive"
+    url = "/archive"
+    weight = 5
+
+  [[menu.main]]
+    identifier = "news"
+    name = "News"
+    url = "/news"
+    weight = 6
+
+  [[menu.main]]
+    identifier = "else"
+    name = "Else"
+    url = "/else"
+    weight = 7
+
+# PaperMod 相关
+[params.paper]
+  highlightStyle = "github"
+  lightbox = true
+  themeColor = "#1a1a1a"
