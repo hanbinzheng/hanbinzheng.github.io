@@ -1,30 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hanbin Zheng</title><link>https://hanbinzheng.github.io/</link><description>Recent content on Hanbin Zheng</description><generator>Hugo -- 0.149.0</generator><language>en-us</language><lastBuildDate>Tue, 02 Sep 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://hanbinzheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Hanbin Zheng</title><link>https://hanbinzheng.github.io/about/</link><pubDate>Tue, 02 Sep 2025 00:00:00 +0000</pubDate><guid>https://hanbinzheng.github.io/about/</guid><description>&lt;h1 id="hi-there"&gt;Hi there,&lt;/h1&gt;
-&lt;p&gt;Welcome to my personal page!&lt;/p&gt;
-&lt;p&gt;I’m Hanbin Zheng, an &lt;strong&gt;ECE undergraduate student&lt;/strong&gt; at &lt;strong&gt;ZJUI (ZJU-UIUC Institute)&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;This site records my academic journey — covering &lt;strong&gt;programming&lt;/strong&gt;, &lt;strong&gt;mathematics&lt;/strong&gt;, and occasional reflections on life.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="about-me"&gt;About Me&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Beginner in &lt;strong&gt;Python, C/C++, ROS, and Generative Modeling&lt;/strong&gt; — still a pure 菜狗&lt;/li&gt;
-&lt;li&gt;Interested in &lt;strong&gt;mathematics&lt;/strong&gt;, though remain a sheer 菜狗&lt;/li&gt;
-&lt;li&gt;Exploring &lt;strong&gt;Emacs&lt;/strong&gt;, especially Centaur Emacs, with plans to learn some Emacs Lisp&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id="personal"&gt;Personal&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Amateur runner — fan of &lt;strong&gt;long-distance running and marathons&lt;/strong&gt;&lt;br&gt;
-&lt;strong&gt;PB&lt;/strong&gt;: 1 h 54 min 39 s (half marathon)&lt;/li&gt;
-&lt;li&gt;Currently single; open to meeting &lt;strong&gt;大姐姐&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id="contact"&gt;Contact&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;GitHub&lt;/strong&gt;: &lt;a href="https://github.com/hanbinzheng"&gt;@hanbinzheng&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Email&lt;/strong&gt;: &lt;a href="mailto:hanbin.24@intl.zju.edu.cn"&gt;hanbin.24@intl.zju.edu.cn&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;WeChat&lt;/strong&gt;: available upon request&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;p&gt;“I find myself just a raw timber, unsuitable for carving.”&lt;/p&gt;</description></item><item><title>The Continuity Equation</title><link>https://hanbinzheng.github.io/blog/the-continuity-equation/</link><pubDate>Tue, 17 Jun 2025 00:00:00 +0800</pubDate><guid>https://hanbinzheng.github.io/blog/the-continuity-equation/</guid><description>&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hanbin Zheng</title><link>https://hanbinzheng.github.io/</link><description>Recent content on Hanbin Zheng</description><generator>Hugo -- 0.149.0</generator><language>en-us</language><lastBuildDate>Tue, 17 Jun 2025 00:00:00 +0800</lastBuildDate><atom:link href="https://hanbinzheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>The Continuity Equation</title><link>https://hanbinzheng.github.io/blog/the-continuity-equation/</link><pubDate>Tue, 17 Jun 2025 00:00:00 +0800</pubDate><guid>https://hanbinzheng.github.io/blog/the-continuity-equation/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;This post is revised by Chat GPT.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;This post presents a detailed walkthrough of the &lt;strong&gt;continuity equation&lt;/strong&gt; from physical intuition to mathematical formalism. We aim to derive the equation step by step and explain all quantities involved.&lt;/p&gt;
 &lt;hr&gt;
@@ -134,4 +108,30 @@ $$&lt;/p&gt;</description></item><item><title>My First Blog</title><link>https:/
 &lt;h2 id="latex-mathematics-formula"&gt;LaTeX Mathematics Formula&lt;/h2&gt;
 &lt;p&gt;$$
 \int_0^{\infty} x^2 dx
-$$&lt;/p&gt;</description></item><item><title/><link>https://hanbinzheng.github.io/archive/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://hanbinzheng.github.io/archive/</guid><description>&lt;p&gt;写点啥&lt;/p&gt;</description></item><item><title/><link>https://hanbinzheng.github.io/news/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://hanbinzheng.github.io/news/</guid><description>&lt;p&gt;写点啥&lt;/p&gt;</description></item></channel></rss>
+$$&lt;/p&gt;</description></item><item><title>Hanbin Zheng</title><link>https://hanbinzheng.github.io/about/</link><pubDate>Mon, 05 May 2025 00:00:00 +0000</pubDate><guid>https://hanbinzheng.github.io/about/</guid><description>&lt;h1 id="hi-there"&gt;Hi there,&lt;/h1&gt;
+&lt;p&gt;Welcome to my personal page!&lt;/p&gt;
+&lt;p&gt;I’m Hanbin Zheng, an &lt;strong&gt;ECE undergraduate student&lt;/strong&gt; at &lt;strong&gt;ZJUI (ZJU-UIUC Institute)&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;This site records my academic journey — covering &lt;strong&gt;programming&lt;/strong&gt;, &lt;strong&gt;mathematics&lt;/strong&gt;, and occasional reflections on life.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="about-me"&gt;About Me&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Beginner in &lt;strong&gt;Python, C/C++, ROS, and Generative Modeling&lt;/strong&gt; — still a pure 菜狗&lt;/li&gt;
+&lt;li&gt;Interested in &lt;strong&gt;mathematics&lt;/strong&gt;, though remain a sheer 菜狗&lt;/li&gt;
+&lt;li&gt;Exploring &lt;strong&gt;Emacs&lt;/strong&gt;, especially Centaur Emacs, with plans to learn some Emacs Lisp&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="personal"&gt;Personal&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Amateur runner — fan of &lt;strong&gt;long-distance running and marathons&lt;/strong&gt;&lt;br&gt;
+&lt;strong&gt;PB&lt;/strong&gt;: 1 h 54 min 39 s (half marathon)&lt;/li&gt;
+&lt;li&gt;Currently single; open to meeting &lt;strong&gt;大姐姐&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="contact"&gt;Contact&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;GitHub&lt;/strong&gt;: &lt;a href="https://github.com/hanbinzheng"&gt;@hanbinzheng&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Email&lt;/strong&gt;: &lt;a href="mailto:hanbin.24@intl.zju.edu.cn"&gt;hanbin.24@intl.zju.edu.cn&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;WeChat&lt;/strong&gt;: available upon request&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“I find myself just a raw timber, unsuitable for carving.”&lt;/p&gt;</description></item><item><title/><link>https://hanbinzheng.github.io/archive/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://hanbinzheng.github.io/archive/</guid><description>&lt;p&gt;写点啥&lt;/p&gt;</description></item><item><title/><link>https://hanbinzheng.github.io/news/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://hanbinzheng.github.io/news/</guid><description>&lt;p&gt;写点啥&lt;/p&gt;</description></item></channel></rss>
