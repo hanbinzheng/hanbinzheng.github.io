@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mechanics on Hanbin Zheng</title><link>https://hanbinzheng.github.io/categories/mechanics/</link><description>Recent content in Mechanics on Hanbin Zheng</description><generator>Hugo -- 0.149.0</generator><language>en-us</language><lastBuildDate>Wed, 14 May 2025 00:00:00 +0800</lastBuildDate><atom:link href="https://hanbinzheng.github.io/categories/mechanics/index.xml" rel="self" type="application/rss+xml"/><item><title>The Simple Pendulum</title><link>https://hanbinzheng.github.io/blog/simple-pendulum/</link><pubDate>Wed, 14 May 2025 00:00:00 +0800</pubDate><guid>https://hanbinzheng.github.io/blog/simple-pendulum/</guid><description>&lt;p&gt;This is a very basic summary of simple pendulum. I wrote this only for a brief review of LaTeX syntax. For more serious one, refer to &lt;a href="https://zhuanlan.zhihu.com/p/138339027"&gt;this article&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="torsion-pendulum"&gt;Torsion Pendulum&lt;/h2&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://hanbinzheng.github.io/assets/img/2025-05-13-Simple-Pendulum/image1.png"&gt;&lt;/p&gt;
+&lt;p&gt;We hope to find the moving function. i.e. $\theta$ and $t$.&lt;/p&gt;
+&lt;p&gt;\begin{align*}
+\vec{\tau} &amp;amp;= -\kappa \vec{\theta} \
+\vec{\tau} &amp;amp;= I \vec{\alpha}&lt;br&gt;
+\end{align*}&lt;/p&gt;
+&lt;p&gt;From definition, we know that:&lt;/p&gt;
+&lt;p&gt;$$
+\ddot{\theta} = \alpha
+$$&lt;/p&gt;
+&lt;p&gt;So, we obtain the final function:&lt;/p&gt;
+&lt;p&gt;$$
+\ddot{\theta} = - \frac{\kappa}{I} \theta
+$$&lt;/p&gt;</description></item></channel></rss>

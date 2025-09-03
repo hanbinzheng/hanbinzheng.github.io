@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Probability on Hanbin Zheng</title><link>https://hanbinzheng.github.io/categories/probability/</link><description>Recent content in Probability on Hanbin Zheng</description><generator>Hugo -- 0.149.0</generator><language>en-us</language><lastBuildDate>Mon, 19 May 2025 00:00:00 +0800</lastBuildDate><atom:link href="https://hanbinzheng.github.io/categories/probability/index.xml" rel="self" type="application/rss+xml"/><item><title>The Gaussian Integral</title><link>https://hanbinzheng.github.io/blog/gaussian-integral/</link><pubDate>Mon, 19 May 2025 00:00:00 +0800</pubDate><guid>https://hanbinzheng.github.io/blog/gaussian-integral/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;This post introduces the Gaussian integral, starting from basic integration and gradually building towards a probabilistic and linear algebraic perspective.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The exposition proceeds from a purely mathematical derivation to a more intuitive understanding grounded in probability and linear algebra.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id="i-the-fundamental-theorem"&gt;I. The Fundamental Theorem&lt;/h2&gt;
+&lt;p&gt;The most fundamental Gaussian Integral is as follows:&lt;/p&gt;
+&lt;p&gt;$$
+\int_{-\infty}^{\infty} \exp \left(-\frac{1}{2}x^2 \right) dx = \sqrt{2\pi}
+$$&lt;/p&gt;
+&lt;p&gt;Equivalently, in the form of the &lt;strong&gt;standard Gaussian distribution&lt;/strong&gt;:&lt;/p&gt;</description></item><item><title>The Central Limit Theorem</title><link>https://hanbinzheng.github.io/blog/central-limit-theorem/</link><pubDate>Thu, 15 May 2025 00:00:00 +0800</pubDate><guid>https://hanbinzheng.github.io/blog/central-limit-theorem/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;Thanks to &lt;a href="https://www.zhihu.com/people/thegenius-16"&gt;子预&lt;/a&gt;. &lt;a href="https://zhuanlan.zhihu.com/p/85233692"&gt;His article&lt;/a&gt; helped me a lot in understanding this topic.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;This is a brief (but not rigorous) proof of the &lt;strong&gt;Central Limit Theorem (CLT)&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The CLT is one of the most fundamental results in probability theory, showing that the sum of many independent random variables tends toward a normal distribution, regardless of their original distribution.&lt;/p&gt;
+&lt;p&gt;Intuitively, the CLT explains why many natural phenomena follow the bell curve: individual randomness averages out into a predictable pattern.&lt;/p&gt;</description></item></channel></rss>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Divergence on Hanbin Zheng</title><link>https://hanbinzheng.github.io/tags/divergence/</link><description>Recent content in Divergence on Hanbin Zheng</description><generator>Hugo -- 0.149.0</generator><language>en-us</language><lastBuildDate>Tue, 17 Jun 2025 00:00:00 +0800</lastBuildDate><atom:link href="https://hanbinzheng.github.io/tags/divergence/index.xml" rel="self" type="application/rss+xml"/><item><title>The Continuity Equation</title><link>https://hanbinzheng.github.io/blog/the-continuity-equation/</link><pubDate>Tue, 17 Jun 2025 00:00:00 +0800</pubDate><guid>https://hanbinzheng.github.io/blog/the-continuity-equation/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;This post is revised by Chat GPT.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;This post presents a detailed walkthrough of the &lt;strong&gt;continuity equation&lt;/strong&gt; from physical intuition to mathematical formalism. We aim to derive the equation step by step and explain all quantities involved.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="1-motivation-conservation-in-physical-systems"&gt;&lt;strong&gt;1. Motivation: Conservation in Physical Systems&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Many physical quantities are conserved in nature. For instance:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Mass&lt;/strong&gt; in a closed system&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Charge&lt;/strong&gt; in electromagnetic systems&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Energy&lt;/strong&gt; in isolated systems&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Number of particles&lt;/strong&gt; in fluid dynamics&lt;/p&gt;</description></item></channel></rss>
