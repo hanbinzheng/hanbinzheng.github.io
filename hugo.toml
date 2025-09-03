@@ -5,32 +5,58 @@ title = "Hanbin Zheng"
 theme = "PaperMod"
 enableRSS = true
 
+# ----------------------------
+# 顶层 params
+# ----------------------------
+[params]
+  # Profile 模式
+  [params.profileMode]
+    enabled = true
+    title = "Hanbin Zheng"
+    subtitle = "A rough timber, unsuitable for carving"
+    imageUrl = "images/avatar.png"
+    imageWidth = 180
+    imageHeight = 180
 
-[params.profileMode]
-enabled = true
-title = "Hanbin Zheng"
-subtitle = "A rough timber, unsuitable for carving"
-imageUrl = "images/avatar.png"
-imageWidth = 180
-imageHeight = 180
+    [[params.profileMode.buttons]]
+    name = "About"
+    url = "/about"
 
-  [[params.profileMode.buttons]]
-  name = "About"
-  url = "/about"
+    [[params.profileMode.buttons]]
+    name = "Academic"
+    url = "/academic"
 
-  [[params.profileMode.buttons]]
-  name = "Academic"
-  url = "/academic"
+    [[params.profileMode.buttons]]
+    name = "Blog"
+    url = "/blog"
 
-  [[params.profileMode.buttons]]
-  name = "Blog"
-  url = "/blog"
+    [[params.profileMode.buttons]]
+    name = "Else"
+    url = "/else"
 
-  [[params.profileMode.buttons]]
-  name = "Else"
-  url = "/else"
+  # PaperMod 相关
+  [params.paper]
+    highlightStyle = "github"
+    lightbox = true
+    themeColor = "#1a1a1a"
+    ShowShareButtons = true  # 分享按钮
+    ShowReadingTime = true # 阅读时间
+    ShowToc = true # Table of content
+    TocOpen = true # 默认开启toc
+    ShowCodeCopyButtons = true   # 这里启用代码块一键复制
+    ShowCodeLanguages = true     # 这里显示代码语言标签
 
 
+
+  # Math 配置，启用 MathJax
+  [params.math]
+    enable = true
+    # engine = "katex"  # 默认就是"katex"
+
+
+# ----------------------------
+# 社交链接（可选）
+# ----------------------------
 # [[params.socialIcons]]
 # name = "github"
 # url = "https://github.com/hanbinzheng"
@@ -44,7 +70,9 @@ imageHeight = 180
 # url = "https://x.com/hanbinzheng222"
 
 
-# right top menu
+# ----------------------------
+# 顶部菜单
+# ----------------------------
 [menu]
   [[menu.main]]
     identifier = "home page"
@@ -77,20 +105,7 @@ imageHeight = 180
     weight = 5
 
   [[menu.main]]
-    identifier = "news"
-    name = "News"
-    url = "/news"
-    weight = 6
-
-  [[menu.main]]
     identifier = "else"
     name = "Else"
     url = "/else"
-    weight = 7
-
-# PaperMod 相关
-[params.paper]
-  highlightStyle = "github"
-  lightbox = true
-  themeColor = "#1a1a1a"
-
+    weight = 6
