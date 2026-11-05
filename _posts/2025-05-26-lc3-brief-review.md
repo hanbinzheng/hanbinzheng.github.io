@@ -1,0 +1,753 @@
+---
+layout: post
+title: LC-3 Brief Review
+date: 2025-05-26 00:00:00+0800
+description: A review of LC-3 assembly, the run-time stack, recursion, linked lists, and binary trees, built around one complete program.
+tags: [lc3, assembly, recursion, data-structures]
+categories: computer-engineering
+toc:
+  sidebar: left
+---
+
+> This is a brief review of some topics from ECE 220. All code below is LC-3 assembly; the code blocks use NASM syntax highlighting, which is close enough.
+
+## I. Purpose and description
+
+### 1. Purpose
+
+This program reviews:
+
+1. LC-3 basics, including I/O;
+2. the run-time stack;
+3. recursion in LC-3;
+4. linked lists in LC-3;
+5. binary trees in LC-3.
+
+### 2. Description
+
+1. The program is a direct LC-3 translation of a C program that prints a directory structure.
+2. The directory tree is stored in memory in fixed data structures. The program prints it to the console in a **pre-order traversal**, in the format shown in [Desired output](#4-desired-output).
+3. To show how C is translated into assembly, every user-defined C function uses the **run-time stack**. I also wrote my own versions of the `OUT` and `PUTS` system calls, which C's `printf()` would ultimately rely on. They are called `PRINT_A_CHAR` and `PRINT_A_STRING`. Like real system calls, they do **not** use the run-time stack. They work the same way as the `OUT` and `PUTS` trap service routines in the LC-3 operating system.
+4. The test case is not exhaustive. Gemini generated most of it, and I fixed a few syntax errors so that it assembles. Feel free to add more test cases.
+
+### 3. Data structure design
+
+#### (1) Files and folders
+
+**A file node** (a node of a singly linked list):
+
+- `[0]` next pointer: the next file in the same folder (`NULL` if none);
+- `[1]` pointer to the file name (`.STRINGZ`).
+
+**A folder node** (a node of a binary tree):
+
+- `[0]` left pointer: the left child (`NULL` if none);
+- `[1]` right pointer: the right child (`NULL` if none);
+- `[2]` file pointer: the head of this folder's file list (`NULL` if none);
+- `[3]` pointer to the folder name (`.STRINGZ`).
+
+Both children of a folder are sub-folders of it. The tree is a plain binary tree, not a "left-child, right-sibling" encoding.
+
+#### (2) Folder tree (test case)
+
+```plaintext
+                         root
+                /                   \
+          projects                  media
+          /      \               /         \
+    c_project    blog      documents       photos
+     /     \                /      \           \
+ utils  python_project  reports  presentations  travel
+                                                    \
+                                                 sub_travel
+```
+
+#### (3) Files in each folder (test case)
+
+- root: config.sys
+- projects: README.md
+- c_project: main.c → Makefile
+- utils: helper.c
+- python_project: main.py → requirements.txt
+- blog: index.md
+- media: (empty)
+- documents: meeting_notes.docx → todo_list.txt
+- reports: q1_report.pdf → budget_summary.xlsx
+- presentations: project_kickoff.pptx
+- photos: IMG001.jpg → IMG002.jpg
+- travel: trip.txt → map.png
+- sub_travel: packing_list.md
+
+#### (4) C structs and function prototypes
+
+```c
+typedef struct f {
+    struct f* nextfile;
+    const char* filename;
+} file_node;
+
+typedef struct F {
+    struct F* left;
+    struct F* right;
+    file_node* file;
+    const char* foldername;
+} folder_node;
+
+// See the comment before each subroutine for its full definition.
+void print_space(int n);
+void print_file(int num, file_node* file);
+void print_folder(int depth, folder_node* folder);
+```
+
+### 4. Desired output
+
+```plaintext
+root
+    file: config.sys
+    projects
+        file: README.md
+        c_project
+            file: main.c Makefile
+            utils
+                file: helper.c
+            python_project
+                file: main.py requirements.txt
+        blog
+            file: index.md
+    media
+        documents
+            file: meeting_notes.docx todo_list.txt
+            reports
+                file: q1_report.pdf budget_summary.xlsx
+            presentations
+                file: project_kickoff.pptx
+        photos
+            file: IMG001.jpg IMG002.jpg
+            travel
+                file: trip.txt map.png
+                sub_travel
+                    file: packing_list.md
+```
+
+### 5. Conventions
+
+These conventions follow the run-time stack model from our textbook, as best I remember it. Please let me know if you spot a mistake.
+
+**Registers:**
+
+- **R4:** global data pointer (not needed in this program)
+- **R5:** frame pointer (points to the first local variable)
+- **R6:** stack pointer (points to the top element of the stack)
+- **R7:** return address (written by `JSR` and `TRAP`)
+
+**The stack frame of one function call** (the stack grows toward lower addresses):
+
+| Address      | Contents                                         |
+| ------------ | ------------------------------------------------ |
+| `M[R5 - k]`  | further local variables (if any)                 |
+| `M[R5 + 0]`  | first local variable                             |
+| `M[R5 + 1]`  | caller's frame pointer                           |
+| `M[R5 + 2]`  | return address                                   |
+| `M[R5 + 3]`  | return value (reserved even for `void` functions) |
+| `M[R5 + 4]`  | first argument                                   |
+| `M[R5 + 5]`  | second argument, …                               |
+
+**Other conventions:**
+
+1. Arguments and local variables are accessed through **R5** plus an offset, never through **R6**, because R6 moves whenever something is pushed.
+2. The caller pushes arguments **from right to left**, so the first argument ends up nearest the frame. On return, the callee leaves R6 pointing at the return value, and the caller pops the return value and the arguments.
+
+**Notes on this program:**
+
+1. Each of `print_folder()`, `print_file()`, and `print_space()` has exactly one local variable (`current`, `next`, and `i`), stored at `M[R5 + 0]`.
+2. `main()` does not build a frame and leaves **R5** unset. This is fine here, because `main` never reads R5, and every callee saves and restores R5 itself.
+
+## II. LC-3 translation of the C functions
+
+### 1. `main()`
+
+```nasm
+;;; ---------------------------- MAIN ------------------------------------
+;;; int main() {
+;;;     folder_node* root = get_info();  // get_info() is too complex to write in LC-3;
+;;;                                      // we assume the tree is already in memory.
+;;;     print_folder(0, root);           // see the next subroutine
+;;;     return 0;
+;;; }
+;;;
+;;; R0, R1: temporary registers.
+    .ORIG   x3000
+
+    ;; initialize the stack pointer (R6) to the bottom of an empty stack
+    LD  R6, STACK_BOTTOM
+    ;; main has no stack frame, so R5 is not set here
+
+    ;; push the arguments of print_folder(0, root), right to left
+    LEA R1, FOLDER_root
+    ADD R6, R6, #-1             ; push root
+    STR R1, R6, #0
+    AND R0, R0, #0
+    ADD R6, R6, #-1             ; push depth = 0
+    STR R0, R6, #0
+
+    ;; call print_folder()
+    JSR PRINT_FOLDER
+
+    ;; pop the return value (unused, void) and the two arguments
+    ADD R6, R6, #3
+    HALT
+
+STACK_BOTTOM
+    .FILL   x4000               ; empty stack: the first push writes to x3FFF
+```
+
+### 2. `print_folder()`
+
+```nasm
+;;; ------------------------- PRINT_FOLDER --------------------------------
+;;; void print_folder(int depth, folder_node* node) {
+;;;     // This check only matters for the root: the recursive calls below
+;;;     // never pass a NULL node.
+;;;     if (node == NULL) {
+;;;         return;
+;;;     }
+;;;
+;;;     print_space(depth);
+;;;     folder_node* current = node;
+;;;     printf("%s", current->foldername);
+;;;
+;;;     // pre-order traversal
+;;;     if (current->file != NULL) {
+;;;         printf("\n");
+;;;         print_file(depth + 1, current->file);
+;;;     }
+;;;     if (current->left != NULL) {
+;;;         printf("\n");
+;;;         print_folder(depth + 1, current->left);
+;;;     }
+;;;     if (current->right != NULL) {
+;;;         printf("\n");
+;;;         print_folder(depth + 1, current->right);
+;;;     }
+;;; }
+;;;
+;;; R0: temporary register (caller-saved).
+;;;
+PRINT_FOLDER
+;;; bookkeeping: build the stack frame
+    ADD R6, R6, #-2             ; skip the return-value slot, then
+    STR R7, R6, #0              ;   save the return address
+    ADD R6, R6, #-1             ; save the caller's frame pointer
+    STR R5, R6, #0
+    ADD R6, R6, #-1             ; allocate local variable `current`
+    ADD R5, R6, #0              ; R5 = new frame pointer
+
+;;; body
+    ;; if (node == NULL) return;
+    LDR R0, R5, #5
+    BRz PRINT_FOLDER_DONE
+
+    ;; print_space(depth);
+    LDR R0, R5, #4
+    ADD R6, R6, #-1             ; push depth
+    STR R0, R6, #0
+    JSR PRINT_SPACE
+    ADD R6, R6, #2              ; pop the return value and the argument
+
+    ;; folder_node* current = node;
+    LDR R0, R5, #5
+    STR R0, R5, #0
+
+    ;; printf("%s", current->foldername);
+    LDR R0, R5, #0
+    LDR R0, R0, #3
+    JSR PRINT_A_STRING
+
+PRINT_FOLDER_FILE
+;;; if (current->file != NULL) {
+;;;     printf("\n");
+;;;     print_file(depth + 1, current->file);
+;;; }
+    LDR R0, R5, #0              ; current->file == NULL ?
+    LDR R0, R0, #2
+    BRz PRINT_FOLDER_LEFT
+    LD  R0, PRINT_FOLDER_NEWLINE
+    JSR PRINT_A_CHAR
+
+    LDR R0, R5, #0              ; push current->file
+    LDR R0, R0, #2
+    ADD R6, R6, #-1
+    STR R0, R6, #0
+    LDR R0, R5, #4              ; push depth + 1
+    ADD R0, R0, #1
+    ADD R6, R6, #-1
+    STR R0, R6, #0
+    JSR PRINT_FILE
+    ADD R6, R6, #3              ; pop the return value and two arguments
+
+PRINT_FOLDER_LEFT
+;;; if (current->left != NULL) {
+;;;     printf("\n");
+;;;     print_folder(depth + 1, current->left);
+;;; }
+    LDR R0, R5, #0              ; current->left == NULL ?
+    LDR R0, R0, #0
+    BRz PRINT_FOLDER_RIGHT
+    LD  R0, PRINT_FOLDER_NEWLINE
+    JSR PRINT_A_CHAR
+
+    LDR R0, R5, #0              ; push current->left
+    LDR R0, R0, #0
+    ADD R6, R6, #-1
+    STR R0, R6, #0
+    LDR R0, R5, #4              ; push depth + 1
+    ADD R0, R0, #1
+    ADD R6, R6, #-1
+    STR R0, R6, #0
+    JSR PRINT_FOLDER            ; recursive call
+    ADD R6, R6, #3              ; pop the return value and two arguments
+
+PRINT_FOLDER_RIGHT
+;;; if (current->right != NULL) {
+;;;     printf("\n");
+;;;     print_folder(depth + 1, current->right);
+;;; }
+    LDR R0, R5, #0              ; current->right == NULL ?
+    LDR R0, R0, #1
+    BRz PRINT_FOLDER_DONE
+    LD  R0, PRINT_FOLDER_NEWLINE
+    JSR PRINT_A_CHAR
+
+    LDR R0, R5, #0              ; push current->right
+    LDR R0, R0, #1
+    ADD R6, R6, #-1
+    STR R0, R6, #0
+    LDR R0, R5, #4              ; push depth + 1
+    ADD R0, R0, #1
+    ADD R6, R6, #-1
+    STR R0, R6, #0
+    JSR PRINT_FOLDER            ; recursive call
+    ADD R6, R6, #3              ; pop the return value and two arguments
+
+PRINT_FOLDER_DONE
+;;; tear down the frame and return
+    ADD R6, R6, #1              ; pop the local variable
+    LDR R5, R6, #0              ; restore the caller's frame pointer
+    ADD R6, R6, #1
+    LDR R7, R6, #0              ; restore the return address
+    ADD R6, R6, #1              ; R6 -> return-value slot
+    RET
+
+PRINT_FOLDER_NEWLINE
+    .FILL   #10
+```
+
+### 3. `print_file()`
+
+```nasm
+;;; -------------------------- PRINT_FILE ---------------------------------
+;;; void print_file(int num, file_node* file) {
+;;;     if (file == NULL) {
+;;;         return;
+;;;     }
+;;;     file_node* next = file;
+;;;
+;;;     print_space(num);
+;;;     printf("file: ");
+;;;
+;;;     while (next != NULL) {
+;;;         printf("%s ", next->filename);
+;;;         next = next->nextfile;
+;;;     }
+;;; }
+;;;
+;;; R0: temporary register (saved and restored by the callee here).
+PRINT_FILE
+;;; bookkeeping: build the stack frame
+    ADD R6, R6, #-2
+    STR R7, R6, #0              ; save the return address
+    ADD R6, R6, #-1
+    STR R5, R6, #0              ; save the caller's frame pointer
+    ADD R6, R6, #-1             ; allocate local variable `next`
+    ADD R5, R6, #0              ; R5 = new frame pointer
+
+;;; body
+    ST  R0, PRINT_FILE_SAVE_R0
+
+    ;; if (file == NULL) return;  file_node* next = file;
+    LDR R0, R5, #5
+    BRz PRINT_FILE_DONE
+    STR R0, R5, #0
+
+    ;; print_space(num);
+    LDR R0, R5, #4
+    ADD R6, R6, #-1             ; push num
+    STR R0, R6, #0
+    JSR PRINT_SPACE
+    ADD R6, R6, #2              ; pop the return value and the argument
+
+    ;; printf("file: ");
+    LEA R0, PRINT_FILE_PROMPT
+    JSR PRINT_A_STRING
+
+PRINT_FILE_LOOP
+    LDR R0, R5, #0              ; while (next != NULL)
+    BRz PRINT_FILE_DONE
+    LDR R0, R0, #1              ; printf("%s ", next->filename);
+    JSR PRINT_A_STRING
+    LD  R0, PRINT_FILE_SPACE
+    JSR PRINT_A_CHAR
+    LDR R0, R5, #0              ; next = next->nextfile;
+    LDR R0, R0, #0
+    STR R0, R5, #0
+    BRnzp   PRINT_FILE_LOOP
+
+PRINT_FILE_DONE
+;;; tear down the frame and return
+    LD  R0, PRINT_FILE_SAVE_R0
+    ADD R6, R6, #1              ; pop the local variable
+    LDR R5, R6, #0              ; restore the caller's frame pointer
+    ADD R6, R6, #1
+    LDR R7, R6, #0              ; restore the return address
+    ADD R6, R6, #1              ; R6 -> return-value slot
+    RET
+
+PRINT_FILE_SPACE
+    .FILL   #32
+PRINT_FILE_PROMPT
+    .STRINGZ "file: "
+PRINT_FILE_SAVE_R0
+    .FILL   x0000
+```
+
+Saving R0 in a fixed memory location like `PRINT_FILE_SAVE_R0` only works because `print_file()` is **not** recursive. A recursive function would overwrite the saved value on each nested call, so it would have to save registers on the stack instead.
+
+### 4. `print_space()`
+
+```nasm
+;;; -------------------------- PRINT_SPACE --------------------------------
+;;; void print_space(int n) {
+;;;     int i = 4 * n;
+;;;     while (i > 0) {
+;;;         printf(" ");
+;;;         i--;
+;;;     }
+;;; }
+;;;
+;;; R0: temporary register (saved and restored by the callee here).
+PRINT_SPACE
+;;; bookkeeping: build the stack frame
+    ADD R6, R6, #-2
+    STR R7, R6, #0              ; save the return address
+    ADD R6, R6, #-1
+    STR R5, R6, #0              ; save the caller's frame pointer
+    ADD R6, R6, #-1             ; allocate local variable `i`
+    ADD R5, R6, #0              ; R5 = new frame pointer
+
+;;; body
+    ST  R0, PRINT_SPACE_SAVE_R0
+    LDR R0, R5, #4              ; int i = 4 * n;
+    ADD R0, R0, R0
+    ADD R0, R0, R0
+    STR R0, R5, #0
+
+PRINT_SPACE_LOOP
+    LDR R0, R5, #0              ; while (i > 0)
+    BRnz    PRINT_SPACE_DONE
+    LD  R0, PRINT_SPACE_SPACE   ; printf(" ");
+    JSR PRINT_A_CHAR
+    LDR R0, R5, #0              ; i--;
+    ADD R0, R0, #-1
+    STR R0, R5, #0
+    BRnzp   PRINT_SPACE_LOOP
+
+PRINT_SPACE_DONE
+;;; tear down the frame and return
+    LD  R0, PRINT_SPACE_SAVE_R0
+    ADD R6, R6, #1              ; pop the local variable
+    LDR R5, R6, #0              ; restore the caller's frame pointer
+    ADD R6, R6, #1
+    LDR R7, R6, #0              ; restore the return address
+    ADD R6, R6, #1              ; R6 -> return-value slot
+    RET
+
+PRINT_SPACE_SPACE
+    .FILL   #32
+PRINT_SPACE_SAVE_R0
+    .FILL   x0000
+```
+
+## III. `PRINT_A_CHAR` and `PRINT_A_STRING` "system calls"
+
+```nasm
+;;; ------------------------- PRINT_A_CHAR --------------------------------
+;;; Same as OUT: write the character in R0 to the display.
+;;; Polls the display status register (DSR) until the display is ready,
+;;; then writes R0 to the display data register (DDR).
+PRINT_A_CHAR
+    ST  R1, PRINT_A_CHAR_SAVE_R1
+PRINT_A_CHAR_POLL
+    LDI R1, DSR                 ; bit 15 of DSR = 1 when the display is ready
+    BRzp    PRINT_A_CHAR_POLL
+    STI R0, DDR
+    LD  R1, PRINT_A_CHAR_SAVE_R1
+    RET
+
+PRINT_A_CHAR_SAVE_R1
+    .FILL   x0000
+DSR
+    .FILL   xFE04
+DDR
+    .FILL   xFE06
+
+;;; ------------------------ PRINT_A_STRING -------------------------------
+;;; Same as PUTS: write the null-terminated string starting at address R0.
+;;; It calls PRINT_A_CHAR, which overwrites R7, so R7 must be saved first.
+PRINT_A_STRING
+    ST  R0, PRINT_A_STRING_SAVE_R0
+    ST  R1, PRINT_A_STRING_SAVE_R1
+    ST  R7, PRINT_A_STRING_SAVE_R7
+    ADD R1, R0, #0              ; R1 = pointer to the current character
+
+PRINT_A_STRING_LOOP
+    LDR R0, R1, #0
+    BRz PRINT_A_STRING_DONE     ; stop at the null terminator
+    JSR PRINT_A_CHAR
+    ADD R1, R1, #1
+    BRnzp   PRINT_A_STRING_LOOP
+
+PRINT_A_STRING_DONE
+    LD  R0, PRINT_A_STRING_SAVE_R0
+    LD  R1, PRINT_A_STRING_SAVE_R1
+    LD  R7, PRINT_A_STRING_SAVE_R7
+    RET
+
+PRINT_A_STRING_SAVE_R0
+    .FILL   x0000
+PRINT_A_STRING_SAVE_R1
+    .FILL   x0000
+PRINT_A_STRING_SAVE_R7
+    .FILL   x0000
+```
+
+## IV. Data
+
+```nasm
+;;; -------------------------folder_info-----------------------------------
+FOLDER_root
+    .FILL FOLDER_projects       ; left
+    .FILL FOLDER_media          ; right
+    .FILL FILE_root             ; file
+    .FILL FOLDER_NAME_root      ; foldername
+FOLDER_NAME_root
+    .STRINGZ "root"
+
+FOLDER_projects
+    .FILL FOLDER_c_project
+    .FILL FOLDER_blog
+    .FILL FILE_projects
+    .FILL FOLDER_NAME_projects
+FOLDER_NAME_projects
+    .STRINGZ "projects"
+
+FOLDER_c_project
+    .FILL FOLDER_utils
+    .FILL FOLDER_python_project
+    .FILL FILE_c_project
+    .FILL FOLDER_NAME_c_project
+FOLDER_NAME_c_project
+    .STRINGZ "c_project"
+
+FOLDER_utils
+    .FILL x0000
+    .FILL x0000
+    .FILL FILE_utils
+    .FILL FOLDER_NAME_utils
+FOLDER_NAME_utils
+    .STRINGZ "utils"
+
+FOLDER_blog
+    .FILL x0000
+    .FILL x0000
+    .FILL FILE_blog
+    .FILL FOLDER_NAME_blog
+FOLDER_NAME_blog
+    .STRINGZ "blog"
+
+FOLDER_media
+    .FILL FOLDER_documents
+    .FILL FOLDER_photos
+    .FILL x0000
+    .FILL FOLDER_NAME_media
+FOLDER_NAME_media
+    .STRINGZ "media"
+
+FOLDER_photos
+    .FILL x0000
+    .FILL FOLDER_travel
+    .FILL FILE_photos
+    .FILL FOLDER_NAME_photos
+FOLDER_NAME_photos
+    .STRINGZ "photos"
+
+FOLDER_travel
+    .FILL x0000
+    .FILL FOLDER_sub_travel
+    .FILL FILE_travel
+    .FILL FOLDER_NAME_travel
+FOLDER_NAME_travel
+    .STRINGZ "travel"
+
+FOLDER_python_project
+    .FILL x0000
+    .FILL x0000
+    .FILL FILE_python_project
+    .FILL FOLDER_NAME_python_project
+FOLDER_NAME_python_project
+    .STRINGZ "python_project"
+
+FOLDER_documents
+    .FILL FOLDER_reports
+    .FILL FOLDER_presentations
+    .FILL FILE_documents
+    .FILL FOLDER_NAME_documents
+FOLDER_NAME_documents
+    .STRINGZ "documents"
+
+FOLDER_reports
+    .FILL x0000
+    .FILL x0000
+    .FILL FILE_reports
+    .FILL FOLDER_NAME_reports
+FOLDER_NAME_reports
+    .STRINGZ "reports"
+
+FOLDER_presentations
+    .FILL x0000
+    .FILL x0000
+    .FILL FILE_presentations
+    .FILL FOLDER_NAME_presentations
+FOLDER_NAME_presentations
+    .STRINGZ "presentations"
+
+FOLDER_sub_travel
+    .FILL x0000
+    .FILL x0000
+    .FILL FILE_sub_travel
+    .FILL FOLDER_NAME_sub_travel
+FOLDER_NAME_sub_travel
+    .STRINGZ "sub_travel"
+
+
+;;; ------------------------file_info-------------------------------------
+FILE_root
+    .FILL x0000                 ; nextfile
+    .FILL FILE_NAME_root        ; filename
+FILE_NAME_root
+    .STRINGZ "config.sys"
+
+FILE_projects
+    .FILL x0000
+    .FILL FILE_NAME_projects
+FILE_NAME_projects
+    .STRINGZ "README.md"
+
+FILE_c_project
+    .FILL FILE_c_project_2
+    .FILL FILE_NAME_c_project1
+FILE_NAME_c_project1
+    .STRINGZ "main.c"
+
+FILE_c_project_2
+    .FILL x0000
+    .FILL FILE_NAME_c_project2
+FILE_NAME_c_project2
+    .STRINGZ "Makefile"
+
+FILE_utils
+    .FILL x0000
+    .FILL FILE_NAME_utils
+FILE_NAME_utils
+    .STRINGZ "helper.c"
+
+FILE_blog
+    .FILL x0000
+    .FILL FILE_NAME_blog
+FILE_NAME_blog
+    .STRINGZ "index.md"
+
+FILE_photos
+    .FILL FILE_photos_2
+    .FILL FILE_NAME_photos1
+FILE_NAME_photos1
+    .STRINGZ "IMG001.jpg"
+
+FILE_photos_2
+    .FILL x0000
+    .FILL FILE_NAME_photos2
+FILE_NAME_photos2
+    .STRINGZ "IMG002.jpg"
+
+FILE_travel
+    .FILL FILE_travel_2
+    .FILL FILE_NAME_travel1
+FILE_NAME_travel1
+    .STRINGZ "trip.txt"
+
+FILE_travel_2
+    .FILL x0000
+    .FILL FILE_NAME_travel2
+FILE_NAME_travel2
+    .STRINGZ "map.png"
+
+FILE_python_project
+    .FILL FILE_python_project_2
+    .FILL FILE_NAME_python_project1
+FILE_NAME_python_project1
+    .STRINGZ "main.py"
+
+FILE_python_project_2
+    .FILL x0000
+    .FILL FILE_NAME_python_project2
+FILE_NAME_python_project2
+    .STRINGZ "requirements.txt"
+
+FILE_documents
+    .FILL FILE_documents_2
+    .FILL FILE_NAME_documents1
+FILE_NAME_documents1
+    .STRINGZ "meeting_notes.docx"
+
+FILE_documents_2
+    .FILL x0000
+    .FILL FILE_NAME_documents_2
+FILE_NAME_documents_2
+    .STRINGZ "todo_list.txt"
+
+FILE_reports
+    .FILL FILE_reports_2
+    .FILL FILE_NAME_reports1
+FILE_NAME_reports1
+    .STRINGZ "q1_report.pdf"
+
+FILE_reports_2
+    .FILL x0000
+    .FILL FILE_NAME_reports2
+FILE_NAME_reports2
+    .STRINGZ "budget_summary.xlsx"
+
+FILE_presentations
+    .FILL x0000
+    .FILL FILE_NAME_presentations1
+FILE_NAME_presentations1
+    .STRINGZ "project_kickoff.pptx"
+
+FILE_sub_travel
+    .FILL x0000
+    .FILL FILE_NAME_sub_travel
+FILE_NAME_sub_travel
+    .STRINGZ "packing_list.md"
+
+    .END
+```
+

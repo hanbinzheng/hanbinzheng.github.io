@@ -1,0 +1,95 @@
+cv:
+  name: Hanbin Zheng
+  label: Undergraduate Student in Computer Engineering
+  email: hanbinz2@illinois.edu
+  location: Haining, Zhejiang, China
+  image: ""
+
+  social_networks:
+    - network: GitHub
+      username: hanbinzheng
+
+  sections:
+    Education:
+      - institution: University of Illinois Urbana-Champaign
+        location: Illinois, US
+        url: https://illinois.edu/
+        area: Computer Engineering
+        studyType: BS
+        start_date: 2024-09
+        end_date: 2028-06
+        score: "GPA: 3.985/4.0"
+        highlights:
+          - Dual-degree program at the Zhejiang University – University of Illinois Urbana-Champaign Institute (ZJUI).
+
+      - institution: Zhejiang University
+        location: Zhejiang, China
+        url: https://www.zju.edu.cn/english/
+        area: Electronic and Computer Engineering
+        studyType: BS
+        start_date: 2024-09
+        end_date: 2028-06
+        score: "GPA: 3.899/4.0"
+
+    Experience:
+      - company: ZJU-UIUC Institute
+        position: Undergraduate Researcher (Advisor - Prof. Xiangming Meng)
+        location: Haining, Zhejiang, China
+        url: https://zjui.intl.zju.edu.cn/en/team/teacherinfo/2082
+        start_date: 2025-06
+        end_date: 2025-12
+        highlights:
+          - "Flow Models Exploration: studied Flow Matching generative modeling in depth and implemented conditional image generation on MNIST and CIFAR-10 from scratch."
+          - "MeanFlow for Image Inverse Problems: studied one-step generative modeling with MeanFlow models and replaced the Gaussian initial distribution with noisy images, giving efficient one-step denoising."
+          - "GMFlow for Inverse Problems: studied Variational Flow Matching and Gaussian Mixture Flow Matching for image inverse problems, and implemented 2D toy examples to test a new algorithm."
+
+    Projects:
+      - name: RoboMaster Hero Robot Electrical Control System
+        url: https://github.com/hanbinzheng/hero
+        start_date: 2025-11
+        end_date: 2026-04
+        highlights:
+          - "Embedded control: developed a real-time control system on an STM32H723 for a swerve-drive hero robot, managing high-frequency control loops and peripheral hardware integration."
+          - "Orientation estimation: derived quaternion kinematics and implemented a Mahony filter from scratch for IMU sensor fusion, giving stable orientation tracking."
+
+      - name: Deep Reinforcement Learning (UC Berkeley CS285, self-study)
+        url: https://github.com/hanbinzheng/cs285
+        start_date: 2026-07
+        end_date: present
+        highlights:
+          - "Implemented core algorithms from scratch, including behavioral cloning with a flow-matching policy, policy gradients, actor-critic methods, and deep Q-learning."
+          - "Trained and benchmarked agents on environments such as PushT, InvertedPendulum, and LunarLander."
+
+    Skills:
+      - name: Programming Languages
+        icon: fa-solid fa-code
+        keywords: "Python (PyTorch), C/C++, LaTeX"
+      - name: Development Tools
+        icon: fa-solid fa-terminal
+        keywords: "Git, Linux, Makefile, CMake, Vim/Neovim, Emacs"
+      - name: Deep Learning
+        icon: fa-solid fa-brain
+        keywords: "U-Net, Transformer, ViT, DiT"
+      - name: Generative Modeling
+        icon: fa-solid fa-wand-magic-sparkles
+        keywords: "Flow Matching, MeanFlow, Diffusion, GMFlow"
+      - name: Robotics & Embedded
+        icon: fa-solid fa-microchip
+        keywords: "STM32, ROS 2 / ros2_control (basic), Quaternions & Euler Angles, Soldering"
+      - name: Reinforcement Learning
+        icon: fa-solid fa-chess-knight
+        keywords: "Behavioral Cloning, Model-Free RL (Policy Gradient, Actor-Critic, DQN)"
+
+    Awards:
+      - title: Third Prize, RoboMaster University League (Shanghai, 3v3)
+        date: 2026-04
+        awarder: RoboMaster Organizing Committee
+      - title: Zhejiang University Second Scholarship
+        date: 2025-10
+        awarder: Zhejiang University
+      - title: Zhejiang Provincial Scholarship
+        date: 2025-10
+        awarder: Zhejiang Province
+      - title: First Prize, ZJU Mathematical Modeling Competition
+        date: 2025-06
+        awarder: Zhejiang University
