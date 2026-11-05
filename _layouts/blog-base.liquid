@@ -1,0 +1,139 @@
+<!doctype html>
+{% comment %}
+  Page shell for the blog (list page, posts, tags).
+  Styled after PaperMod / https://lilianweng.github.io/. The about and projects
+  pages keep the al-folio layouts.
+{% endcomment %}
+{% assign full_name = site.first_name | append: ' ' | append: site.last_name %}
+<html lang="{{ site.lang | default: 'en' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% if page.title and page.permalink != '/blog/' %}{{ page.title }} | {% endif %}{{ full_name }}{% if page.permalink == '/blog/' %} | blog{% endif %}</title>
+    <meta name="author" content="{{ full_name }}">
+    <meta name="description" content="{{ page.description | default: site.blog_description | strip_html | strip_newlines | escape }}">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    <link rel="alternate" type="application/atom+xml" title="{{ full_name }}" href="{{ '/feed.xml' | relative_url }}">
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ site.icon }}</text></svg>"
+    >
+
+    <script>
+      // Apply the saved theme before the page paints. Shares the "theme" key with al-folio,
+      // so the choice carries over between the blog and the rest of the site.
+      (function () {
+        var setting = null;
+        try {
+          setting = localStorage.getItem("theme");
+        } catch (e) {}
+        var dark = setting === "dark" || ((!setting || setting === "system") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script>
+
+    <link rel="stylesheet" href="{{ '/assets/blog/blog.css' | relative_url }}">
+
+    {% if page.math != false %}
+      <script>
+        window.MathJax = {
+          tex: {
+            tags: "ams",
+            inlineMath: [
+              ["$", "$"],
+              ["\\(", "\\)"],
+            ],
+            displayMath: [
+              ["$$", "$$"],
+              ["\\[", "\\]"],
+            ],
+            processEscapes: true,
+          },
+          options: {
+            skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+          },
+        };
+      </script>
+      <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+    {% endif %}
+  </head>
+
+  <body>
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">
+          <a href="{{ '/' | relative_url }}">{{ site.first_name }} <span class="light-name">{{ site.last_name }}</span></a>
+          <button id="theme-toggle" type="button" title="Toggle light / dark (Alt + T)" aria-label="Toggle light / dark">
+            <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+        </div>
+        <ul id="menu">
+          {% for p in site.pages %}
+            {% if p.permalink == '/' %}{% assign about_title = p.title %}{% endif %}
+          {% endfor %}
+          <li>
+            <a href="{{ '/' | relative_url }}">{{ about_title }}</a>
+          </li>
+          {% assign sorted_pages = site.pages | sort: 'nav_order' %}
+          {% for p in sorted_pages %}
+            {% if p.nav and p.autogen == null %}
+              {% if p.permalink contains '://' %}
+                <li>
+                  <a href="{{ p.permalink }}">{{ p.title }}</a>
+                </li>
+              {% else %}
+                {% assign section = p.permalink | split: '/' | where_exp: 'part', 'part != ""' | first %}
+                {% assign here = page.url | split: '/' | where_exp: 'part', 'part != ""' | first %}
+                <li>
+                  <a href="{{ p.url | relative_url }}" {% if section == here %}class="active"{% endif %}>{{ p.title }}</a>
+                </li>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </nav>
+    </header>
+
+    <main class="main">
+      {{ content }}
+    </main>
+
+    <footer class="footer">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ full_name }}</span>
+      &middot;
+      <span>Powered by <a href="https://jekyllrb.com/" rel="noopener noreferrer" target="_blank">Jekyll</a></span>
+      &middot;
+      <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+    </footer>
+
+    <script>
+      // Theme toggle (light <-> dark).
+      (function () {
+        function toggle() {
+          var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", next);
+          try {
+            localStorage.setItem("theme", next);
+          } catch (e) {}
+        }
+        document.getElementById("theme-toggle").addEventListener("click", toggle);
+        document.addEventListener("keydown", function (e) {
+          if (e.altKey && (e.key === "t" || e.key === "T" || e.code === "KeyT")) toggle();
+        });
+      })();
+    </script>
+  </body>
+</html>

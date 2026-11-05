@@ -1,57 +1,64 @@
 ---
-layout: post
+layout: blog-post
 title: LC-3 Brief Review
-date: 2025-05-26 00:00:00+0800
+date: 2025-05-26 00:00:00 +0800
 description: A review of LC-3 assembly, the run-time stack, recursion, linked lists, and binary trees, built around one complete program.
 tags: [lc3, assembly, recursion, data-structures]
-categories: computer-engineering
-toc:
-  sidebar: left
 ---
 
-> This is a brief review of some topics from ECE 220. All code below is LC-3 assembly; the code blocks use NASM syntax highlighting, which is close enough.
 
-## I. Purpose and description
+<blockquote>
+  <p>This is a brief review of some topics from ECE 220. All code below is LC-3 assembly; the code blocks use NASM syntax highlighting, which is close enough.</p>
+</blockquote>
 
-### 1. Purpose
+<h2 id="i-purpose-and-description">I. Purpose and description</h2>
 
-This program reviews:
+<h3 id="1-purpose">1. Purpose</h3>
 
-1. LC-3 basics, including I/O;
-2. the run-time stack;
-3. recursion in LC-3;
-4. linked lists in LC-3;
-5. binary trees in LC-3.
+<p>This program reviews:</p>
 
-### 2. Description
+<ol>
+  <li>LC-3 basics, including I/O;</li>
+  <li>the run-time stack;</li>
+  <li>recursion in LC-3;</li>
+  <li>linked lists in LC-3;</li>
+  <li>binary trees in LC-3.</li>
+</ol>
 
-1. The program is a direct LC-3 translation of a C program that prints a directory structure.
-2. The directory tree is stored in memory in fixed data structures. The program prints it to the console in a **pre-order traversal**, in the format shown in [Desired output](#4-desired-output).
-3. To show how C is translated into assembly, every user-defined C function uses the **run-time stack**. I also wrote my own versions of the `OUT` and `PUTS` system calls, which C's `printf()` would ultimately rely on. They are called `PRINT_A_CHAR` and `PRINT_A_STRING`. Like real system calls, they do **not** use the run-time stack. They work the same way as the `OUT` and `PUTS` trap service routines in the LC-3 operating system.
-4. The test case is not exhaustive. Gemini generated most of it, and I fixed a few syntax errors so that it assembles. Feel free to add more test cases.
+<h3 id="2-description">2. Description</h3>
 
-### 3. Data structure design
+<ol>
+  <li>The program is a direct LC-3 translation of a C program that prints a directory structure.</li>
+  <li>The directory tree is stored in memory in fixed data structures. The program prints it to the console in a <strong>pre-order traversal</strong>, in the format shown in <a href="#4-desired-output">Desired output</a>.</li>
+  <li>To show how C is translated into assembly, every user-defined C function uses the <strong>run-time stack</strong>. I also wrote my own versions of the <code>OUT</code> and <code>PUTS</code> system calls, which C’s <code>printf()</code> would ultimately rely on. They are called <code>PRINT_A_CHAR</code> and <code>PRINT_A_STRING</code>. Like real system calls, they do <strong>not</strong> use the run-time stack. They work the same way as the <code>OUT</code> and <code>PUTS</code> trap service routines in the LC-3 operating system.</li>
+  <li>The test case is not exhaustive. Gemini generated most of it, and I fixed a few syntax errors so that it assembles. Feel free to add more test cases.</li>
+</ol>
 
-#### (1) Files and folders
+<h3 id="3-data-structure-design">3. Data structure design</h3>
 
-**A file node** (a node of a singly linked list):
+<h4 id="1-files-and-folders">(1) Files and folders</h4>
 
-- `[0]` next pointer: the next file in the same folder (`NULL` if none);
-- `[1]` pointer to the file name (`.STRINGZ`).
+<p><strong>A file node</strong> (a node of a singly linked list):</p>
 
-**A folder node** (a node of a binary tree):
+<ul>
+  <li><code>[0]</code> next pointer: the next file in the same folder (<code>NULL</code> if none);</li>
+  <li><code>[1]</code> pointer to the file name (<code>.STRINGZ</code>).</li>
+</ul>
 
-- `[0]` left pointer: the left child (`NULL` if none);
-- `[1]` right pointer: the right child (`NULL` if none);
-- `[2]` file pointer: the head of this folder's file list (`NULL` if none);
-- `[3]` pointer to the folder name (`.STRINGZ`).
+<p><strong>A folder node</strong> (a node of a binary tree):</p>
 
-Both children of a folder are sub-folders of it. The tree is a plain binary tree, not a "left-child, right-sibling" encoding.
+<ul>
+  <li><code>[0]</code> left pointer: the left child (<code>NULL</code> if none);</li>
+  <li><code>[1]</code> right pointer: the right child (<code>NULL</code> if none);</li>
+  <li><code>[2]</code> file pointer: the head of this folder’s file list (<code>NULL</code> if none);</li>
+  <li><code>[3]</code> pointer to the folder name (<code>.STRINGZ</code>).</li>
+</ul>
 
-#### (2) Folder tree (test case)
+<p>Both children of a folder are sub-folders of it. The tree is a plain binary tree, not a “left-child, right-sibling” encoding.</p>
 
-```plaintext
-                         root
+<h4 id="2-folder-tree-test-case">(2) Folder tree (test case)</h4>
+
+<pre><code>                         root
                 /                   \
           projects                  media
           /      \               /         \
@@ -59,28 +66,29 @@ Both children of a folder are sub-folders of it. The tree is a plain binary tree
      /     \                /      \           \
  utils  python_project  reports  presentations  travel
                                                     \
-                                                 sub_travel
-```
+                                                 sub_travel</code></pre>
 
-#### (3) Files in each folder (test case)
+<h4 id="3-files-in-each-folder-test-case">(3) Files in each folder (test case)</h4>
 
-- root: config.sys
-- projects: README.md
-- c_project: main.c → Makefile
-- utils: helper.c
-- python_project: main.py → requirements.txt
-- blog: index.md
-- media: (empty)
-- documents: meeting_notes.docx → todo_list.txt
-- reports: q1_report.pdf → budget_summary.xlsx
-- presentations: project_kickoff.pptx
-- photos: IMG001.jpg → IMG002.jpg
-- travel: trip.txt → map.png
-- sub_travel: packing_list.md
+<ul>
+  <li>root: config.sys</li>
+  <li>projects: README.md</li>
+  <li>c_project: main.c → Makefile</li>
+  <li>utils: helper.c</li>
+  <li>python_project: main.py → requirements.txt</li>
+  <li>blog: index.md</li>
+  <li>media: (empty)</li>
+  <li>documents: meeting_notes.docx → todo_list.txt</li>
+  <li>reports: q1_report.pdf → budget_summary.xlsx</li>
+  <li>presentations: project_kickoff.pptx</li>
+  <li>photos: IMG001.jpg → IMG002.jpg</li>
+  <li>travel: trip.txt → map.png</li>
+  <li>sub_travel: packing_list.md</li>
+</ul>
 
-#### (4) C structs and function prototypes
+<h4 id="4-c-structs-and-function-prototypes">(4) C structs and function prototypes</h4>
 
-```c
+{% highlight c %}
 typedef struct f {
     struct f* nextfile;
     const char* filename;
@@ -97,12 +105,11 @@ typedef struct F {
 void print_space(int n);
 void print_file(int num, file_node* file);
 void print_folder(int depth, folder_node* folder);
-```
+{% endhighlight %}
 
-### 4. Desired output
+<h3 id="4-desired-output">4. Desired output</h3>
 
-```plaintext
-root
+<pre><code>root
     file: config.sys
     projects
         file: README.md
@@ -126,47 +133,81 @@ root
             travel
                 file: trip.txt map.png
                 sub_travel
-                    file: packing_list.md
-```
+                    file: packing_list.md</code></pre>
 
-### 5. Conventions
+<h3 id="5-conventions">5. Conventions</h3>
 
-These conventions follow the run-time stack model from our textbook, as best I remember it. Please let me know if you spot a mistake.
+<p>These conventions follow the run-time stack model from our textbook, as best I remember it. Please let me know if you spot a mistake.</p>
 
-**Registers:**
+<p><strong>Registers:</strong></p>
 
-- **R4:** global data pointer (not needed in this program)
-- **R5:** frame pointer (points to the first local variable)
-- **R6:** stack pointer (points to the top element of the stack)
-- **R7:** return address (written by `JSR` and `TRAP`)
+<ul>
+  <li><strong>R4:</strong> global data pointer (not needed in this program)</li>
+  <li><strong>R5:</strong> frame pointer (points to the first local variable)</li>
+  <li><strong>R6:</strong> stack pointer (points to the top element of the stack)</li>
+  <li><strong>R7:</strong> return address (written by <code>JSR</code> and <code>TRAP</code>)</li>
+</ul>
 
-**The stack frame of one function call** (the stack grows toward lower addresses):
+<p><strong>The stack frame of one function call</strong> (the stack grows toward lower addresses):</p>
 
-| Address      | Contents                                         |
-| ------------ | ------------------------------------------------ |
-| `M[R5 - k]`  | further local variables (if any)                 |
-| `M[R5 + 0]`  | first local variable                             |
-| `M[R5 + 1]`  | caller's frame pointer                           |
-| `M[R5 + 2]`  | return address                                   |
-| `M[R5 + 3]`  | return value (reserved even for `void` functions) |
-| `M[R5 + 4]`  | first argument                                   |
-| `M[R5 + 5]`  | second argument, …                               |
+<table>
+  <thead>
+    <tr>
+      <th>Address</th>
+      <th>Contents</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>M[R5 - k]</code></td>
+      <td>further local variables (if any)</td>
+    </tr>
+    <tr>
+      <td><code>M[R5 + 0]</code></td>
+      <td>first local variable</td>
+    </tr>
+    <tr>
+      <td><code>M[R5 + 1]</code></td>
+      <td>caller’s frame pointer</td>
+    </tr>
+    <tr>
+      <td><code>M[R5 + 2]</code></td>
+      <td>return address</td>
+    </tr>
+    <tr>
+      <td><code>M[R5 + 3]</code></td>
+      <td>return value (reserved even for <code>void</code> functions)</td>
+    </tr>
+    <tr>
+      <td><code>M[R5 + 4]</code></td>
+      <td>first argument</td>
+    </tr>
+    <tr>
+      <td><code>M[R5 + 5]</code></td>
+      <td>second argument, …</td>
+    </tr>
+  </tbody>
+</table>
 
-**Other conventions:**
+<p><strong>Other conventions:</strong></p>
 
-1. Arguments and local variables are accessed through **R5** plus an offset, never through **R6**, because R6 moves whenever something is pushed.
-2. The caller pushes arguments **from right to left**, so the first argument ends up nearest the frame. On return, the callee leaves R6 pointing at the return value, and the caller pops the return value and the arguments.
+<ol>
+  <li>Arguments and local variables are accessed through <strong>R5</strong> plus an offset, never through <strong>R6</strong>, because R6 moves whenever something is pushed.</li>
+  <li>The caller pushes arguments <strong>from right to left</strong>, so the first argument ends up nearest the frame. On return, the callee leaves R6 pointing at the return value, and the caller pops the return value and the arguments.</li>
+</ol>
 
-**Notes on this program:**
+<p><strong>Notes on this program:</strong></p>
 
-1. Each of `print_folder()`, `print_file()`, and `print_space()` has exactly one local variable (`current`, `next`, and `i`), stored at `M[R5 + 0]`.
-2. `main()` does not build a frame and leaves **R5** unset. This is fine here, because `main` never reads R5, and every callee saves and restores R5 itself.
+<ol>
+  <li>Each of <code>print_folder()</code>, <code>print_file()</code>, and <code>print_space()</code> has exactly one local variable (<code>current</code>, <code>next</code>, and <code>i</code>), stored at <code>M[R5 + 0]</code>.</li>
+  <li><code>main()</code> does not build a frame and leaves <strong>R5</strong> unset. This is fine here, because <code>main</code> never reads R5, and every callee saves and restores R5 itself.</li>
+</ol>
 
-## II. LC-3 translation of the C functions
+<h2 id="ii-lc-3-translation-of-the-c-functions">II. LC-3 translation of the C functions</h2>
 
-### 1. `main()`
+<h3 id="1-main">1. <code>main()</code></h3>
 
-```nasm
+{% highlight nasm %}
 ;;; ---------------------------- MAIN ------------------------------------
 ;;; int main() {
 ;;;     folder_node* root = get_info();  // get_info() is too complex to write in LC-3;
@@ -199,11 +240,11 @@ These conventions follow the run-time stack model from our textbook, as best I r
 
 STACK_BOTTOM
     .FILL   x4000               ; empty stack: the first push writes to x3FFF
-```
+{% endhighlight %}
 
-### 2. `print_folder()`
+<h3 id="2-print_folder">2. <code>print_folder()</code></h3>
 
-```nasm
+{% highlight nasm %}
 ;;; ------------------------- PRINT_FOLDER --------------------------------
 ;;; void print_folder(int depth, folder_node* node) {
 ;;;     // This check only matters for the root: the recursive calls below
@@ -340,11 +381,11 @@ PRINT_FOLDER_DONE
 
 PRINT_FOLDER_NEWLINE
     .FILL   #10
-```
+{% endhighlight %}
 
-### 3. `print_file()`
+<h3 id="3-print_file">3. <code>print_file()</code></h3>
 
-```nasm
+{% highlight nasm %}
 ;;; -------------------------- PRINT_FILE ---------------------------------
 ;;; void print_file(int num, file_node* file) {
 ;;;     if (file == NULL) {
@@ -418,13 +459,13 @@ PRINT_FILE_PROMPT
     .STRINGZ "file: "
 PRINT_FILE_SAVE_R0
     .FILL   x0000
-```
+{% endhighlight %}
 
-Saving R0 in a fixed memory location like `PRINT_FILE_SAVE_R0` only works because `print_file()` is **not** recursive. A recursive function would overwrite the saved value on each nested call, so it would have to save registers on the stack instead.
+<p>Saving R0 in a fixed memory location like <code>PRINT_FILE_SAVE_R0</code> only works because <code>print_file()</code> is <strong>not</strong> recursive. A recursive function would overwrite the saved value on each nested call, so it would have to save registers on the stack instead.</p>
 
-### 4. `print_space()`
+<h3 id="4-print_space">4. <code>print_space()</code></h3>
 
-```nasm
+{% highlight nasm %}
 ;;; -------------------------- PRINT_SPACE --------------------------------
 ;;; void print_space(int n) {
 ;;;     int i = 4 * n;
@@ -475,11 +516,11 @@ PRINT_SPACE_SPACE
     .FILL   #32
 PRINT_SPACE_SAVE_R0
     .FILL   x0000
-```
+{% endhighlight %}
 
-## III. `PRINT_A_CHAR` and `PRINT_A_STRING` "system calls"
+<h2 id="iii-print_a_char-and-print_a_string-system-calls">III. <code>PRINT_A_CHAR</code> and <code>PRINT_A_STRING</code> “system calls”</h2>
 
-```nasm
+{% highlight nasm %}
 ;;; ------------------------- PRINT_A_CHAR --------------------------------
 ;;; Same as OUT: write the character in R0 to the display.
 ;;; Polls the display status register (DSR) until the display is ready,
@@ -528,11 +569,11 @@ PRINT_A_STRING_SAVE_R1
     .FILL   x0000
 PRINT_A_STRING_SAVE_R7
     .FILL   x0000
-```
+{% endhighlight %}
 
-## IV. Data
+<h2 id="iv-data">IV. Data</h2>
 
-```nasm
+{% highlight nasm %}
 ;;; -------------------------folder_info-----------------------------------
 FOLDER_root
     .FILL FOLDER_projects       ; left
@@ -637,7 +678,6 @@ FOLDER_sub_travel
     .FILL FOLDER_NAME_sub_travel
 FOLDER_NAME_sub_travel
     .STRINGZ "sub_travel"
-
 
 ;;; ------------------------file_info-------------------------------------
 FILE_root
@@ -749,5 +789,5 @@ FILE_NAME_sub_travel
     .STRINGZ "packing_list.md"
 
     .END
-```
+{% endhighlight %}
 

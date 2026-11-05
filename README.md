@@ -6,61 +6,76 @@ Built with [Jekyll](https://jekyllrb.com/) and the [al-folio](https://github.com
 
 ## Where things live
 
-| What                       | File / folder                    |
-| -------------------------- | -------------------------------- |
-| Site name, URL, features   | `_config.yml`                    |
-| About (home) page          | `_pages/about.md`                |
-| Portrait                   | `assets/img/prof_pic.jpg`        |
-| News on the home page      | `_news/*.md`                     |
-| Blog posts                 | `_posts/YYYY-MM-DD-title.md`     |
-| Projects                   | `_projects/*.md`                 |
-| CV page (web version)      | `_data/cv.yml`                   |
-| CV PDF (download button)   | `assets/pdf/cv.pdf`              |
-| Social links (home footer) | `_data/socials.yml`              |
-| Images / videos for posts  | `assets/img/`, `assets/video/`   |
+| What                         | File / folder                         |
+| ---------------------------- | ------------------------------------- |
+| Site name, URL, features     | `_config.yml`                         |
+| About (home) page            | `_pages/about.md`                     |
+| Portrait                     | `assets/img/prof_pic.jpg`             |
+| Blog posts                   | `_posts/YYYY-MM-DD-title.html`        |
+| Blog list / tags pages       | `_pages/blog.html`, `_pages/blog-tags.html` |
+| Blog look (layouts, CSS)     | `_layouts/blog-*.liquid`, `assets/blog/blog.css` |
+| Projects                     | `_projects/*.md`                      |
+| CV link in the navbar        | `_pages/cv.md` (links to the PDF in the `cv` repo) |
+| Social links (home footer)   | `_data/socials.yml`                   |
+| Images / videos for posts    | `assets/img/`, `assets/video/`        |
+| News on the home page (off)  | create `_news/*.md`, then set `announcements.enabled: true` in `_pages/about.md` |
 
 The navbar shows the home page plus every page in `_pages/` with `nav: true`, sorted by `nav_order`.
+A page whose `permalink` is a full URL (like `_pages/cv.md`) becomes an external link.
+
+The about and projects pages use the al-folio theme. The blog uses its own layouts,
+styled after [Lil'Log](https://lilianweng.github.io/).
 
 ## Writing a blog post
 
-Create `_posts/2026-01-31-my-post.md`:
+Posts are plain HTML with a small header. Create `_posts/2026-01-31-my-post.html`:
 
-```markdown
+```html
 ---
-layout: post
+layout: blog-post
 title: My Post
-date: 2026-01-31 00:00:00+0800
+date: 2026-01-31 00:00:00 +0800
 description: One-line summary shown in the blog list.
-tags: [probability]
-categories: math
-toc:
-  sidebar: left
+tags: [probability, gaussian]
 ---
 
-Inline math: $$e^{i\pi} + 1 = 0$$.
+<p>Inline math: \(e^{i\pi} + 1 = 0\) or $e^{i\pi} + 1 = 0$.</p>
 
-Display math (keep a blank line before and after, and no blank lines inside):
+<h2 id="first-section">First section</h2>
 
-$$
-\begin{align*}
-f(x) &= x^2 \\
-f'(x) &= 2x
-\end{align*}
-$$
+\[
+\begin{align}
+f(x) &amp;= x^2 \\
+f'(x) &amp;= 2x \label{eq:deriv}
+\end{align}
+\]
+
+<p>Equation \(\eqref{eq:deriv}\) is numbered automatically.</p>
+
+<h3 id="a-subsection">A subsection</h3>
+
+{% highlight python %}
+print("code blocks are highlighted")
+{% endhighlight %}
 ```
 
-Math tips (the Markdown engine is kramdown):
-
-- Use `$$...$$` for **both** inline and display math. A `$$` block on its own lines becomes display math; `$$...$$` inside a sentence becomes inline math.
-- Never leave a blank line inside a display-math block; it ends the block.
-- Numbered equations: `\begin{equation} ... \label{eq:name} \end{equation}`, referenced with `$$\eqref{eq:name}$$`.
+- Give every `<h2>` / `<h3>` an `id`. They make up the "Table of Contents" box.
+- Inside math, write `&` as `&amp;` and `<` as `&lt;` (it is HTML). MathJax still sees `&` and `<`.
+- A literal dollar sign in text must be written `\$`.
+- Optional header fields: `toc: false`, `citation: false`, `math: false`.
 
 Images, GIFs and videos (put the file under `assets/`):
 
-```liquid
-{% include figure.liquid path="assets/img/my-plot.gif" class="img-fluid rounded" zoomable=true %}
-{% include video.liquid path="assets/video/my-demo.mp4" class="img-fluid rounded" controls=true autoplay=true loop=true muted=true %}
-{% include video.liquid path="https://www.youtube.com/embed/VIDEO_ID" class="img-fluid rounded" %}
+```html
+<figure>
+  <img src="/assets/img/my-plot.gif" alt="..." style="width: 80%">
+  <figcaption>Caption, which can contain math like \(x^2\).</figcaption>
+</figure>
+
+<figure>
+  <video src="/assets/video/my-demo.mp4" controls autoplay loop muted playsinline style="width: 80%"></video>
+  <figcaption>A video.</figcaption>
+</figure>
 ```
 
 ## Previewing locally (macOS)

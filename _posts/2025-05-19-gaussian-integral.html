@@ -1,0 +1,236 @@
+---
+layout: blog-post
+title: The Gaussian Integral
+date: 2025-05-19 00:00:00 +0800
+description: From the one-dimensional Gaussian integral to the multivariate case, with a probabilistic and linear-algebraic view.
+tags: [probability, gaussian, linear-algebra, pca]
+---
+
+
+<blockquote>
+  <p>This post introduces the Gaussian integral, starting from basic integration and building up to a probabilistic and linear-algebraic view of it.</p>
+</blockquote>
+
+<h2 id="i-the-fundamental-integral">I. The fundamental integral</h2>
+
+<p>The most basic Gaussian integral is</p>
+
+\[\int_{-\infty}^{\infty} \exp \left(-\frac{1}{2}x^2 \right) dx = \sqrt{2\pi} ,\]
+
+<p>or equivalently, in the form of the <strong>standard Gaussian density</strong>,</p>
+
+\[\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \exp \left( -\frac{1}{2} x^2 \right) dx = 1 .\]
+
+<p>Here is how to compute it. Write \(I\) for the integral.</p>
+
+<h3 id="step-1-square-it">Step 1: square it</h3>
+
+\[\begin{align*}
+I^2 &amp;= \int_{-\infty}^{\infty} \exp \left( -\frac{1}{2} x^2 \right) dx \cdot \int_{-\infty}^{\infty} \exp \left( -\frac{1}{2} y^2 \right) dy \\[1ex]
+&amp;= \iint_{\mathbb{R}^2} \exp \left( -\frac{1}{2}(x^2 + y^2) \right) dx \, dy .
+\end{align*}\]
+
+<p>The integrand is positive, so Tonelli’s theorem allows us to combine the two integrals into a double integral.</p>
+
+<h3 id="step-2-switch-to-polar-coordinates">Step 2: switch to polar coordinates</h3>
+
+<p>Let</p>
+
+\[\left\{
+\begin{aligned}
+x &amp;= r \cos \theta \\
+y &amp;= r \sin \theta
+\end{aligned}
+\right.
+\qquad r \in [0, \infty), \ \theta \in [0, 2\pi) .\]
+
+<p>The <strong>Jacobian matrix</strong> of this map is</p>
+
+\[J(r, \theta) = \frac{\partial (x, y)}{\partial (r, \theta)} =
+\begin{bmatrix}
+\dfrac{\partial x}{\partial r} &amp; \dfrac{\partial x}{\partial \theta} \\[1.5ex]
+\dfrac{\partial y}{\partial r} &amp; \dfrac{\partial y}{\partial \theta}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cos \theta &amp; - r \sin \theta \\
+\sin \theta &amp; r \cos \theta
+\end{bmatrix} ,\]
+
+<p>so the area element transforms as</p>
+
+\[\begin{align*}
+dx \, dy &amp;= \left\lvert \det J(r, \theta) \right\rvert \, dr \, d\theta \\[1ex]
+&amp;= r \left( \cos^2 \theta + \sin^2 \theta \right) dr \, d\theta \\[1ex]
+&amp;= r \, dr \, d\theta .
+\end{align*}\]
+
+<h3 id="step-3-integrate">Step 3: integrate</h3>
+
+\[\begin{align*}
+I^2 &amp;= \int_0^{2 \pi} \int_0^{\infty} \exp \left( -\frac{1}{2} r^2 \right) r \, dr \, d\theta \\[1ex]
+&amp;= \int_0^{2 \pi} \left[ -\exp \left( -\frac{1}{2} r^2 \right) \right]_0^{\infty} d\theta \\[1ex]
+&amp;= \int_0^{2 \pi} 1 \, d\theta = 2 \pi .
+\end{align*}\]
+
+<p>Since \(I &gt; 0\),</p>
+
+\[\int_{-\infty}^{\infty} \exp \left( -\frac{1}{2} x^2 \right) dx = \sqrt{2 \pi} .\]
+
+<p><strong>Shifting and scaling.</strong> Substituting \(x \mapsto (x - b)/\sqrt{a}\) gives, for any \(a &gt; 0\) and \(b \in \mathbb{R}\),</p>
+
+\[\int_{-\infty}^{\infty} \exp \left( -\frac{(x - b)^2}{2a} \right) dx = \sqrt{2 \pi a} ,\]
+
+<p>or, in the form of a Gaussian density,</p>
+
+\[\int_{-\infty}^{\infty} \frac{1}{\sqrt{2 \pi a}} \exp \left( -\frac{(x - b)^2}{2 a} \right) dx = 1 .\]
+
+<h2 id="ii-from-one-dimension-to-many">II. From one dimension to many</h2>
+
+<p>Now we generalize the univariate Gaussian integral to \(n\) dimensions.</p>
+
+<p><strong>Notation.</strong></p>
+
+<ol>
+  <li>\(\boldsymbol{x} = (x_1, \dots, x_n)^\top \in \mathbb{R}^n\) is a column vector.</li>
+  <li>\(d\boldsymbol{x}\) denotes the volume element \(dx_1 \cdots dx_n\).</li>
+  <li>For \(f: \mathbb{R}^n \to \mathbb{R}\), \(\displaystyle \int_{\mathbb{R}^n} f(\boldsymbol{x}) \, d \boldsymbol{x} = \idotsint_{\mathbb{R}^n} f(x_1, \dots, x_n) \, dx_1 \cdots dx_n\).</li>
+</ol>
+
+<p><strong>Statement.</strong> Let \(A \in \mathbb{R}^{n \times n}\) be symmetric positive definite, and let \(\boldsymbol{b} \in \mathbb{R}^n\). Then</p>
+
+\[\begin{equation}
+\int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^\top A^{-1} (\boldsymbol{x} - \boldsymbol{b}) \right) d\boldsymbol{x} = \sqrt{ (2 \pi)^n \det A } .
+\label{eq:multivariate}
+\end{equation}\]
+
+<p>For \(n = 1\) and \(A = a\), this is exactly the shifted and scaled formula above.</p>
+
+<h3 id="step-1-diagonalize">Step 1: diagonalize</h3>
+
+<p>Since \(A\) is symmetric positive definite, so is \(A^{-1}\). By the <a href="https://math.mit.edu/~dav/spectral.pdf">spectral theorem</a>,</p>
+
+\[A^{-1} = Q^\top \Lambda Q ,\]
+
+<p>where \(\Lambda = \mathrm{diag}(\lambda_1, \dots, \lambda_n)\) has <strong>positive</strong> diagonal entries and \(Q\) is <strong>orthogonal</strong> (\(Q^\top Q = Q Q^\top = I\)).</p>
+
+<p>Change variables to</p>
+
+\[\boldsymbol{y} = Q (\boldsymbol{x} - \boldsymbol{b}) , \qquad \text{i.e.} \quad y_i = \sum_{j = 1}^{n} Q_{ij} (x_j - b_j) .\]
+
+<p>Then \(\partial y_i / \partial x_k = Q_{ik}\), so the Jacobian matrix is \(\partial \boldsymbol{y} / \partial \boldsymbol{x} = Q\). An orthogonal matrix satisfies \(\det(Q)^2 = \det(Q^\top Q) = 1\), so \(\det Q = \pm 1\). (It can be \(-1\), for a reflection. That is why the absolute value matters.) Hence</p>
+
+\[d \boldsymbol{y} = \left\lvert \det Q \right\rvert d \boldsymbol{x} = d \boldsymbol{x} .\]
+
+<p>Substituting,</p>
+
+\[\begin{align*}
+&amp;\int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^\top A^{-1} (\boldsymbol{x} - \boldsymbol{b}) \right) d\boldsymbol{x} \\[1ex]
+={} &amp;\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^\top Q^\top \Lambda Q (\boldsymbol{x} - \boldsymbol{b}) \right) d \boldsymbol{x} \\[1ex]
+={} &amp;\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \big(Q (\boldsymbol{x} - \boldsymbol{b}) \big)^\top \Lambda \big(Q (\boldsymbol{x} - \boldsymbol{b}) \big) \right) d \boldsymbol{x} \\[1ex]
+={} &amp;\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \boldsymbol{y}^\top \Lambda \boldsymbol{y} \right) d \boldsymbol{y} .
+\end{align*}\]
+
+<h3 id="step-2-separate-the-variables">Step 2: separate the variables</h3>
+
+<p>Because \(\Lambda\) is diagonal,</p>
+
+\[\boldsymbol{y}^\top \Lambda \boldsymbol{y}
+=
+\begin{bmatrix} y_1 &amp; \cdots &amp; y_n \end{bmatrix}
+\begin{bmatrix}
+\lambda_1 &amp; &amp; \\
+&amp; \ddots &amp; \\
+&amp; &amp; \lambda_n
+\end{bmatrix}
+\begin{bmatrix} y_1 \\ \vdots \\ y_n \end{bmatrix}
+= \sum_{i=1}^{n} \lambda_i y_i^2 ,\]
+
+<p>so the exponential factors into a product, and so does the integral:</p>
+
+\[\begin{align*}
+\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \boldsymbol{y}^\top \Lambda \boldsymbol{y} \right) d \boldsymbol{y}
+&amp;= \idotsint_{\mathbb{R}^n} \prod_{i=1}^{n} \exp \left( -\frac{1}{2} \lambda_i y_i^2 \right) dy_1 \cdots dy_n \\[1ex]
+&amp;= \prod_{i=1}^{n} \int_{-\infty}^{\infty} \exp \left( -\frac{1}{2} \lambda_i y_i^2 \right) dy_i .
+\end{align*}\]
+
+<h3 id="step-3-use-the-one-dimensional-result">Step 3: use the one-dimensional result</h3>
+
+<p>Each factor is a one-dimensional Gaussian integral with \(a = 1/\lambda_i\):</p>
+
+\[\prod_{i=1}^{n} \int_{-\infty}^{\infty} \exp \left( -\frac{y_i^2}{2 \lambda_i^{-1}} \right) dy_i
+= \prod_{i=1}^{n} \sqrt{\frac{2 \pi}{\lambda_i}}
+= \frac{(2 \pi)^{n/2}}{\sqrt{\det \Lambda}} .\]
+
+<p>Finally, from \(A^{-1} = Q^\top \Lambda Q\),</p>
+
+\[\frac{1}{\det A} = \det (A^{-1}) = \det(Q^\top) \det(\Lambda) \det(Q) = \det(Q)^2 \det \Lambda = \det \Lambda .\]
+
+<p>Putting everything together,</p>
+
+\[\int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^\top A^{-1} (\boldsymbol{x} - \boldsymbol{b}) \right) d\boldsymbol{x}
+= \frac{(2 \pi)^{n/2}}{\sqrt{\det \Lambda}}
+= \sqrt{ (2 \pi)^n \det A } ,\]
+
+<p>which proves \(\eqref{eq:multivariate}\). \(\blacksquare\)</p>
+
+<h2 id="iii-probability-and-linear-algebra">III. Probability and linear algebra</h2>
+
+<h3 id="1-the-univariate-gaussian-distribution">1. The univariate Gaussian distribution</h3>
+
+<p>If \(X \sim \mathcal{N}(\mu, \sigma^2)\), its density integrates to one:</p>
+
+\[\int_{-\infty}^{\infty} f_X(x) \, dx = \int_{-\infty}^{\infty} \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left( -\frac{(x - \mu)^2}{2 \sigma^2} \right) dx = 1 .\]
+
+<p>This is just the shifted and scaled formula from Part I: the mean \(\mu\) plays the role of the shift \(b\), and the variance \(\sigma^2\) plays the role of the scale \(a\).</p>
+
+<h3 id="2-the-multivariate-gaussian-distribution">2. The multivariate Gaussian distribution</h3>
+
+<p>We write a <strong>random vector</strong> in bold capitals, \(\boldsymbol{X} = (X_1, \dots, X_n)^\top\). Each component \(X_i\) is a random variable. A specific value of \(\boldsymbol{X}\) is written in bold lowercase, \(\boldsymbol{x}\).</p>
+
+<p>If \(\boldsymbol{X} \sim \mathcal{N}(\boldsymbol{\mu}, \Sigma)\) with a positive definite covariance matrix \(\Sigma\), then by \(\eqref{eq:multivariate}\) with \(A = \Sigma\) and \(\boldsymbol{b} = \boldsymbol{\mu}\),</p>
+
+\[\int_{\mathbb{R}^n} f_{\boldsymbol{X}}(\boldsymbol{x}) \, d \boldsymbol{x}
+= \int_{\mathbb{R}^n} \frac{1}{\sqrt{(2\pi)^n \det \Sigma}} \exp \left( -\frac{1}{2} (\boldsymbol{x}-\boldsymbol{\mu})^\top \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu})\right) d \boldsymbol{x} = 1 .\]
+
+<p>The interesting part is the change of variables that simplified the quadratic form in the exponent. It has a clear probabilistic meaning.</p>
+
+<h4 id="1-diagonalizing-sigma-1-the-pca-view">(1) Diagonalizing \(\Sigma^{-1}\): the PCA view</h4>
+
+<p>Write</p>
+
+\[\Sigma^{-1} = Q^\top \Lambda Q ,\]
+
+<p>where the <strong>rows</strong> of the orthogonal matrix \(Q\) are eigenvectors of \(\Sigma^{-1}\), and \(\Lambda\) holds the corresponding eigenvalues. The eigenvectors of \(\Sigma^{-1}\) are the same as those of \(\Sigma\), but each eigenvalue is inverted: \(\Sigma = Q^\top \Lambda^{-1} Q\).</p>
+
+<p>This is exactly the core idea of <a href="https://www.cs.cmu.edu/~elaw/papers/pca.pdf">principal component analysis</a> (PCA). We find the principal axes of the distribution and rotate the coordinate system to align with them. The variance along the \(i\)-th axis is \(1/\lambda_i\), so the direction of <strong>largest</strong> variance belongs to the <strong>smallest</strong> eigenvalue of \(\Sigma^{-1}\).</p>
+
+<h4 id="2-the-change-of-variables">(2) The change of variables</h4>
+
+<p>Apply</p>
+
+\[\boldsymbol{y} = Q (\boldsymbol{x} - \boldsymbol{\mu}) , \qquad \text{equivalently} \qquad \boldsymbol{Y} = Q (\boldsymbol{X} - \boldsymbol{\mu}) .\]
+
+<p>This centers and rotates the coordinate system, and the quadratic form becomes</p>
+
+\[(\boldsymbol{x} - \boldsymbol{\mu})^\top \Sigma^{-1} (\boldsymbol{x} - \boldsymbol{\mu}) = \boldsymbol{y}^\top \Lambda \boldsymbol{y} .\]
+
+<p>The covariance of the new random vector is</p>
+
+\[\mathrm{Cov}(\boldsymbol{Y}) = \mathbb{E}\left[\boldsymbol{Y} \boldsymbol{Y}^\top\right] = Q \, \Sigma \, Q^\top = Q \left( Q^\top \Lambda^{-1} Q \right) Q^\top = \Lambda^{-1} ,\]
+
+<p>which is <strong>diagonal</strong>. So the components \(Y_1, \dots, Y_n\) are <strong>uncorrelated</strong>, with \(\mathrm{Var}(Y_i) = 1/\lambda_i\). Going from \(\boldsymbol{X}\) to \(\boldsymbol{Y}\) decorrelates the coordinates.</p>
+
+<h4 id="3-uncorrelated-vs-independent">(3) Uncorrelated vs. independent</h4>
+
+<p>In general, uncorrelated random variables need not be independent. But <strong>for a jointly Gaussian random vector, uncorrelated components are independent.</strong> (Marginally Gaussian is not enough: the vector must be jointly Gaussian.) Here \(\boldsymbol{Y}\) is an affine function of a Gaussian vector, so it is jointly Gaussian.</p>
+
+<p>You can see this directly from the density, which factors into a product of one-dimensional Gaussians:</p>
+
+\[f_{\boldsymbol{Y}}(\boldsymbol{y}) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\lambda_i^{-1}}} \exp\left( -\frac{y_i^2}{2\lambda_i^{-1}} \right) = \prod_{i=1}^n \mathcal{N}\!\left(y_i;\, 0,\, \lambda_i^{-1}\right) .\]
+
+<p>This factorization is exactly what made the integral in Part II easy to compute.</p>
+
+<blockquote>
+  <p>Thanks to ChatGPT, which helped me organize my words.</p>
+</blockquote>

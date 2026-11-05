@@ -1,0 +1,31 @@
+---
+layout: blog-base
+permalink: /blog/
+title: blog
+nav: true
+nav_order: 1
+math: false
+---
+{% assign full_name = site.first_name | append: ' ' | append: site.last_name %}
+
+<header class="page-header">
+  <h1>Blog</h1>
+  <p>{{ site.blog_description | capitalize }}.</p>
+</header>
+
+{% for post in site.posts %}
+  {% assign words = post.content | strip_html | number_of_words %}
+  {% assign read_time = words | divided_by: 200 | at_least: 1 %}
+  <article class="post-entry">
+    <header class="entry-header">
+      <h2>{{ post.title }}</h2>
+    </header>
+    <div class="entry-content">
+      <p>{{ post.description }}</p>
+    </div>
+    <footer class="entry-footer">
+      Date: {{ post.date | date: '%B %-d, %Y' }} &nbsp;|&nbsp; Estimated Reading Time: {{ read_time }} min &nbsp;|&nbsp; Author: {{ post.author | default: full_name }}
+    </footer>
+    <a class="entry-link" aria-label="post link to {{ post.title | escape }}" href="{{ post.url | relative_url }}"></a>
+  </article>
+{% endfor %}

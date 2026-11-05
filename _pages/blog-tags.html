@@ -1,0 +1,25 @@
+---
+layout: blog-base
+permalink: /blog/tags/
+title: tags
+math: false
+---
+
+<header class="page-header">
+  <h1>Tags</h1>
+</header>
+
+<div class="tag-index">
+  {% assign tags = site.tags | sort %}
+  {% for tag in tags %}
+    <h2 id="{{ tag[0] | slugify }}">{{ tag[0] }} <small>({{ tag[1].size }})</small></h2>
+    <ul>
+      {% for post in tag[1] %}
+        <li>
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          <span class="date">&middot; {{ post.date | date: '%B %-d, %Y' }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+</div>

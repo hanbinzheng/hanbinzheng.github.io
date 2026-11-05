@@ -1,12 +1,6 @@
 ---
-layout: cv
-permalink: /cv/
 title: CV
+permalink: https://github.com/hanbinzheng/cv/blob/main/main.pdf
 nav: true
 nav_order: 3
-cv_pdf: /assets/pdf/cv.pdf # you can also use external links here
-cv_format: rendercv # options: rendercv, jsonresume
-description: Download the PDF version with the button on the right.
-toc:
-  sidebar: left
 ---
