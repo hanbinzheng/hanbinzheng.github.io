@@ -5,7 +5,6 @@ layout: blog-base
   A single blog post. Front matter used:
     title, date, description, tags   (standard)
     toc: false                        hide the "Table of Contents" box
-    citation: false                   hide the "Citation" section
     math: false                       don't load MathJax
 {% endcomment %}
 {% assign full_name = site.first_name | append: ' ' | append: site.last_name %}
@@ -35,27 +34,6 @@ layout: blog-base
   <div class="post-content">
     {{ content }}
 
-    {% if page.citation != false %}
-      {% assign slug_first = page.slug | split: '-' | first %}
-      {% assign year = page.date | date: '%Y' %}
-      <h2 id="citation">Citation</h2>
-      <p>Cited as:</p>
-      <blockquote>
-        <p>
-          {{ site.last_name }}, {{ site.first_name }}. ({{ page.date | date: '%b %Y' }}). {{ page.title }}. {{ site.url | remove: 'https://' }}.
-          {{ page.url | absolute_url }}.
-        </p>
-      </blockquote>
-      <p>Or</p>
-      <pre><code>@article{ {{- site.last_name | downcase }}{{ year }}{{ slug_first -}},
-  title   = "{{ page.title }}",
-  author  = "{{ site.last_name }}, {{ site.first_name }}",
-  journal = "{{ site.url | remove: 'https://' }}",
-  year    = "{{ year }}",
-  month   = "{{ page.date | date: '%b' }}",
-  url     = "{{ page.url | absolute_url }}"
-}</code></pre>
-    {% endif %}
   </div>
 
   <footer class="post-footer">

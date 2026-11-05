@@ -127,8 +127,9 @@ a {
   height: 18px;
 }
 
-html[data-theme="dark"] #moon,
-html:not([data-theme="dark"]) #sun {
+/* the icon shows the current mode: moon = dark, sun = light */
+html[data-theme="dark"] #sun,
+html:not([data-theme="dark"]) #moon {
   display: none;
 }
 
@@ -473,6 +474,10 @@ html[data-theme="dark"] .toc {
 .post-content figure video {
   display: block;
   margin: 0 auto;
+}
+
+.post-content .references p {
+  margin-bottom: 8px;
 }
 
 .post-content figcaption {

@@ -108,7 +108,7 @@ I^2 &amp;= \int_0^{2 \pi} \int_0^{\infty} \exp \left( -\frac{1}{2} r^2 \right) r
 
 <h3 id="step-1-diagonalize">Step 1: diagonalize</h3>
 
-<p>Since \(A\) is symmetric positive definite, so is \(A^{-1}\). By the <a href="https://math.mit.edu/~dav/spectral.pdf">spectral theorem</a>,</p>
+<p>Since \(A\) is symmetric positive definite, so is \(A^{-1}\). By the spectral theorem [1],</p>
 
 \[A^{-1} = Q^\top \Lambda Q ,\]
 
@@ -203,7 +203,7 @@ I^2 &amp;= \int_0^{2 \pi} \int_0^{\infty} \exp \left( -\frac{1}{2} r^2 \right) r
 
 <p>where the <strong>rows</strong> of the orthogonal matrix \(Q\) are eigenvectors of \(\Sigma^{-1}\), and \(\Lambda\) holds the corresponding eigenvalues. The eigenvectors of \(\Sigma^{-1}\) are the same as those of \(\Sigma\), but each eigenvalue is inverted: \(\Sigma = Q^\top \Lambda^{-1} Q\).</p>
 
-<p>This is exactly the core idea of <a href="https://www.cs.cmu.edu/~elaw/papers/pca.pdf">principal component analysis</a> (PCA). We find the principal axes of the distribution and rotate the coordinate system to align with them. The variance along the \(i\)-th axis is \(1/\lambda_i\), so the direction of <strong>largest</strong> variance belongs to the <strong>smallest</strong> eigenvalue of \(\Sigma^{-1}\).</p>
+<p>This is exactly the core idea of principal component analysis (PCA) [2]. We find the principal axes of the distribution and rotate the coordinate system to align with them. The variance along the \(i\)-th axis is \(1/\lambda_i\), so the direction of <strong>largest</strong> variance belongs to the <strong>smallest</strong> eigenvalue of \(\Sigma^{-1}\).</p>
 
 <h4 id="2-the-change-of-variables">(2) The change of variables</h4>
 
@@ -234,3 +234,10 @@ I^2 &amp;= \int_0^{2 \pi} \int_0^{\infty} \exp \left( -\frac{1}{2} r^2 \right) r
 <blockquote>
   <p>Thanks to ChatGPT, which helped me organize my words.</p>
 </blockquote>
+
+<h2 id="references">References</h2>
+
+<div class="references">
+  <p>[1] David Vogan. <a href="https://math.mit.edu/~dav/spectral.pdf">“Proof of the spectral theorem.”</a> Lecture notes, MIT, 2013.</p>
+  <p>[2] Jonathon Shlens. <a href="https://www.cs.cmu.edu/~elaw/papers/pca.pdf">“A Tutorial on Principal Component Analysis.”</a> 2005.</p>
+</div>

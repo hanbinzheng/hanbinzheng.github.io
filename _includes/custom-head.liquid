@@ -1,0 +1,39 @@
+<style>
+  /* Use the same plain background as the blog (assets/blog/blog.css). */
+  html[data-theme="dark"] {
+    --global-bg-color: rgb(29, 30, 32);
+  }
+
+  /* Plain footer, like the blog's (al-folio draws a grey bar). */
+  footer.fixed-bottom,
+  footer.sticky-bottom {
+    background-color: var(--global-bg-color) !important;
+    color: var(--global-text-color-light) !important;
+  }
+  footer.fixed-bottom .container,
+  footer.sticky-bottom .container,
+  footer.fixed-bottom a,
+  footer.sticky-bottom a {
+    color: inherit !important;
+  }
+
+  /* Two-state theme toggle: the icon shows the current mode (moon = dark, sun = light). */
+  #light-toggle-system {
+    display: none !important;
+  }
+  html[data-theme="dark"] #light-toggle-dark,
+  html:not([data-theme="dark"]) #light-toggle-light {
+    display: inline-block !important;
+  }
+  html[data-theme="dark"] #light-toggle-light,
+  html:not([data-theme="dark"]) #light-toggle-dark {
+    display: none !important;
+  }
+</style>
+
+<script>
+  // al-folio cycles system -> light -> dark. Switch between light and dark only.
+  toggleThemeSetting = () => {
+    setThemeSetting(determineComputedTheme() === "dark" ? "light" : "dark");
+  };
+</script>

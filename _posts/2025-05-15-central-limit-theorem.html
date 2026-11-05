@@ -8,7 +8,7 @@ tags: [probability, gaussian]
 
 
 <blockquote>
-  <p>Thanks to <a href="https://www.zhihu.com/people/thegenius-16">子预</a>. <a href="https://zhuanlan.zhihu.com/p/85233692">His article</a> helped me a lot in understanding this topic.</p>
+  <p>Thanks to <a href="https://www.zhihu.com/people/thegenius-16">子预</a>. <a href="https://zhuanlan.zhihu.com/p/85233692">His article</a> helped me a lot in understanding this topic [1].</p>
 </blockquote>
 
 <p>This post gives a short, mostly self-contained proof of the <strong>Central Limit Theorem (CLT)</strong>. It is not fully rigorous: I state two standard results from analysis without proving them.</p>
@@ -45,7 +45,7 @@ tags: [probability, gaussian]
 <blockquote>
   <ol>
     <li><strong>Uniqueness.</strong> The characteristic function determines the distribution: if \(\varphi_X(t) = \varphi_Y(t)\) for all \(t\), then \(X\) and \(Y\) have the same distribution. (This is the Fourier inversion theorem in disguise.)</li>
-    <li><strong>Lévy’s continuity theorem.</strong> If \(\varphi_{Z_n}(t) \to \varphi_Z(t)\) for every \(t\), then \(Z_n \xrightarrow{D} Z\).</li>
+    <li><strong>Lévy’s continuity theorem.</strong> If \(\varphi_{Z_n}(t) \to \varphi_Z(t)\) for every \(t\), then \(Z_n \xrightarrow{D} Z\). (See Durrett [2], Section 3.3, for proofs of both facts.)</li>
   </ol>
 </blockquote>
 
@@ -175,3 +175,10 @@ tags: [probability, gaussian]
 \[\varphi_{X + Y}(t) = \mathbb{E}\left[e^{itX} e^{itY}\right] = \mathbb{E}\left[e^{itX}\right] \mathbb{E}\left[e^{itY}\right] = \varphi_X(t) \, \varphi_Y(t) .\]
 
 <p>By induction, the characteristic function of a sum of \(n\) independent variables is the product of their characteristic functions.</p>
+
+<h2 id="references">References</h2>
+
+<div class="references">
+  <p>[1] 子预. <a href="https://zhuanlan.zhihu.com/p/85233692">Article on the central limit theorem</a> (in Chinese). Zhihu.</p>
+  <p>[2] Rick Durrett. <em>Probability: Theory and Examples</em>, 5th edition. Cambridge University Press, 2019.</p>
+</div>

@@ -3,7 +3,7 @@ layout: page
 title: projects
 permalink: /projects/
 description: Research and engineering projects I have worked on.
-nav: true
+nav: false # hidden from the navbar for now; set to true to show it again
 nav_order: 2
 display_categories: [research, engineering]
 horizontal: true

@@ -1,0 +1,132 @@
+---
+layout: default
+---
+{% comment %}
+  Site-local replacement for al_folio_core's about layout:
+  the name, subtitle and bio sit in one column, vertically centered next to the portrait,
+  followed by the latest posts. No news, papers or social icons.
+{% endcomment %}
+<style>
+  .about-intro {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+
+  .about-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .about-text .post-title {
+    margin-bottom: 0.75rem;
+  }
+
+  .about-text .desc {
+    margin-bottom: 1.75rem;
+    color: var(--global-text-color-light);
+  }
+
+  .about-bio {
+    line-height: 1.85;
+  }
+
+  .about-bio p {
+    margin-bottom: 1.25rem;
+  }
+
+  .about-bio p:last-child {
+    margin-bottom: 0;
+  }
+
+  .about-portrait {
+    flex: 0 0 30%;
+    max-width: 280px;
+  }
+
+  .about-portrait figure {
+    margin: 0;
+  }
+
+  .about-posts {
+    margin-top: 4rem;
+  }
+
+  .about-posts h2 {
+    margin-bottom: 1.25rem;
+  }
+
+  .about-posts .table th,
+  .about-posts .table td {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+  }
+
+  @media (max-width: 575.98px) {
+    .about-intro {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .about-portrait {
+      flex-basis: auto;
+      width: 60%;
+      max-width: 240px;
+      align-self: center;
+    }
+
+    .about-posts .table th {
+      width: 40% !important;
+    }
+  }
+</style>
+
+<div class="post">
+  <article>
+    <div class="about-intro">
+      <div class="about-text">
+        <header class="post-header">
+          <h1 class="post-title">
+            {% if site.title == 'blank' %}
+              <span class="font-weight-bold">{{ site.first_name }}</span> {{ site.middle_name }}
+              {{ site.last_name }}
+            {% else %}
+              {{ site.title }}
+            {% endif %}
+          </h1>
+          {% if page.subtitle %}
+            <p class="desc">{{ page.subtitle }}</p>
+          {% endif %}
+        </header>
+        <div class="about-bio">{{ content }}</div>
+      </div>
+
+      {% if page.profile and page.profile.image %}
+        <div class="about-portrait">
+          {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
+          {% if page.profile.image_circular %}
+            {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
+          {% else %}
+            {% assign profile_image_class = 'img-fluid z-depth-1 rounded' %}
+          {% endif %}
+          {%
+            include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes="(min-width: 576px) 280px, 95vw"
+            alt=page.profile.image cache_bust=true
+          %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if page.latest_posts and page.latest_posts.enabled %}
+      <div class="about-posts">
+        <h2>
+          <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>
+        </h2>
+        {% include latest_posts.liquid %}
+      </div>
+    {% endif %}
+  </article>
+</div>

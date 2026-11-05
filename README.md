@@ -62,7 +62,7 @@ print("code blocks are highlighted")
 - Give every `<h2>` / `<h3>` an `id`. They make up the "Table of Contents" box.
 - Inside math, write `&` as `&amp;` and `<` as `&lt;` (it is HTML). MathJax still sees `&` and `<`.
 - A literal dollar sign in text must be written `\$`.
-- Optional header fields: `toc: false`, `citation: false`, `math: false`.
+- Optional header fields: `toc: false`, `math: false`. End a post with a `<h2 id="references">References</h2>` section (see the existing posts).
 
 Images, GIFs and videos (put the file under `assets/`):
 

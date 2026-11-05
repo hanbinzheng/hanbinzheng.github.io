@@ -11,7 +11,7 @@ tags: [divergence, conservation-laws, pde]
   <p>This post was revised with the help of ChatGPT.</p>
 </blockquote>
 
-<p>This post walks through the <strong>continuity equation</strong>, from physical intuition to the mathematical statement. We derive it step by step and explain every quantity involved.</p>
+<p>This post walks through the <strong>continuity equation</strong> [1], from physical intuition to the mathematical statement. We derive it step by step and explain every quantity involved.</p>
 
 <h2 id="1-motivation-conservation-in-physical-systems">1. Motivation: conservation in physical systems</h2>
 
@@ -89,7 +89,7 @@ tags: [divergence, conservation-laws, pde]
 
 <h2 id="4-gausss-divergence-theorem">4. Gauss’s divergence theorem</h2>
 
-<p>To turn the boundary integral into a volume integral, we use the <strong>divergence theorem</strong>. It holds for a continuously differentiable field \(\boldsymbol{J}\):</p>
+<p>To turn the boundary integral into a volume integral, we use the <strong>divergence theorem</strong> [2]. It holds for a continuously differentiable field \(\boldsymbol{J}\):</p>
 
 \[\oint_{\partial V} \boldsymbol{J}(\boldsymbol{x}, t) \cdot d\boldsymbol{S} = \int_V \nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) \, d\boldsymbol{x} .\]
 
@@ -202,3 +202,10 @@ tags: [divergence, conservation-laws, pde]
 </blockquote>
 
 <p>It is fundamental across physics and mathematics: in fluid mechanics, electromagnetism (conservation of charge), quantum mechanics (conservation of probability), and, more recently, in the flow-matching and diffusion models of machine learning, where it describes how a probability density is transported by a learned velocity field.</p>
+
+<h2 id="references">References</h2>
+
+<div class="references">
+  <p>[1] Wikipedia. <a href="https://en.wikipedia.org/wiki/Continuity_equation">“Continuity equation.”</a></p>
+  <p>[2] Wikipedia. <a href="https://en.wikipedia.org/wiki/Divergence_theorem">“Divergence theorem.”</a></p>
+</div>
