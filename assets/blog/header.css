@@ -1,0 +1,118 @@
+/*
+ * Site header (see _includes/site-header.liquid), shared by the blog and the
+ * al-folio pages so it looks identical everywhere. PaperMod-style, like
+ * https://lilianweng.github.io/. Kept outside assets/css/ so PurgeCSS leaves it alone.
+ */
+
+.site-header {
+  --hdr-bg: rgb(255, 255, 255);
+  --hdr-fg: rgb(30, 30, 30);
+  --hdr-gap: 24px;
+  --hdr-height: 60px;
+
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background: var(--hdr-bg);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "segoe ui",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "open sans",
+    "helvetica neue",
+    sans-serif;
+  font-size: 16px;
+  line-height: var(--hdr-height);
+}
+
+html[data-theme="dark"] .site-header {
+  --hdr-bg: rgb(29, 30, 32);
+  --hdr-fg: rgb(218, 218, 219);
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: calc(1024px + var(--hdr-gap) * 2);
+  margin: 0 auto;
+  padding: 0 var(--hdr-gap);
+}
+
+.site-header a,
+.site-header a:hover,
+.site-header a:focus {
+  color: var(--hdr-fg);
+  text-decoration: none;
+}
+
+.site-logo {
+  display: flex;
+  align-items: center;
+  flex-wrap: inherit;
+  margin-inline-end: 12px;
+}
+
+.site-logo > a {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* #light-toggle beats al-folio's own #light-toggle rules on al-folio pages. */
+.site-header #light-toggle {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 0 12px;
+  padding: 0;
+  height: 26px;
+  width: auto;
+  border: 0;
+  background: none;
+  color: var(--hdr-fg);
+  cursor: pointer;
+  transform: none;
+}
+
+.site-header #light-toggle:hover {
+  color: var(--hdr-fg);
+  opacity: 0.7;
+}
+
+.site-theme-toggle svg {
+  height: 18px;
+  width: 18px;
+}
+
+/* The icon shows the current mode: moon = dark, sun = light. */
+html[data-theme="dark"] .site-theme-toggle .icon-sun,
+html:not([data-theme="dark"]) .site-theme-toggle .icon-moon {
+  display: none;
+}
+
+.site-menu {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.site-menu li + li {
+  margin-inline-start: var(--hdr-gap);
+}
+
+.site-menu .active {
+  font-weight: 500;
+  border-bottom: 2px solid currentColor;
+}
+
+@media screen and (max-width: 768px) {
+  .site-header {
+    --hdr-gap: 14px;
+  }
+}
