@@ -1,0 +1,702 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <title>LC-3 Brief Review | Hanbin Zheng</title> <meta name="author" content="Hanbin Zheng"> <meta name="description" content="A review of LC-3 assembly, the run-time stack, recursion, linked lists, and binary trees, built around one complete program."> <link rel="canonical" href="https://hanbinzheng.github.io/blog/2025/lc3-brief-review/"> <link rel="alternate" type="application/atom+xml" title="Hanbin Zheng" href="/feed.xml"> <link rel="icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%A6%86&lt;/text&gt;&lt;/svg&gt;"> <script>
+      // Apply the saved theme before the page paints. Shares the "theme" key with al-folio,
+      // so the choice carries over between the blog and the rest of the site.
+      (function () {
+        var setting = null;
+        try {
+          setting = localStorage.getItem("theme");
+        } catch (e) {}
+        var dark = setting === "dark" || ((!setting || setting === "system") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script> <link rel="stylesheet" href="/assets/blog/blog.css"> <script>
+        window.MathJax = {
+          tex: {
+            tags: "ams",
+            inlineMath: [
+              ["$", "$"],
+              ["\\(", "\\)"],
+            ],
+            displayMath: [
+              ["$$", "$$"],
+              ["\\[", "\\]"],
+            ],
+            processEscapes: true,
+          },
+          options: {
+            skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+          },
+        };
+      </script> <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script> </head> <body> <header class="header"> <nav class="nav"> <div class="logo"> <a href="/">Hanbin <span class="light-name">Zheng</span></a> <button id="theme-toggle" type="button" title="Toggle light / dark (Alt + T)" aria-label="Toggle light / dark"> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <circle cx="12" cy="12" r="5"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line> </svg> </button> </div> <ul id="menu"> <li> <a href="/">about</a> </li> <li> <a href="/blog/" class="active">blog</a> </li> <li> <a href="https://github.com/hanbinzheng/cv/blob/main/main.pdf" rel="external nofollow noopener" target="_blank">CV</a> </li> </ul> </nav> </header> <main class="main"> <article class="post-single"> <header class="post-header"> <h1 class="post-title">LC-3 Brief Review</h1> <div class="post-meta"> Date: May 26, 2025  |  Estimated Reading Time: 12 min  |  Author: Hanbin Zheng </div> </header> <div class="toc" id="toc" hidden> <details> <summary accesskey="c" title="(Alt + C)"> <span class="details">Table of Contents</span> </summary> <div class="inner"></div> </details> </div> <div class="post-content"> <blockquote> <p>This is a brief review of some topics from ECE 220. All code below is LC-3 assembly; the code blocks use NASM syntax highlighting, which is close enough.</p> </blockquote> <h2 id="i-purpose-and-description">I. Purpose and description</h2> <h3 id="1-purpose">1. Purpose</h3> <p>This program reviews:</p> <ol> <li>LC-3 basics, including I/O;</li> <li>the run-time stack;</li> <li>recursion in LC-3;</li> <li>linked lists in LC-3;</li> <li>binary trees in LC-3.</li> </ol> <h3 id="2-description">2. Description</h3> <ol> <li>The program is a direct LC-3 translation of a C program that prints a directory structure.</li> <li>The directory tree is stored in memory in fixed data structures. The program prints it to the console in a <strong>pre-order traversal</strong>, in the format shown in <a href="#4-desired-output">Desired output</a>.</li> <li>To show how C is translated into assembly, every user-defined C function uses the <strong>run-time stack</strong>. I also wrote my own versions of the <code>OUT</code> and <code>PUTS</code> system calls, which C’s <code>printf()</code> would ultimately rely on. They are called <code>PRINT_A_CHAR</code> and <code>PRINT_A_STRING</code>. Like real system calls, they do <strong>not</strong> use the run-time stack. They work the same way as the <code>OUT</code> and <code>PUTS</code> trap service routines in the LC-3 operating system.</li> <li>The test case is not exhaustive. Gemini generated most of it, and I fixed a few syntax errors so that it assembles. Feel free to add more test cases.</li> </ol> <h3 id="3-data-structure-design">3. Data structure design</h3> <h4 id="1-files-and-folders">(1) Files and folders</h4> <p><strong>A file node</strong> (a node of a singly linked list):</p> <ul> <li> <code>[0]</code> next pointer: the next file in the same folder (<code>NULL</code> if none);</li> <li> <code>[1]</code> pointer to the file name (<code>.STRINGZ</code>).</li> </ul> <p><strong>A folder node</strong> (a node of a binary tree):</p> <ul> <li> <code>[0]</code> left pointer: the left child (<code>NULL</code> if none);</li> <li> <code>[1]</code> right pointer: the right child (<code>NULL</code> if none);</li> <li> <code>[2]</code> file pointer: the head of this folder’s file list (<code>NULL</code> if none);</li> <li> <code>[3]</code> pointer to the folder name (<code>.STRINGZ</code>).</li> </ul> <p>Both children of a folder are sub-folders of it. The tree is a plain binary tree, not a “left-child, right-sibling” encoding.</p> <h4 id="2-folder-tree-test-case">(2) Folder tree (test case)</h4> <pre><code>                         root
+                /                   \
+          projects                  media
+          /      \               /         \
+    c_project    blog      documents       photos
+     /     \                /      \           \
+ utils  python_project  reports  presentations  travel
+                                                    \
+                                                 sub_travel</code></pre> <h4 id="3-files-in-each-folder-test-case">(3) Files in each folder (test case)</h4> <ul> <li>root: config.sys</li> <li>projects: README.md</li> <li>c_project: main.c → Makefile</li> <li>utils: helper.c</li> <li>python_project: main.py → requirements.txt</li> <li>blog: index.md</li> <li>media: (empty)</li> <li>documents: meeting_notes.docx → todo_list.txt</li> <li>reports: q1_report.pdf → budget_summary.xlsx</li> <li>presentations: project_kickoff.pptx</li> <li>photos: IMG001.jpg → IMG002.jpg</li> <li>travel: trip.txt → map.png</li> <li>sub_travel: packing_list.md</li> </ul> <h4 id="4-c-structs-and-function-prototypes">(4) C structs and function prototypes</h4> <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">f</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">f</span><span class="o">*</span> <span class="n">nextfile</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">filename</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">file_node</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">F</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">F</span><span class="o">*</span> <span class="n">left</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">F</span><span class="o">*</span> <span class="n">right</span><span class="p">;</span>
+    <span class="n">file_node</span><span class="o">*</span> <span class="n">file</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">foldername</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">folder_node</span><span class="p">;</span>
+
+<span class="c1">// See the comment before each subroutine for its full definition.</span>
+<span class="kt">void</span> <span class="nf">print_space</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">print_file</span><span class="p">(</span><span class="kt">int</span> <span class="n">num</span><span class="p">,</span> <span class="n">file_node</span><span class="o">*</span> <span class="n">file</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">print_folder</span><span class="p">(</span><span class="kt">int</span> <span class="n">depth</span><span class="p">,</span> <span class="n">folder_node</span><span class="o">*</span> <span class="n">folder</span><span class="p">);</span></code></pre></figure> <h3 id="4-desired-output">4. Desired output</h3> <pre><code>root
+    file: config.sys
+    projects
+        file: README.md
+        c_project
+            file: main.c Makefile
+            utils
+                file: helper.c
+            python_project
+                file: main.py requirements.txt
+        blog
+            file: index.md
+    media
+        documents
+            file: meeting_notes.docx todo_list.txt
+            reports
+                file: q1_report.pdf budget_summary.xlsx
+            presentations
+                file: project_kickoff.pptx
+        photos
+            file: IMG001.jpg IMG002.jpg
+            travel
+                file: trip.txt map.png
+                sub_travel
+                    file: packing_list.md</code></pre> <h3 id="5-conventions">5. Conventions</h3> <p>These conventions follow the run-time stack model from our textbook [1], as best I remember it. Please let me know if you spot a mistake.</p> <p><strong>Registers:</strong></p> <ul> <li> <strong>R4:</strong> global data pointer (not needed in this program)</li> <li> <strong>R5:</strong> frame pointer (points to the first local variable)</li> <li> <strong>R6:</strong> stack pointer (points to the top element of the stack)</li> <li> <strong>R7:</strong> return address (written by <code>JSR</code> and <code>TRAP</code>)</li> </ul> <p><strong>The stack frame of one function call</strong> (the stack grows toward lower addresses):</p> <table> <thead> <tr> <th>Address</th> <th>Contents</th> </tr> </thead> <tbody> <tr> <td><code>M[R5 - k]</code></td> <td>further local variables (if any)</td> </tr> <tr> <td><code>M[R5 + 0]</code></td> <td>first local variable</td> </tr> <tr> <td><code>M[R5 + 1]</code></td> <td>caller’s frame pointer</td> </tr> <tr> <td><code>M[R5 + 2]</code></td> <td>return address</td> </tr> <tr> <td><code>M[R5 + 3]</code></td> <td>return value (reserved even for <code>void</code> functions)</td> </tr> <tr> <td><code>M[R5 + 4]</code></td> <td>first argument</td> </tr> <tr> <td><code>M[R5 + 5]</code></td> <td>second argument, …</td> </tr> </tbody> </table> <p><strong>Other conventions:</strong></p> <ol> <li>Arguments and local variables are accessed through <strong>R5</strong> plus an offset, never through <strong>R6</strong>, because R6 moves whenever something is pushed.</li> <li>The caller pushes arguments <strong>from right to left</strong>, so the first argument ends up nearest the frame. On return, the callee leaves R6 pointing at the return value, and the caller pops the return value and the arguments.</li> </ol> <p><strong>Notes on this program:</strong></p> <ol> <li>Each of <code>print_folder()</code>, <code>print_file()</code>, and <code>print_space()</code> has exactly one local variable (<code>current</code>, <code>next</code>, and <code>i</code>), stored at <code>M[R5 + 0]</code>.</li> <li> <code>main()</code> does not build a frame and leaves <strong>R5</strong> unset. This is fine here, because <code>main</code> never reads R5, and every callee saves and restores R5 itself.</li> </ol> <h2 id="ii-lc-3-translation-of-the-c-functions">II. LC-3 translation of the C functions</h2> <h3 id="1-main">1. <code>main()</code> </h3> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; ---------------------------- MAIN ------------------------------------</span>
+<span class="c1">;;; int main() {</span>
+<span class="c1">;;;     folder_node* root = get_info();  // get_info() is too complex to write in LC-3;</span>
+<span class="c1">;;;                                      // we assume the tree is already in memory.</span>
+<span class="c1">;;;     print_folder(0, root);           // see the next subroutine</span>
+<span class="c1">;;;     return 0;</span>
+<span class="c1">;;; }</span>
+<span class="c1">;;;</span>
+<span class="c1">;;; R0, R1: temporary registers.</span>
+    <span class="nf">.ORIG</span>   <span class="nv">x3000</span>
+
+    <span class="c1">;; initialize the stack pointer (R6) to the bottom of an empty stack</span>
+    <span class="nf">LD</span>  <span class="nv">R6</span><span class="p">,</span> <span class="nv">STACK_BOTTOM</span>
+    <span class="c1">;; main has no stack frame, so R5 is not set here</span>
+
+    <span class="c1">;; push the arguments of print_folder(0, root), right to left</span>
+    <span class="nf">LEA</span> <span class="nv">R1</span><span class="p">,</span> <span class="nv">FOLDER_root</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; push root</span>
+    <span class="nf">STR</span> <span class="nv">R1</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">AND</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; push depth = 0</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+
+    <span class="c1">;; call print_folder()</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_FOLDER</span>
+
+    <span class="c1">;; pop the return value (unused, void) and the two arguments</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">3</span>
+    <span class="nf">HALT</span>
+
+<span class="nf">STACK_BOTTOM</span>
+    <span class="nf">.FILL</span>   <span class="nv">x4000</span>               <span class="c1">; empty stack: the first push writes to x3FFF</span></code></pre></figure> <h3 id="2-print_folder">2. <code>print_folder()</code> </h3> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; ------------------------- PRINT_FOLDER --------------------------------</span>
+<span class="c1">;;; void print_folder(int depth, folder_node* node) {</span>
+<span class="c1">;;;     // This check only matters for the root: the recursive calls below</span>
+<span class="c1">;;;     // never pass a NULL node.</span>
+<span class="c1">;;;     if (node == NULL) {</span>
+<span class="c1">;;;         return;</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;;</span>
+<span class="c1">;;;     print_space(depth);</span>
+<span class="c1">;;;     folder_node* current = node;</span>
+<span class="c1">;;;     printf("%s", current-&gt;foldername);</span>
+<span class="c1">;;;</span>
+<span class="c1">;;;     // pre-order traversal</span>
+<span class="c1">;;;     if (current-&gt;file != NULL) {</span>
+<span class="c1">;;;         printf("\n");</span>
+<span class="c1">;;;         print_file(depth + 1, current-&gt;file);</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;;     if (current-&gt;left != NULL) {</span>
+<span class="c1">;;;         printf("\n");</span>
+<span class="c1">;;;         print_folder(depth + 1, current-&gt;left);</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;;     if (current-&gt;right != NULL) {</span>
+<span class="c1">;;;         printf("\n");</span>
+<span class="c1">;;;         print_folder(depth + 1, current-&gt;right);</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;; }</span>
+<span class="c1">;;;</span>
+<span class="c1">;;; R0: temporary register (caller-saved).</span>
+<span class="c1">;;;</span>
+<span class="nf">PRINT_FOLDER</span>
+<span class="c1">;;; bookkeeping: build the stack frame</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">2</span>             <span class="c1">; skip the return-value slot, then</span>
+    <span class="nf">STR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">;   save the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; save the caller's frame pointer</span>
+    <span class="nf">STR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; allocate local variable `current`</span>
+    <span class="nf">ADD</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; R5 = new frame pointer</span>
+
+<span class="c1">;;; body</span>
+    <span class="c1">;; if (node == NULL) return;</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">5</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FOLDER_DONE</span>
+
+    <span class="c1">;; print_space(depth);</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; push depth</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_SPACE</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">2</span>              <span class="c1">; pop the return value and the argument</span>
+
+    <span class="c1">;; folder_node* current = node;</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">5</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+
+    <span class="c1">;; printf("%s", current-&gt;foldername);</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">3</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_STRING</span>
+
+<span class="nf">PRINT_FOLDER_FILE</span>
+<span class="c1">;;; if (current-&gt;file != NULL) {</span>
+<span class="c1">;;;     printf("\n");</span>
+<span class="c1">;;;     print_file(depth + 1, current-&gt;file);</span>
+<span class="c1">;;; }</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; current-&gt;file == NULL ?</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">2</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FOLDER_LEFT</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FOLDER_NEWLINE</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; push current-&gt;file</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">2</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>              <span class="c1">; push depth + 1</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_FILE</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">3</span>              <span class="c1">; pop the return value and two arguments</span>
+
+<span class="nf">PRINT_FOLDER_LEFT</span>
+<span class="c1">;;; if (current-&gt;left != NULL) {</span>
+<span class="c1">;;;     printf("\n");</span>
+<span class="c1">;;;     print_folder(depth + 1, current-&gt;left);</span>
+<span class="c1">;;; }</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; current-&gt;left == NULL ?</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FOLDER_RIGHT</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FOLDER_NEWLINE</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; push current-&gt;left</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>              <span class="c1">; push depth + 1</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_FOLDER</span>            <span class="c1">; recursive call</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">3</span>              <span class="c1">; pop the return value and two arguments</span>
+
+<span class="nf">PRINT_FOLDER_RIGHT</span>
+<span class="c1">;;; if (current-&gt;right != NULL) {</span>
+<span class="c1">;;;     printf("\n");</span>
+<span class="c1">;;;     print_folder(depth + 1, current-&gt;right);</span>
+<span class="c1">;;; }</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; current-&gt;right == NULL ?</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FOLDER_DONE</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FOLDER_NEWLINE</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; push current-&gt;right</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>              <span class="c1">; push depth + 1</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_FOLDER</span>            <span class="c1">; recursive call</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">3</span>              <span class="c1">; pop the return value and two arguments</span>
+
+<span class="nf">PRINT_FOLDER_DONE</span>
+<span class="c1">;;; tear down the frame and return</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; pop the local variable</span>
+    <span class="nf">LDR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the caller's frame pointer</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">LDR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; R6 -&gt; return-value slot</span>
+    <span class="nf">RET</span>
+
+<span class="nf">PRINT_FOLDER_NEWLINE</span>
+    <span class="nf">.FILL</span>   <span class="err">#</span><span class="mi">10</span></code></pre></figure> <h3 id="3-print_file">3. <code>print_file()</code> </h3> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; -------------------------- PRINT_FILE ---------------------------------</span>
+<span class="c1">;;; void print_file(int num, file_node* file) {</span>
+<span class="c1">;;;     if (file == NULL) {</span>
+<span class="c1">;;;         return;</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;;     file_node* next = file;</span>
+<span class="c1">;;;</span>
+<span class="c1">;;;     print_space(num);</span>
+<span class="c1">;;;     printf("file: ");</span>
+<span class="c1">;;;</span>
+<span class="c1">;;;     while (next != NULL) {</span>
+<span class="c1">;;;         printf("%s ", next-&gt;filename);</span>
+<span class="c1">;;;         next = next-&gt;nextfile;</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;; }</span>
+<span class="c1">;;;</span>
+<span class="c1">;;; R0: temporary register (saved and restored by the callee here).</span>
+<span class="nf">PRINT_FILE</span>
+<span class="c1">;;; bookkeeping: build the stack frame</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">2</span>
+    <span class="nf">STR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; save the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; save the caller's frame pointer</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; allocate local variable `next`</span>
+    <span class="nf">ADD</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; R5 = new frame pointer</span>
+
+<span class="c1">;;; body</span>
+    <span class="nf">ST</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FILE_SAVE_R0</span>
+
+    <span class="c1">;; if (file == NULL) return;  file_node* next = file;</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">5</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FILE_DONE</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+
+    <span class="c1">;; print_space(num);</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; push num</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_SPACE</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">2</span>              <span class="c1">; pop the return value and the argument</span>
+
+    <span class="c1">;; printf("file: ");</span>
+    <span class="nf">LEA</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FILE_PROMPT</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_STRING</span>
+
+<span class="nf">PRINT_FILE_LOOP</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; while (next != NULL)</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FILE_DONE</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; printf("%s ", next-&gt;filename);</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_STRING</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FILE_SPACE</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; next = next-&gt;nextfile;</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">BRnzp</span>   <span class="nv">PRINT_FILE_LOOP</span>
+
+<span class="nf">PRINT_FILE_DONE</span>
+<span class="c1">;;; tear down the frame and return</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FILE_SAVE_R0</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; pop the local variable</span>
+    <span class="nf">LDR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the caller's frame pointer</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">LDR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; R6 -&gt; return-value slot</span>
+    <span class="nf">RET</span>
+
+<span class="nf">PRINT_FILE_SPACE</span>
+    <span class="nf">.FILL</span>   <span class="err">#</span><span class="mi">32</span>
+<span class="nf">PRINT_FILE_PROMPT</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"file: "</span>
+<span class="nf">PRINT_FILE_SAVE_R0</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span></code></pre></figure> <p>Saving R0 in a fixed memory location like <code>PRINT_FILE_SAVE_R0</code> only works because <code>print_file()</code> is <strong>not</strong> recursive. A recursive function would overwrite the saved value on each nested call, so it would have to save registers on the stack instead.</p> <h3 id="4-print_space">4. <code>print_space()</code> </h3> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; -------------------------- PRINT_SPACE --------------------------------</span>
+<span class="c1">;;; void print_space(int n) {</span>
+<span class="c1">;;;     int i = 4 * n;</span>
+<span class="c1">;;;     while (i &gt; 0) {</span>
+<span class="c1">;;;         printf(" ");</span>
+<span class="c1">;;;         i--;</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;; }</span>
+<span class="c1">;;;</span>
+<span class="c1">;;; R0: temporary register (saved and restored by the callee here).</span>
+<span class="nf">PRINT_SPACE</span>
+<span class="c1">;;; bookkeeping: build the stack frame</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">2</span>
+    <span class="nf">STR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; save the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; save the caller's frame pointer</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; allocate local variable `i`</span>
+    <span class="nf">ADD</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; R5 = new frame pointer</span>
+
+<span class="c1">;;; body</span>
+    <span class="nf">ST</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_SPACE_SAVE_R0</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>              <span class="c1">; int i = 4 * n;</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+
+<span class="nf">PRINT_SPACE_LOOP</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; while (i &gt; 0)</span>
+    <span class="nf">BRnz</span>    <span class="nv">PRINT_SPACE_DONE</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_SPACE_SPACE</span>   <span class="c1">; printf(" ");</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; i--;</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">BRnzp</span>   <span class="nv">PRINT_SPACE_LOOP</span>
+
+<span class="nf">PRINT_SPACE_DONE</span>
+<span class="c1">;;; tear down the frame and return</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_SPACE_SAVE_R0</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; pop the local variable</span>
+    <span class="nf">LDR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the caller's frame pointer</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">LDR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; R6 -&gt; return-value slot</span>
+    <span class="nf">RET</span>
+
+<span class="nf">PRINT_SPACE_SPACE</span>
+    <span class="nf">.FILL</span>   <span class="err">#</span><span class="mi">32</span>
+<span class="nf">PRINT_SPACE_SAVE_R0</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span></code></pre></figure> <h2 id="iii-print_a_char-and-print_a_string-system-calls">III. <code>PRINT_A_CHAR</code> and <code>PRINT_A_STRING</code> “system calls”</h2> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; ------------------------- PRINT_A_CHAR --------------------------------</span>
+<span class="c1">;;; Same as OUT: write the character in R0 to the display.</span>
+<span class="c1">;;; Polls the display status register (DSR) until the display is ready,</span>
+<span class="c1">;;; then writes R0 to the display data register (DDR).</span>
+<span class="nf">PRINT_A_CHAR</span>
+    <span class="nf">ST</span>  <span class="nv">R1</span><span class="p">,</span> <span class="nv">PRINT_A_CHAR_SAVE_R1</span>
+<span class="nf">PRINT_A_CHAR_POLL</span>
+    <span class="nf">LDI</span> <span class="nv">R1</span><span class="p">,</span> <span class="nb">DS</span><span class="nv">R</span>                 <span class="c1">; bit 15 of DSR = 1 when the display is ready</span>
+    <span class="nf">BRzp</span>    <span class="nv">PRINT_A_CHAR_POLL</span>
+    <span class="nf">STI</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">DDR</span>
+    <span class="nf">LD</span>  <span class="nv">R1</span><span class="p">,</span> <span class="nv">PRINT_A_CHAR_SAVE_R1</span>
+    <span class="nf">RET</span>
+
+<span class="nf">PRINT_A_CHAR_SAVE_R1</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span>
+<span class="nf">DSR</span>
+    <span class="nf">.FILL</span>   <span class="nv">xFE04</span>
+<span class="kd">DD</span><span class="nv">R</span>
+    <span class="nf">.FILL</span>   <span class="nv">xFE06</span>
+
+<span class="c1">;;; ------------------------ PRINT_A_STRING -------------------------------</span>
+<span class="c1">;;; Same as PUTS: write the null-terminated string starting at address R0.</span>
+<span class="c1">;;; It calls PRINT_A_CHAR, which overwrites R7, so R7 must be saved first.</span>
+<span class="nf">PRINT_A_STRING</span>
+    <span class="nf">ST</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R0</span>
+    <span class="nf">ST</span>  <span class="nv">R1</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R1</span>
+    <span class="nf">ST</span>  <span class="nv">R7</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R7</span>
+    <span class="nf">ADD</span> <span class="nv">R1</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; R1 = pointer to the current character</span>
+
+<span class="nf">PRINT_A_STRING_LOOP</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R1</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_A_STRING_DONE</span>     <span class="c1">; stop at the null terminator</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+    <span class="nf">ADD</span> <span class="nv">R1</span><span class="p">,</span> <span class="nv">R1</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">BRnzp</span>   <span class="nv">PRINT_A_STRING_LOOP</span>
+
+<span class="nf">PRINT_A_STRING_DONE</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R0</span>
+    <span class="nf">LD</span>  <span class="nv">R1</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R1</span>
+    <span class="nf">LD</span>  <span class="nv">R7</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R7</span>
+    <span class="nf">RET</span>
+
+<span class="nf">PRINT_A_STRING_SAVE_R0</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span>
+<span class="nf">PRINT_A_STRING_SAVE_R1</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span>
+<span class="nf">PRINT_A_STRING_SAVE_R7</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span></code></pre></figure> <h2 id="iv-data">IV. Data</h2> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; -------------------------folder_info-----------------------------------</span>
+<span class="nf">FOLDER_root</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_projects</span>       <span class="c1">; left</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_media</span>          <span class="c1">; right</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_root</span>             <span class="c1">; file</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_root</span>      <span class="c1">; foldername</span>
+<span class="nf">FOLDER_NAME_root</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"root"</span>
+
+<span class="nf">FOLDER_projects</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_c_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_blog</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_projects</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_projects</span>
+<span class="nf">FOLDER_NAME_projects</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"projects"</span>
+
+<span class="nf">FOLDER_c_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_utils</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_python_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_c_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_c_project</span>
+<span class="nf">FOLDER_NAME_c_project</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"c_project"</span>
+
+<span class="nf">FOLDER_utils</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_utils</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_utils</span>
+<span class="nf">FOLDER_NAME_utils</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"utils"</span>
+
+<span class="nf">FOLDER_blog</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_blog</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_blog</span>
+<span class="nf">FOLDER_NAME_blog</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"blog"</span>
+
+<span class="nf">FOLDER_media</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_documents</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_photos</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_media</span>
+<span class="nf">FOLDER_NAME_media</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"media"</span>
+
+<span class="nf">FOLDER_photos</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_travel</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_photos</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_photos</span>
+<span class="nf">FOLDER_NAME_photos</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"photos"</span>
+
+<span class="nf">FOLDER_travel</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_sub_travel</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_travel</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_travel</span>
+<span class="nf">FOLDER_NAME_travel</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"travel"</span>
+
+<span class="nf">FOLDER_python_project</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_python_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_python_project</span>
+<span class="nf">FOLDER_NAME_python_project</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">python_project</span><span class="err">"</span>
+
+<span class="nf">FOLDER_documents</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_reports</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_presentations</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_documents</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_documents</span>
+<span class="nf">FOLDER_NAME_documents</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">documents</span><span class="s">"
+
+FOLDER_reports
+    .FILL x0000
+    .FILL x0000
+    .FILL FILE_reports
+    .FILL FOLDER_NAME_reports
+FOLDER_NAME_reports
+    .STRINGZ "</span><span class="nv">reports</span><span class="err">"</span>
+
+<span class="nf">FOLDER_presentations</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_presentations</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_presentations</span>
+<span class="nf">FOLDER_NAME_presentations</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">presentations</span><span class="s">"
+
+FOLDER_sub_travel
+    .FILL x0000
+    .FILL x0000
+    .FILL FILE_sub_travel
+    .FILL FOLDER_NAME_sub_travel
+FOLDER_NAME_sub_travel
+    .STRINGZ "</span><span class="nv">sub_travel</span><span class="err">"</span>
+
+<span class="c1">;;; ------------------------file_info-------------------------------------</span>
+<span class="nf">FILE_root</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>                 <span class="c1">; nextfile</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_root</span>        <span class="c1">; filename</span>
+<span class="nf">FILE_NAME_root</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">config.sys</span><span class="s">"
+
+FILE_projects
+    .FILL x0000
+    .FILL FILE_NAME_projects
+FILE_NAME_projects
+    .STRINGZ "</span><span class="nv">README.md</span><span class="s">"
+
+FILE_c_project
+    .FILL FILE_c_project_2
+    .FILL FILE_NAME_c_project1
+FILE_NAME_c_project1
+    .STRINGZ "</span><span class="nv">main.c</span><span class="s">"
+
+FILE_c_project_2
+    .FILL x0000
+    .FILL FILE_NAME_c_project2
+FILE_NAME_c_project2
+    .STRINGZ "</span><span class="nv">Makefile</span><span class="s">"
+
+FILE_utils
+    .FILL x0000
+    .FILL FILE_NAME_utils
+FILE_NAME_utils
+    .STRINGZ "</span><span class="nv">helper.c</span><span class="s">"
+
+FILE_blog
+    .FILL x0000
+    .FILL FILE_NAME_blog
+FILE_NAME_blog
+    .STRINGZ "</span><span class="nv">index.md</span><span class="s">"
+
+FILE_photos
+    .FILL FILE_photos_2
+    .FILL FILE_NAME_photos1
+FILE_NAME_photos1
+    .STRINGZ "</span><span class="nv">IMG001.jpg</span><span class="s">"
+
+FILE_photos_2
+    .FILL x0000
+    .FILL FILE_NAME_photos2
+FILE_NAME_photos2
+    .STRINGZ "</span><span class="nv">IMG002.jpg</span><span class="s">"
+
+FILE_travel
+    .FILL FILE_travel_2
+    .FILL FILE_NAME_travel1
+FILE_NAME_travel1
+    .STRINGZ "</span><span class="nv">trip.txt</span><span class="s">"
+
+FILE_travel_2
+    .FILL x0000
+    .FILL FILE_NAME_travel2
+FILE_NAME_travel2
+    .STRINGZ "</span><span class="nv">map.png</span><span class="err">"</span>
+
+<span class="nf">FILE_python_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_python_project_2</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_python_project1</span>
+<span class="nf">FILE_NAME_python_project1</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">main.py</span><span class="err">"</span>
+
+<span class="nf">FILE_python_project_2</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_python_project2</span>
+<span class="nf">FILE_NAME_python_project2</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">requirements.txt</span><span class="err">"</span>
+
+<span class="nf">FILE_documents</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_documents_2</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_documents1</span>
+<span class="nf">FILE_NAME_documents1</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">meeting_notes.docx</span><span class="err">"</span>
+
+<span class="nf">FILE_documents_2</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_documents_2</span>
+<span class="nf">FILE_NAME_documents_2</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"todo_list.txt"</span>
+
+<span class="nf">FILE_reports</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_reports_2</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_reports1</span>
+<span class="nf">FILE_NAME_reports1</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"q1_report.pdf"</span>
+
+<span class="nf">FILE_reports_2</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_reports2</span>
+<span class="nf">FILE_NAME_reports2</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"budget_summary.xlsx"</span>
+
+<span class="nf">FILE_presentations</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_presentations1</span>
+<span class="nf">FILE_NAME_presentations1</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"project_kickoff.pptx"</span>
+
+<span class="nf">FILE_sub_travel</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_sub_travel</span>
+<span class="nf">FILE_NAME_sub_travel</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">packing_list.md</span><span class="err">"</span>
+
+    <span class="nf">.END</span></code></pre></figure> <h2 id="references">References</h2> <div class="references"> <p>[1] Yale N. Patt and Sanjay J. Patel. <em>Introduction to Computing Systems: From Bits &amp; Gates to C/C++ &amp; Beyond</em>, 3rd edition. McGraw-Hill, 2019.</p> </div> </div> <footer class="post-footer"> <ul class="post-tags"> <li> <a href="/blog/tags/#lc3">lc3</a> </li> <li> <a href="/blog/tags/#assembly">assembly</a> </li> <li> <a href="/blog/tags/#recursion">recursion</a> </li> <li> <a href="/blog/tags/#data-structures">data-structures</a> </li> </ul> <nav class="paginav"> <a class="prev" href="/blog/2025/the-continuity-equation/"> <span class="title">« Prev</span> <span>The Continuity Equation</span> </a> <a class="next" href="/blog/2025/gaussian-integral/"> <span class="title">Next »</span> <span>The Gaussian Integral</span> </a> </nav> </footer> </article> <script>
+  // Runs before MathJax (which is deferred), so math copied into the TOC is typeset too.
+  (function () {
+    var content = document.querySelector(".post-content");
+    var headings = content.querySelectorAll("h2[id], h3[id]");
+
+    // Table of contents: nested list of h2 / h3.
+    var toc = document.getElementById("toc");
+    if (toc && headings.length > 1) {
+      var root = document.createElement("ul");
+      var currentSub = null;
+      headings.forEach(function (h) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = "#" + h.id;
+        a.innerHTML = h.innerHTML;
+        li.appendChild(a);
+        if (h.tagName === "H2" || !root.lastElementChild) {
+          root.appendChild(li);
+          currentSub = null;
+        } else {
+          if (!currentSub) {
+            currentSub = document.createElement("ul");
+            root.lastElementChild.appendChild(currentSub);
+          }
+          currentSub.appendChild(li);
+        }
+      });
+      toc.querySelector(".inner").appendChild(root);
+      toc.hidden = false;
+    }
+
+    // "#" anchor shown when hovering a heading.
+    content.querySelectorAll("h2[id], h3[id], h4[id], h5[id]").forEach(function (h) {
+      var a = document.createElement("a");
+      a.className = "anchor";
+      a.href = "#" + h.id;
+      a.setAttribute("aria-hidden", "true");
+      a.textContent = "#";
+      h.appendChild(a);
+    });
+
+    // "copy" button on code blocks.
+    content.querySelectorAll("pre").forEach(function (pre) {
+      var box = pre.closest(".highlight") || pre;
+      if (box.querySelector(".copy-code")) return;
+      var btn = document.createElement("button");
+      btn.className = "copy-code";
+      btn.type = "button";
+      btn.textContent = "copy";
+      btn.addEventListener("click", function () {
+        var code = pre.querySelector("code") || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = "copied!";
+          setTimeout(function () {
+            btn.textContent = "copy";
+          }, 2000);
+        });
+      });
+      box.appendChild(btn);
+    });
+  })();
+</script> </main> <footer class="footer"> <span>© 2026 Hanbin Zheng</span> · <span>Powered by <a href="https://jekyllrb.com/" rel="noopener noreferrer" target="_blank">Jekyll</a></span> · <a href="/feed.xml">RSS</a> </footer> <script>
+      // Theme toggle (light <-> dark).
+      (function () {
+        function toggle() {
+          var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", next);
+          try {
+            localStorage.setItem("theme", next);
+          } catch (e) {}
+        }
+        document.getElementById("theme-toggle").addEventListener("click", toggle);
+        document.addEventListener("keydown", function (e) {
+          if (e.altKey && (e.key === "t" || e.key === "T" || e.code === "KeyT")) toggle();
+        });
+      })();
+    </script> </body> </html>

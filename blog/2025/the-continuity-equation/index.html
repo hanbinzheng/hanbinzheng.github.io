@@ -1,0 +1,107 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <title>The Continuity Equation | Hanbin Zheng</title> <meta name="author" content="Hanbin Zheng"> <meta name="description" content="Deriving the continuity equation step by step, from conservation laws to the divergence theorem."> <link rel="canonical" href="https://hanbinzheng.github.io/blog/2025/the-continuity-equation/"> <link rel="alternate" type="application/atom+xml" title="Hanbin Zheng" href="/feed.xml"> <link rel="icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%A6%86&lt;/text&gt;&lt;/svg&gt;"> <script>
+      // Apply the saved theme before the page paints. Shares the "theme" key with al-folio,
+      // so the choice carries over between the blog and the rest of the site.
+      (function () {
+        var setting = null;
+        try {
+          setting = localStorage.getItem("theme");
+        } catch (e) {}
+        var dark = setting === "dark" || ((!setting || setting === "system") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script> <link rel="stylesheet" href="/assets/blog/blog.css"> <script>
+        window.MathJax = {
+          tex: {
+            tags: "ams",
+            inlineMath: [
+              ["$", "$"],
+              ["\\(", "\\)"],
+            ],
+            displayMath: [
+              ["$$", "$$"],
+              ["\\[", "\\]"],
+            ],
+            processEscapes: true,
+          },
+          options: {
+            skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+          },
+        };
+      </script> <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script> </head> <body> <header class="header"> <nav class="nav"> <div class="logo"> <a href="/">Hanbin <span class="light-name">Zheng</span></a> <button id="theme-toggle" type="button" title="Toggle light / dark (Alt + T)" aria-label="Toggle light / dark"> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <circle cx="12" cy="12" r="5"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line> </svg> </button> </div> <ul id="menu"> <li> <a href="/">about</a> </li> <li> <a href="/blog/" class="active">blog</a> </li> <li> <a href="https://github.com/hanbinzheng/cv/blob/main/main.pdf" rel="external nofollow noopener" target="_blank">CV</a> </li> </ul> </nav> </header> <main class="main"> <article class="post-single"> <header class="post-header"> <h1 class="post-title">The Continuity Equation</h1> <div class="post-meta"> Date: June 17, 2025  |  Estimated Reading Time: 7 min  |  Author: Hanbin Zheng </div> </header> <div class="toc" id="toc" hidden> <details> <summary accesskey="c" title="(Alt + C)"> <span class="details">Table of Contents</span> </summary> <div class="inner"></div> </details> </div> <div class="post-content"> <blockquote> <p>This post was revised with the help of ChatGPT.</p> </blockquote> <p>This post walks through the <strong>continuity equation</strong> [1], from physical intuition to the mathematical statement. We derive it step by step and explain every quantity involved.</p> <h2 id="1-motivation-conservation-in-physical-systems">1. Motivation: conservation in physical systems</h2> <p>Many physical quantities are conserved, for example:</p> <ul> <li> <strong>mass</strong> in a closed system;</li> <li> <strong>charge</strong> in electromagnetism;</li> <li> <strong>energy</strong> in an isolated system;</li> <li>the <strong>number of particles</strong> in a fluid.</li> </ul> <p>Although these quantities are conserved <strong>globally</strong>, they <strong>vary locally</strong> in space and time. To describe their local behavior, we use <em>density functions</em>. A density tells us how much of the conserved quantity there is per unit volume at each point and time:</p> <ul> <li>mass density \(\rho(\boldsymbol{x}, t)\);</li> <li>charge density \(\rho_q(\boldsymbol{x}, t)\);</li> <li>energy density \(\epsilon(\boldsymbol{x}, t)\);</li> <li>particle number density \(n(\boldsymbol{x}, t)\).</li> </ul> <p>Each of these is a function \(\mathbb{R}^n \times \mathbb{R}_{\ge 0} \to \mathbb{R}\).</p> <p>To model how a density evolves, imagine the quantity being carried by a flow. A tiny <strong>fluid parcel</strong> at position \(\boldsymbol{x}\) and time \(t\) moves with velocity \(\boldsymbol{v}(\boldsymbol{x}, t)\) and carries the local amount of the quantity with it.</p> <p>Our goal is a <strong>local law</strong> describing how the density changes over space and time. This law is the <strong>continuity equation</strong>.</p> <h2 id="2-basic-definitions">2. Basic definitions</h2> <p>Let:</p> <ul> <li>\(\rho(\boldsymbol{x}, t): \mathbb{R}^n \times \mathbb{R}_{\ge 0} \to \mathbb{R}\) be the scalar <strong>density</strong> of a conserved quantity;</li> <li>\(\boldsymbol{J}(\boldsymbol{x}, t): \mathbb{R}^n \times \mathbb{R}_{\ge 0} \to \mathbb{R}^n\) be the <strong>flux</strong>. Its component along a unit vector \(\boldsymbol{n}\) is the amount of the quantity crossing a unit area perpendicular to \(\boldsymbol{n}\) per unit time.</li> </ul> <p>When the quantity is transported by a velocity field \(\boldsymbol{v}(\boldsymbol{x}, t)\), the flux is</p> \[\boldsymbol{J}(\boldsymbol{x}, t) = \rho(\boldsymbol{x}, t) \, \boldsymbol{v}(\boldsymbol{x}, t) .\] <p>In words, flux is density times velocity: how much passes through depends on how much is there and how fast it moves.</p> <p>Now fix a region \(V \subset \mathbb{R}^n\) with a smooth boundary \(\partial V\).</p> <ul> <li> <p>The <strong>total amount inside \(V\)</strong> at time \(t\) is</p> \[Q_V(t) = \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} .\] </li> <li> <p>Its <strong>rate of change</strong> is</p> \[\frac{d}{dt} Q_V(t) = \frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} .\] <p>Since the quantity is conserved (there are no sources or sinks), this change can only come from <strong>flux across the boundary</strong> \(\partial V\).</p> </li> </ul> <h2 id="3-flux-across-the-boundary">3. Flux across the boundary</h2> <p>Each point \(\boldsymbol{x} \in \partial V\) has an <strong>outward unit normal</strong> \(\boldsymbol{n}(\boldsymbol{x})\). Let \(dS\) be the surface area element, and let \(d\boldsymbol{S} = \boldsymbol{n} \, dS\) be the oriented surface element, pointing outward.</p> <p>The <strong>net outflow</strong> through \(\partial V\) per unit time is</p> \[\oint_{\partial V} \boldsymbol{J}(\boldsymbol{x}, t) \cdot d\boldsymbol{S} .\] <p>The dot product keeps only the component of the flux normal to the surface; flow tangent to the surface does not cross it. The integral is positive when more of the quantity leaves than enters.</p> <p>Conservation says that the amount inside decreases exactly at the rate it flows out:</p> \[\frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} = - \oint_{\partial V} \boldsymbol{J}(\boldsymbol{x}, t) \cdot d\boldsymbol{S} .\] <p>This is the <strong>integral form</strong> of the conservation law.</p> <h2 id="4-gausss-divergence-theorem">4. Gauss’s divergence theorem</h2> <p>To turn the boundary integral into a volume integral, we use the <strong>divergence theorem</strong> [2]. It holds for a continuously differentiable field \(\boldsymbol{J}\):</p> \[\oint_{\partial V} \boldsymbol{J}(\boldsymbol{x}, t) \cdot d\boldsymbol{S} = \int_V \nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) \, d\boldsymbol{x} .\] <p>The theorem says that the total outward flux through the boundary equals the total <strong>divergence</strong> inside:</p> <ul> <li>the left-hand side adds up what flows <strong>out of</strong> each patch of the surface;</li> <li>the right-hand side adds up the local “spreading out” of the flow at each point inside \(V\).</li> </ul> <p>Substituting into the conservation law gives</p> \[\frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} = - \int_V \nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) \, d\boldsymbol{x} .\] <h2 id="5-from-integral-form-to-differential-form">5. From integral form to differential form</h2> <p>If \(\rho\) is smooth enough (see <a href="#8-why-can-we-swap-the-derivative-and-the-integral">Section 8</a>), we may move the time derivative inside the integral:</p> \[\frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} = \int_V \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} \, d\boldsymbol{x} .\] <p>Thus</p> \[\int_V \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} \, d\boldsymbol{x} = - \int_V \nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) \, d\boldsymbol{x} ,\] <p>and moving everything to one side,</p> \[\int_V \left( \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} + \nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) \right) d\boldsymbol{x} = 0 .\] <p>This holds for <strong>every</strong> region \(V\). If the integrand \(g = \partial_t \rho + \nabla \cdot \boldsymbol{J}\) is continuous, it must vanish <strong>pointwise</strong>. To see why, suppose \(g(\boldsymbol{x}_0, t) &gt; 0\) at some point. By continuity, \(g &gt; 0\) on a small ball \(B\) around \(\boldsymbol{x}_0\), and then \(\int_B g \, d\boldsymbol{x} &gt; 0\), a contradiction. The same argument works if \(g(\boldsymbol{x}_0, t) &lt; 0\). Therefore</p> \[\frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} + \nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) = 0 .\] <h2 id="6-the-continuity-equation">6. The continuity equation</h2> <p>Using \(\boldsymbol{J} = \rho \, \boldsymbol{v}\), we obtain the <strong>continuity equation</strong>:</p> \[\begin{equation} \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} + \nabla \cdot \big(\rho(\boldsymbol{x}, t) \, \boldsymbol{v}(\boldsymbol{x}, t)\big) = 0 . \label{eq:continuity} \end{equation}\] <p>It expresses the <strong>local conservation</strong> of the quantity carried by the flow.</p> <p><strong>Expanded form.</strong> By the product rule, \(\nabla \cdot (\rho \boldsymbol{v}) = \boldsymbol{v} \cdot \nabla \rho + \rho \, \nabla \cdot \boldsymbol{v}\), so</p> \[\underbrace{\frac{\partial \rho}{\partial t} + \boldsymbol{v} \cdot \nabla \rho}_{\displaystyle \frac{D\rho}{Dt}} = - \rho \, \nabla \cdot \boldsymbol{v} .\] <p>The left-hand side is the <strong>material derivative</strong> \(D\rho / Dt\), the rate of change of density seen by an observer moving with a parcel. So the density following a parcel changes only when the flow compresses (\(\nabla \cdot \boldsymbol{v} &lt; 0\)) or expands (\(\nabla \cdot \boldsymbol{v} &gt; 0\)). For an <strong>incompressible</strong> flow (\(\nabla \cdot \boldsymbol{v} = 0\)), the density along each parcel stays constant.</p> <h2 id="7-divergence-geometric-meaning">7. Divergence: geometric meaning</h2> <p>The divergence of a vector field is</p> \[\nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) = \sum_{i=1}^n \frac{\partial J_i(\boldsymbol{x}, t)}{\partial x_i} .\] <p>By the continuity equation, \(\partial_t \rho = -\nabla \cdot \boldsymbol{J}\). So:</p> <ul> <li>if \(\nabla \cdot \boldsymbol{J} &gt; 0\) at a point, more flows <strong>out</strong> than in, and \(\rho\) <strong>decreases</strong> there;</li> <li>if \(\nabla \cdot \boldsymbol{J} &lt; 0\), more flows <strong>in</strong> than out, and \(\rho\) <strong>increases</strong>;</li> <li>if \(\nabla \cdot \boldsymbol{J} = 0\), inflow and outflow balance, and \(\rho\) does not change there.</li> </ul> <p>Geometrically, divergence is a <strong>local</strong> measure of how much a vector field “spreads out” at a point. This follows from the divergence theorem: shrink \(V\) to a small ball \(B_r(\boldsymbol{x})\) around a point, and</p> \[\nabla \cdot \boldsymbol{J}(\boldsymbol{x}) = \lim_{r \to 0} \frac{1}{\lvert B_r \rvert} \oint_{\partial B_r} \boldsymbol{J} \cdot d\boldsymbol{S} ,\] <p>i.e. divergence is the outward flux per unit volume.</p> <h2 id="8-why-can-we-swap-the-derivative-and-the-integral">8. Why can we swap the derivative and the integral?</h2> <p>We used</p> \[\frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} = \int_V \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} \, d\boldsymbol{x} .\] <p>By definition of the derivative,</p> \[\begin{align*} \frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} &amp;= \lim_{\Delta t \to 0} \frac{1}{\Delta t} \left( \int_V \rho(\boldsymbol{x}, t + \Delta t) \, d\boldsymbol{x} - \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} \right) \\[1ex] &amp;= \lim_{\Delta t \to 0} \int_V \frac{\rho(\boldsymbol{x}, t + \Delta t) - \rho(\boldsymbol{x}, t)}{\Delta t} \, d\boldsymbol{x} \\[1ex] &amp;\overset{(\star)}{=} \int_V \lim_{\Delta t \to 0} \frac{\rho(\boldsymbol{x}, t + \Delta t) - \rho(\boldsymbol{x}, t)}{\Delta t} \, d\boldsymbol{x} = \int_V \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} \, d\boldsymbol{x} . \end{align*}\] <p>The step \((\star)\), which swaps the limit and the integral, is the only one that needs justification. A sufficient condition is that \(V\) is bounded and \(\partial_t \rho\) is continuous on \(\overline{V} \times [t - \delta, t + \delta]\). By the mean value theorem, the difference quotient equals \(\partial_t \rho(\boldsymbol{x}, t + \theta \Delta t)\) for some \(\theta \in (0, 1)\). This is uniformly bounded, so the dominated convergence theorem applies. (The region \(V\) is fixed in time. For a region that moves with the flow, you would need the Reynolds transport theorem instead.)</p> <h2 id="9-summary">9. Summary</h2> <p>We began with:</p> <ul> <li>a physical idea: a conserved quantity;</li> <li>a model: the quantity is carried by a flow with velocity \(\boldsymbol{v}\);</li> <li>a density \(\rho(\boldsymbol{x}, t)\) and a flux \(\boldsymbol{J} = \rho \boldsymbol{v}\);</li> <li>a balance law: rate of change inside a region = \(-\)(net outflow through its boundary);</li> <li>the divergence theorem: surface integral \(\to\) volume integral;</li> <li>swapping derivative and integral: \(\frac{d}{dt}\int_V = \int_V \partial_t\);</li> <li>“zero integral over every region” \(\Rightarrow\) “zero integrand.”</li> </ul> <p>We arrived at</p> \[\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \, \boldsymbol{v}) = 0 .\] <p>The continuity equation appears whenever we model a conserved quantity moving through space. It captures one simple idea:</p> <blockquote> <p>Any local change in the quantity must be explained by its flow into or out of that region.</p> </blockquote> <p>It is fundamental across physics and mathematics: in fluid mechanics, electromagnetism (conservation of charge), quantum mechanics (conservation of probability), and, more recently, in the flow-matching and diffusion models of machine learning, where it describes how a probability density is transported by a learned velocity field.</p> <h2 id="references">References</h2> <div class="references"> <p>[1] Wikipedia. <a href="https://en.wikipedia.org/wiki/Continuity_equation" rel="external nofollow noopener" target="_blank">“Continuity equation.”</a></p> <p>[2] Wikipedia. <a href="https://en.wikipedia.org/wiki/Divergence_theorem" rel="external nofollow noopener" target="_blank">“Divergence theorem.”</a></p> </div> </div> <footer class="post-footer"> <ul class="post-tags"> <li> <a href="/blog/tags/#divergence">divergence</a> </li> <li> <a href="/blog/tags/#conservation-laws">conservation-laws</a> </li> <li> <a href="/blog/tags/#pde">pde</a> </li> </ul> <nav class="paginav"> <a class="next" href="/blog/2025/lc3-brief-review/"> <span class="title">Next »</span> <span>LC-3 Brief Review</span> </a> </nav> </footer> </article> <script>
+  // Runs before MathJax (which is deferred), so math copied into the TOC is typeset too.
+  (function () {
+    var content = document.querySelector(".post-content");
+    var headings = content.querySelectorAll("h2[id], h3[id]");
+
+    // Table of contents: nested list of h2 / h3.
+    var toc = document.getElementById("toc");
+    if (toc && headings.length > 1) {
+      var root = document.createElement("ul");
+      var currentSub = null;
+      headings.forEach(function (h) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = "#" + h.id;
+        a.innerHTML = h.innerHTML;
+        li.appendChild(a);
+        if (h.tagName === "H2" || !root.lastElementChild) {
+          root.appendChild(li);
+          currentSub = null;
+        } else {
+          if (!currentSub) {
+            currentSub = document.createElement("ul");
+            root.lastElementChild.appendChild(currentSub);
+          }
+          currentSub.appendChild(li);
+        }
+      });
+      toc.querySelector(".inner").appendChild(root);
+      toc.hidden = false;
+    }
+
+    // "#" anchor shown when hovering a heading.
+    content.querySelectorAll("h2[id], h3[id], h4[id], h5[id]").forEach(function (h) {
+      var a = document.createElement("a");
+      a.className = "anchor";
+      a.href = "#" + h.id;
+      a.setAttribute("aria-hidden", "true");
+      a.textContent = "#";
+      h.appendChild(a);
+    });
+
+    // "copy" button on code blocks.
+    content.querySelectorAll("pre").forEach(function (pre) {
+      var box = pre.closest(".highlight") || pre;
+      if (box.querySelector(".copy-code")) return;
+      var btn = document.createElement("button");
+      btn.className = "copy-code";
+      btn.type = "button";
+      btn.textContent = "copy";
+      btn.addEventListener("click", function () {
+        var code = pre.querySelector("code") || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = "copied!";
+          setTimeout(function () {
+            btn.textContent = "copy";
+          }, 2000);
+        });
+      });
+      box.appendChild(btn);
+    });
+  })();
+</script> </main> <footer class="footer"> <span>© 2026 Hanbin Zheng</span> · <span>Powered by <a href="https://jekyllrb.com/" rel="noopener noreferrer" target="_blank">Jekyll</a></span> · <a href="/feed.xml">RSS</a> </footer> <script>
+      // Theme toggle (light <-> dark).
+      (function () {
+        function toggle() {
+          var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", next);
+          try {
+            localStorage.setItem("theme", next);
+          } catch (e) {}
+        }
+        document.getElementById("theme-toggle").addEventListener("click", toggle);
+        document.addEventListener("keydown", function (e) {
+          if (e.altKey && (e.key === "t" || e.key === "T" || e.code === "KeyT")) toggle();
+        });
+      })();
+    </script> </body> </html>

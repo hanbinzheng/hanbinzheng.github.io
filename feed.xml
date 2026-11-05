@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://hanbinzheng.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://hanbinzheng.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2026-11-06T05:14:57+08:00</updated><id>https://hanbinzheng.github.io/feed.xml</id><title type="html">blank</title><subtitle>Personal website and blog of Hanbin Zheng, an undergraduate in computer engineering at ZJU-UIUC Institute. </subtitle><entry><title type="html">The Continuity Equation</title><link href="https://hanbinzheng.github.io/blog/2025/the-continuity-equation/" rel="alternate" type="text/html" title="The Continuity Equation"/><published>2025-06-17T00:00:00+08:00</published><updated>2025-06-17T00:00:00+08:00</updated><id>https://hanbinzheng.github.io/blog/2025/the-continuity-equation</id><content type="html" xml:base="https://hanbinzheng.github.io/blog/2025/the-continuity-equation/"><![CDATA[<blockquote> <p>This post was revised with the help of ChatGPT.</p> </blockquote> <p>This post walks through the <strong>continuity equation</strong> [1], from physical intuition to the mathematical statement. We derive it step by step and explain every quantity involved.</p> <h2 id="1-motivation-conservation-in-physical-systems">1. Motivation: conservation in physical systems</h2> <p>Many physical quantities are conserved, for example:</p> <ul> <li><strong>mass</strong> in a closed system;</li> <li><strong>charge</strong> in electromagnetism;</li> <li><strong>energy</strong> in an isolated system;</li> <li>the <strong>number of particles</strong> in a fluid.</li> </ul> <p>Although these quantities are conserved <strong>globally</strong>, they <strong>vary locally</strong> in space and time. To describe their local behavior, we use <em>density functions</em>. A density tells us how much of the conserved quantity there is per unit volume at each point and time:</p> <ul> <li>mass density \(\rho(\boldsymbol{x}, t)\);</li> <li>charge density \(\rho_q(\boldsymbol{x}, t)\);</li> <li>energy density \(\epsilon(\boldsymbol{x}, t)\);</li> <li>particle number density \(n(\boldsymbol{x}, t)\).</li> </ul> <p>Each of these is a function \(\mathbb{R}^n \times \mathbb{R}_{\ge 0} \to \mathbb{R}\).</p> <p>To model how a density evolves, imagine the quantity being carried by a flow. A tiny <strong>fluid parcel</strong> at position \(\boldsymbol{x}\) and time \(t\) moves with velocity \(\boldsymbol{v}(\boldsymbol{x}, t)\) and carries the local amount of the quantity with it.</p> <p>Our goal is a <strong>local law</strong> describing how the density changes over space and time. This law is the <strong>continuity equation</strong>.</p> <h2 id="2-basic-definitions">2. Basic definitions</h2> <p>Let:</p> <ul> <li>\(\rho(\boldsymbol{x}, t): \mathbb{R}^n \times \mathbb{R}_{\ge 0} \to \mathbb{R}\) be the scalar <strong>density</strong> of a conserved quantity;</li> <li>\(\boldsymbol{J}(\boldsymbol{x}, t): \mathbb{R}^n \times \mathbb{R}_{\ge 0} \to \mathbb{R}^n\) be the <strong>flux</strong>. Its component along a unit vector \(\boldsymbol{n}\) is the amount of the quantity crossing a unit area perpendicular to \(\boldsymbol{n}\) per unit time.</li> </ul> <p>When the quantity is transported by a velocity field \(\boldsymbol{v}(\boldsymbol{x}, t)\), the flux is</p> \[\boldsymbol{J}(\boldsymbol{x}, t) = \rho(\boldsymbol{x}, t) \, \boldsymbol{v}(\boldsymbol{x}, t) .\] <p>In words, flux is density times velocity: how much passes through depends on how much is there and how fast it moves.</p> <p>Now fix a region \(V \subset \mathbb{R}^n\) with a smooth boundary \(\partial V\).</p> <ul> <li> <p>The <strong>total amount inside \(V\)</strong> at time \(t\) is</p> \[Q_V(t) = \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} .\] </li> <li> <p>Its <strong>rate of change</strong> is</p> \[\frac{d}{dt} Q_V(t) = \frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} .\] <p>Since the quantity is conserved (there are no sources or sinks), this change can only come from <strong>flux across the boundary</strong> \(\partial V\).</p> </li> </ul> <h2 id="3-flux-across-the-boundary">3. Flux across the boundary</h2> <p>Each point \(\boldsymbol{x} \in \partial V\) has an <strong>outward unit normal</strong> \(\boldsymbol{n}(\boldsymbol{x})\). Let \(dS\) be the surface area element, and let \(d\boldsymbol{S} = \boldsymbol{n} \, dS\) be the oriented surface element, pointing outward.</p> <p>The <strong>net outflow</strong> through \(\partial V\) per unit time is</p> \[\oint_{\partial V} \boldsymbol{J}(\boldsymbol{x}, t) \cdot d\boldsymbol{S} .\] <p>The dot product keeps only the component of the flux normal to the surface; flow tangent to the surface does not cross it. The integral is positive when more of the quantity leaves than enters.</p> <p>Conservation says that the amount inside decreases exactly at the rate it flows out:</p> \[\frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} = - \oint_{\partial V} \boldsymbol{J}(\boldsymbol{x}, t) \cdot d\boldsymbol{S} .\] <p>This is the <strong>integral form</strong> of the conservation law.</p> <h2 id="4-gausss-divergence-theorem">4. Gauss’s divergence theorem</h2> <p>To turn the boundary integral into a volume integral, we use the <strong>divergence theorem</strong> [2]. It holds for a continuously differentiable field \(\boldsymbol{J}\):</p> \[\oint_{\partial V} \boldsymbol{J}(\boldsymbol{x}, t) \cdot d\boldsymbol{S} = \int_V \nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) \, d\boldsymbol{x} .\] <p>The theorem says that the total outward flux through the boundary equals the total <strong>divergence</strong> inside:</p> <ul> <li>the left-hand side adds up what flows <strong>out of</strong> each patch of the surface;</li> <li>the right-hand side adds up the local “spreading out” of the flow at each point inside \(V\).</li> </ul> <p>Substituting into the conservation law gives</p> \[\frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} = - \int_V \nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) \, d\boldsymbol{x} .\] <h2 id="5-from-integral-form-to-differential-form">5. From integral form to differential form</h2> <p>If \(\rho\) is smooth enough (see <a href="#8-why-can-we-swap-the-derivative-and-the-integral">Section 8</a>), we may move the time derivative inside the integral:</p> \[\frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} = \int_V \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} \, d\boldsymbol{x} .\] <p>Thus</p> \[\int_V \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} \, d\boldsymbol{x} = - \int_V \nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) \, d\boldsymbol{x} ,\] <p>and moving everything to one side,</p> \[\int_V \left( \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} + \nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) \right) d\boldsymbol{x} = 0 .\] <p>This holds for <strong>every</strong> region \(V\). If the integrand \(g = \partial_t \rho + \nabla \cdot \boldsymbol{J}\) is continuous, it must vanish <strong>pointwise</strong>. To see why, suppose \(g(\boldsymbol{x}_0, t) &gt; 0\) at some point. By continuity, \(g &gt; 0\) on a small ball \(B\) around \(\boldsymbol{x}_0\), and then \(\int_B g \, d\boldsymbol{x} &gt; 0\), a contradiction. The same argument works if \(g(\boldsymbol{x}_0, t) &lt; 0\). Therefore</p> \[\frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} + \nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) = 0 .\] <h2 id="6-the-continuity-equation">6. The continuity equation</h2> <p>Using \(\boldsymbol{J} = \rho \, \boldsymbol{v}\), we obtain the <strong>continuity equation</strong>:</p> \[\begin{equation} \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} + \nabla \cdot \big(\rho(\boldsymbol{x}, t) \, \boldsymbol{v}(\boldsymbol{x}, t)\big) = 0 . \label{eq:continuity} \end{equation}\] <p>It expresses the <strong>local conservation</strong> of the quantity carried by the flow.</p> <p><strong>Expanded form.</strong> By the product rule, \(\nabla \cdot (\rho \boldsymbol{v}) = \boldsymbol{v} \cdot \nabla \rho + \rho \, \nabla \cdot \boldsymbol{v}\), so</p> \[\underbrace{\frac{\partial \rho}{\partial t} + \boldsymbol{v} \cdot \nabla \rho}_{\displaystyle \frac{D\rho}{Dt}} = - \rho \, \nabla \cdot \boldsymbol{v} .\] <p>The left-hand side is the <strong>material derivative</strong> \(D\rho / Dt\), the rate of change of density seen by an observer moving with a parcel. So the density following a parcel changes only when the flow compresses (\(\nabla \cdot \boldsymbol{v} &lt; 0\)) or expands (\(\nabla \cdot \boldsymbol{v} &gt; 0\)). For an <strong>incompressible</strong> flow (\(\nabla \cdot \boldsymbol{v} = 0\)), the density along each parcel stays constant.</p> <h2 id="7-divergence-geometric-meaning">7. Divergence: geometric meaning</h2> <p>The divergence of a vector field is</p> \[\nabla \cdot \boldsymbol{J}(\boldsymbol{x}, t) = \sum_{i=1}^n \frac{\partial J_i(\boldsymbol{x}, t)}{\partial x_i} .\] <p>By the continuity equation, \(\partial_t \rho = -\nabla \cdot \boldsymbol{J}\). So:</p> <ul> <li>if \(\nabla \cdot \boldsymbol{J} &gt; 0\) at a point, more flows <strong>out</strong> than in, and \(\rho\) <strong>decreases</strong> there;</li> <li>if \(\nabla \cdot \boldsymbol{J} &lt; 0\), more flows <strong>in</strong> than out, and \(\rho\) <strong>increases</strong>;</li> <li>if \(\nabla \cdot \boldsymbol{J} = 0\), inflow and outflow balance, and \(\rho\) does not change there.</li> </ul> <p>Geometrically, divergence is a <strong>local</strong> measure of how much a vector field “spreads out” at a point. This follows from the divergence theorem: shrink \(V\) to a small ball \(B_r(\boldsymbol{x})\) around a point, and</p> \[\nabla \cdot \boldsymbol{J}(\boldsymbol{x}) = \lim_{r \to 0} \frac{1}{\lvert B_r \rvert} \oint_{\partial B_r} \boldsymbol{J} \cdot d\boldsymbol{S} ,\] <p>i.e. divergence is the outward flux per unit volume.</p> <h2 id="8-why-can-we-swap-the-derivative-and-the-integral">8. Why can we swap the derivative and the integral?</h2> <p>We used</p> \[\frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} = \int_V \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} \, d\boldsymbol{x} .\] <p>By definition of the derivative,</p> \[\begin{align*} \frac{d}{dt} \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} &amp;= \lim_{\Delta t \to 0} \frac{1}{\Delta t} \left( \int_V \rho(\boldsymbol{x}, t + \Delta t) \, d\boldsymbol{x} - \int_V \rho(\boldsymbol{x}, t) \, d\boldsymbol{x} \right) \\[1ex] &amp;= \lim_{\Delta t \to 0} \int_V \frac{\rho(\boldsymbol{x}, t + \Delta t) - \rho(\boldsymbol{x}, t)}{\Delta t} \, d\boldsymbol{x} \\[1ex] &amp;\overset{(\star)}{=} \int_V \lim_{\Delta t \to 0} \frac{\rho(\boldsymbol{x}, t + \Delta t) - \rho(\boldsymbol{x}, t)}{\Delta t} \, d\boldsymbol{x} = \int_V \frac{\partial \rho(\boldsymbol{x}, t)}{\partial t} \, d\boldsymbol{x} . \end{align*}\] <p>The step \((\star)\), which swaps the limit and the integral, is the only one that needs justification. A sufficient condition is that \(V\) is bounded and \(\partial_t \rho\) is continuous on \(\overline{V} \times [t - \delta, t + \delta]\). By the mean value theorem, the difference quotient equals \(\partial_t \rho(\boldsymbol{x}, t + \theta \Delta t)\) for some \(\theta \in (0, 1)\). This is uniformly bounded, so the dominated convergence theorem applies. (The region \(V\) is fixed in time. For a region that moves with the flow, you would need the Reynolds transport theorem instead.)</p> <h2 id="9-summary">9. Summary</h2> <p>We began with:</p> <ul> <li>a physical idea: a conserved quantity;</li> <li>a model: the quantity is carried by a flow with velocity \(\boldsymbol{v}\);</li> <li>a density \(\rho(\boldsymbol{x}, t)\) and a flux \(\boldsymbol{J} = \rho \boldsymbol{v}\);</li> <li>a balance law: rate of change inside a region = \(-\)(net outflow through its boundary);</li> <li>the divergence theorem: surface integral \(\to\) volume integral;</li> <li>swapping derivative and integral: \(\frac{d}{dt}\int_V = \int_V \partial_t\);</li> <li>“zero integral over every region” \(\Rightarrow\) “zero integrand.”</li> </ul> <p>We arrived at</p> \[\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \, \boldsymbol{v}) = 0 .\] <p>The continuity equation appears whenever we model a conserved quantity moving through space. It captures one simple idea:</p> <blockquote> <p>Any local change in the quantity must be explained by its flow into or out of that region.</p> </blockquote> <p>It is fundamental across physics and mathematics: in fluid mechanics, electromagnetism (conservation of charge), quantum mechanics (conservation of probability), and, more recently, in the flow-matching and diffusion models of machine learning, where it describes how a probability density is transported by a learned velocity field.</p> <h2 id="references">References</h2> <div class="references"> <p>[1] Wikipedia. <a href="https://en.wikipedia.org/wiki/Continuity_equation">“Continuity equation.”</a></p> <p>[2] Wikipedia. <a href="https://en.wikipedia.org/wiki/Divergence_theorem">“Divergence theorem.”</a></p> </div>]]></content><author><name></name></author><category term="divergence"/><category term="conservation-laws"/><category term="pde"/><summary type="html"><![CDATA[Deriving the continuity equation step by step, from conservation laws to the divergence theorem.]]></summary></entry><entry><title type="html">LC-3 Brief Review</title><link href="https://hanbinzheng.github.io/blog/2025/lc3-brief-review/" rel="alternate" type="text/html" title="LC-3 Brief Review"/><published>2025-05-26T00:00:00+08:00</published><updated>2025-05-26T00:00:00+08:00</updated><id>https://hanbinzheng.github.io/blog/2025/lc3-brief-review</id><content type="html" xml:base="https://hanbinzheng.github.io/blog/2025/lc3-brief-review/"><![CDATA[<blockquote> <p>This is a brief review of some topics from ECE 220. All code below is LC-3 assembly; the code blocks use NASM syntax highlighting, which is close enough.</p> </blockquote> <h2 id="i-purpose-and-description">I. Purpose and description</h2> <h3 id="1-purpose">1. Purpose</h3> <p>This program reviews:</p> <ol> <li>LC-3 basics, including I/O;</li> <li>the run-time stack;</li> <li>recursion in LC-3;</li> <li>linked lists in LC-3;</li> <li>binary trees in LC-3.</li> </ol> <h3 id="2-description">2. Description</h3> <ol> <li>The program is a direct LC-3 translation of a C program that prints a directory structure.</li> <li>The directory tree is stored in memory in fixed data structures. The program prints it to the console in a <strong>pre-order traversal</strong>, in the format shown in <a href="#4-desired-output">Desired output</a>.</li> <li>To show how C is translated into assembly, every user-defined C function uses the <strong>run-time stack</strong>. I also wrote my own versions of the <code>OUT</code> and <code>PUTS</code> system calls, which C’s <code>printf()</code> would ultimately rely on. They are called <code>PRINT_A_CHAR</code> and <code>PRINT_A_STRING</code>. Like real system calls, they do <strong>not</strong> use the run-time stack. They work the same way as the <code>OUT</code> and <code>PUTS</code> trap service routines in the LC-3 operating system.</li> <li>The test case is not exhaustive. Gemini generated most of it, and I fixed a few syntax errors so that it assembles. Feel free to add more test cases.</li> </ol> <h3 id="3-data-structure-design">3. Data structure design</h3> <h4 id="1-files-and-folders">(1) Files and folders</h4> <p><strong>A file node</strong> (a node of a singly linked list):</p> <ul> <li><code>[0]</code> next pointer: the next file in the same folder (<code>NULL</code> if none);</li> <li><code>[1]</code> pointer to the file name (<code>.STRINGZ</code>).</li> </ul> <p><strong>A folder node</strong> (a node of a binary tree):</p> <ul> <li><code>[0]</code> left pointer: the left child (<code>NULL</code> if none);</li> <li><code>[1]</code> right pointer: the right child (<code>NULL</code> if none);</li> <li><code>[2]</code> file pointer: the head of this folder’s file list (<code>NULL</code> if none);</li> <li><code>[3]</code> pointer to the folder name (<code>.STRINGZ</code>).</li> </ul> <p>Both children of a folder are sub-folders of it. The tree is a plain binary tree, not a “left-child, right-sibling” encoding.</p> <h4 id="2-folder-tree-test-case">(2) Folder tree (test case)</h4> <pre><code>                         root
+                /                   \
+          projects                  media
+          /      \               /         \
+    c_project    blog      documents       photos
+     /     \                /      \           \
+ utils  python_project  reports  presentations  travel
+                                                    \
+                                                 sub_travel</code></pre> <h4 id="3-files-in-each-folder-test-case">(3) Files in each folder (test case)</h4> <ul> <li>root: config.sys</li> <li>projects: README.md</li> <li>c_project: main.c → Makefile</li> <li>utils: helper.c</li> <li>python_project: main.py → requirements.txt</li> <li>blog: index.md</li> <li>media: (empty)</li> <li>documents: meeting_notes.docx → todo_list.txt</li> <li>reports: q1_report.pdf → budget_summary.xlsx</li> <li>presentations: project_kickoff.pptx</li> <li>photos: IMG001.jpg → IMG002.jpg</li> <li>travel: trip.txt → map.png</li> <li>sub_travel: packing_list.md</li> </ul> <h4 id="4-c-structs-and-function-prototypes">(4) C structs and function prototypes</h4> <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">f</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">f</span><span class="o">*</span> <span class="n">nextfile</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">filename</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">file_node</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">F</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">F</span><span class="o">*</span> <span class="n">left</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">F</span><span class="o">*</span> <span class="n">right</span><span class="p">;</span>
+    <span class="n">file_node</span><span class="o">*</span> <span class="n">file</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">foldername</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">folder_node</span><span class="p">;</span>
+
+<span class="c1">// See the comment before each subroutine for its full definition.</span>
+<span class="kt">void</span> <span class="nf">print_space</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">print_file</span><span class="p">(</span><span class="kt">int</span> <span class="n">num</span><span class="p">,</span> <span class="n">file_node</span><span class="o">*</span> <span class="n">file</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">print_folder</span><span class="p">(</span><span class="kt">int</span> <span class="n">depth</span><span class="p">,</span> <span class="n">folder_node</span><span class="o">*</span> <span class="n">folder</span><span class="p">);</span></code></pre></figure> <h3 id="4-desired-output">4. Desired output</h3> <pre><code>root
+    file: config.sys
+    projects
+        file: README.md
+        c_project
+            file: main.c Makefile
+            utils
+                file: helper.c
+            python_project
+                file: main.py requirements.txt
+        blog
+            file: index.md
+    media
+        documents
+            file: meeting_notes.docx todo_list.txt
+            reports
+                file: q1_report.pdf budget_summary.xlsx
+            presentations
+                file: project_kickoff.pptx
+        photos
+            file: IMG001.jpg IMG002.jpg
+            travel
+                file: trip.txt map.png
+                sub_travel
+                    file: packing_list.md</code></pre> <h3 id="5-conventions">5. Conventions</h3> <p>These conventions follow the run-time stack model from our textbook [1], as best I remember it. Please let me know if you spot a mistake.</p> <p><strong>Registers:</strong></p> <ul> <li><strong>R4:</strong> global data pointer (not needed in this program)</li> <li><strong>R5:</strong> frame pointer (points to the first local variable)</li> <li><strong>R6:</strong> stack pointer (points to the top element of the stack)</li> <li><strong>R7:</strong> return address (written by <code>JSR</code> and <code>TRAP</code>)</li> </ul> <p><strong>The stack frame of one function call</strong> (the stack grows toward lower addresses):</p> <table> <thead> <tr> <th>Address</th> <th>Contents</th> </tr> </thead> <tbody> <tr> <td><code>M[R5 - k]</code></td> <td>further local variables (if any)</td> </tr> <tr> <td><code>M[R5 + 0]</code></td> <td>first local variable</td> </tr> <tr> <td><code>M[R5 + 1]</code></td> <td>caller’s frame pointer</td> </tr> <tr> <td><code>M[R5 + 2]</code></td> <td>return address</td> </tr> <tr> <td><code>M[R5 + 3]</code></td> <td>return value (reserved even for <code>void</code> functions)</td> </tr> <tr> <td><code>M[R5 + 4]</code></td> <td>first argument</td> </tr> <tr> <td><code>M[R5 + 5]</code></td> <td>second argument, …</td> </tr> </tbody> </table> <p><strong>Other conventions:</strong></p> <ol> <li>Arguments and local variables are accessed through <strong>R5</strong> plus an offset, never through <strong>R6</strong>, because R6 moves whenever something is pushed.</li> <li>The caller pushes arguments <strong>from right to left</strong>, so the first argument ends up nearest the frame. On return, the callee leaves R6 pointing at the return value, and the caller pops the return value and the arguments.</li> </ol> <p><strong>Notes on this program:</strong></p> <ol> <li>Each of <code>print_folder()</code>, <code>print_file()</code>, and <code>print_space()</code> has exactly one local variable (<code>current</code>, <code>next</code>, and <code>i</code>), stored at <code>M[R5 + 0]</code>.</li> <li><code>main()</code> does not build a frame and leaves <strong>R5</strong> unset. This is fine here, because <code>main</code> never reads R5, and every callee saves and restores R5 itself.</li> </ol> <h2 id="ii-lc-3-translation-of-the-c-functions">II. LC-3 translation of the C functions</h2> <h3 id="1-main">1. <code>main()</code></h3> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; ---------------------------- MAIN ------------------------------------</span>
+<span class="c1">;;; int main() {</span>
+<span class="c1">;;;     folder_node* root = get_info();  // get_info() is too complex to write in LC-3;</span>
+<span class="c1">;;;                                      // we assume the tree is already in memory.</span>
+<span class="c1">;;;     print_folder(0, root);           // see the next subroutine</span>
+<span class="c1">;;;     return 0;</span>
+<span class="c1">;;; }</span>
+<span class="c1">;;;</span>
+<span class="c1">;;; R0, R1: temporary registers.</span>
+    <span class="nf">.ORIG</span>   <span class="nv">x3000</span>
+
+    <span class="c1">;; initialize the stack pointer (R6) to the bottom of an empty stack</span>
+    <span class="nf">LD</span>  <span class="nv">R6</span><span class="p">,</span> <span class="nv">STACK_BOTTOM</span>
+    <span class="c1">;; main has no stack frame, so R5 is not set here</span>
+
+    <span class="c1">;; push the arguments of print_folder(0, root), right to left</span>
+    <span class="nf">LEA</span> <span class="nv">R1</span><span class="p">,</span> <span class="nv">FOLDER_root</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; push root</span>
+    <span class="nf">STR</span> <span class="nv">R1</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">AND</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; push depth = 0</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+
+    <span class="c1">;; call print_folder()</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_FOLDER</span>
+
+    <span class="c1">;; pop the return value (unused, void) and the two arguments</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">3</span>
+    <span class="nf">HALT</span>
+
+<span class="nf">STACK_BOTTOM</span>
+    <span class="nf">.FILL</span>   <span class="nv">x4000</span>               <span class="c1">; empty stack: the first push writes to x3FFF</span></code></pre></figure> <h3 id="2-print_folder">2. <code>print_folder()</code></h3> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; ------------------------- PRINT_FOLDER --------------------------------</span>
+<span class="c1">;;; void print_folder(int depth, folder_node* node) {</span>
+<span class="c1">;;;     // This check only matters for the root: the recursive calls below</span>
+<span class="c1">;;;     // never pass a NULL node.</span>
+<span class="c1">;;;     if (node == NULL) {</span>
+<span class="c1">;;;         return;</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;;</span>
+<span class="c1">;;;     print_space(depth);</span>
+<span class="c1">;;;     folder_node* current = node;</span>
+<span class="c1">;;;     printf("%s", current-&gt;foldername);</span>
+<span class="c1">;;;</span>
+<span class="c1">;;;     // pre-order traversal</span>
+<span class="c1">;;;     if (current-&gt;file != NULL) {</span>
+<span class="c1">;;;         printf("\n");</span>
+<span class="c1">;;;         print_file(depth + 1, current-&gt;file);</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;;     if (current-&gt;left != NULL) {</span>
+<span class="c1">;;;         printf("\n");</span>
+<span class="c1">;;;         print_folder(depth + 1, current-&gt;left);</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;;     if (current-&gt;right != NULL) {</span>
+<span class="c1">;;;         printf("\n");</span>
+<span class="c1">;;;         print_folder(depth + 1, current-&gt;right);</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;; }</span>
+<span class="c1">;;;</span>
+<span class="c1">;;; R0: temporary register (caller-saved).</span>
+<span class="c1">;;;</span>
+<span class="nf">PRINT_FOLDER</span>
+<span class="c1">;;; bookkeeping: build the stack frame</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">2</span>             <span class="c1">; skip the return-value slot, then</span>
+    <span class="nf">STR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">;   save the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; save the caller's frame pointer</span>
+    <span class="nf">STR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; allocate local variable `current`</span>
+    <span class="nf">ADD</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; R5 = new frame pointer</span>
+
+<span class="c1">;;; body</span>
+    <span class="c1">;; if (node == NULL) return;</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">5</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FOLDER_DONE</span>
+
+    <span class="c1">;; print_space(depth);</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; push depth</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_SPACE</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">2</span>              <span class="c1">; pop the return value and the argument</span>
+
+    <span class="c1">;; folder_node* current = node;</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">5</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+
+    <span class="c1">;; printf("%s", current-&gt;foldername);</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">3</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_STRING</span>
+
+<span class="nf">PRINT_FOLDER_FILE</span>
+<span class="c1">;;; if (current-&gt;file != NULL) {</span>
+<span class="c1">;;;     printf("\n");</span>
+<span class="c1">;;;     print_file(depth + 1, current-&gt;file);</span>
+<span class="c1">;;; }</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; current-&gt;file == NULL ?</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">2</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FOLDER_LEFT</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FOLDER_NEWLINE</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; push current-&gt;file</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">2</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>              <span class="c1">; push depth + 1</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_FILE</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">3</span>              <span class="c1">; pop the return value and two arguments</span>
+
+<span class="nf">PRINT_FOLDER_LEFT</span>
+<span class="c1">;;; if (current-&gt;left != NULL) {</span>
+<span class="c1">;;;     printf("\n");</span>
+<span class="c1">;;;     print_folder(depth + 1, current-&gt;left);</span>
+<span class="c1">;;; }</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; current-&gt;left == NULL ?</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FOLDER_RIGHT</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FOLDER_NEWLINE</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; push current-&gt;left</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>              <span class="c1">; push depth + 1</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_FOLDER</span>            <span class="c1">; recursive call</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">3</span>              <span class="c1">; pop the return value and two arguments</span>
+
+<span class="nf">PRINT_FOLDER_RIGHT</span>
+<span class="c1">;;; if (current-&gt;right != NULL) {</span>
+<span class="c1">;;;     printf("\n");</span>
+<span class="c1">;;;     print_folder(depth + 1, current-&gt;right);</span>
+<span class="c1">;;; }</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; current-&gt;right == NULL ?</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FOLDER_DONE</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FOLDER_NEWLINE</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; push current-&gt;right</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>              <span class="c1">; push depth + 1</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_FOLDER</span>            <span class="c1">; recursive call</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">3</span>              <span class="c1">; pop the return value and two arguments</span>
+
+<span class="nf">PRINT_FOLDER_DONE</span>
+<span class="c1">;;; tear down the frame and return</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; pop the local variable</span>
+    <span class="nf">LDR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the caller's frame pointer</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">LDR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; R6 -&gt; return-value slot</span>
+    <span class="nf">RET</span>
+
+<span class="nf">PRINT_FOLDER_NEWLINE</span>
+    <span class="nf">.FILL</span>   <span class="err">#</span><span class="mi">10</span></code></pre></figure> <h3 id="3-print_file">3. <code>print_file()</code></h3> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; -------------------------- PRINT_FILE ---------------------------------</span>
+<span class="c1">;;; void print_file(int num, file_node* file) {</span>
+<span class="c1">;;;     if (file == NULL) {</span>
+<span class="c1">;;;         return;</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;;     file_node* next = file;</span>
+<span class="c1">;;;</span>
+<span class="c1">;;;     print_space(num);</span>
+<span class="c1">;;;     printf("file: ");</span>
+<span class="c1">;;;</span>
+<span class="c1">;;;     while (next != NULL) {</span>
+<span class="c1">;;;         printf("%s ", next-&gt;filename);</span>
+<span class="c1">;;;         next = next-&gt;nextfile;</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;; }</span>
+<span class="c1">;;;</span>
+<span class="c1">;;; R0: temporary register (saved and restored by the callee here).</span>
+<span class="nf">PRINT_FILE</span>
+<span class="c1">;;; bookkeeping: build the stack frame</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">2</span>
+    <span class="nf">STR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; save the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; save the caller's frame pointer</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; allocate local variable `next`</span>
+    <span class="nf">ADD</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; R5 = new frame pointer</span>
+
+<span class="c1">;;; body</span>
+    <span class="nf">ST</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FILE_SAVE_R0</span>
+
+    <span class="c1">;; if (file == NULL) return;  file_node* next = file;</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">5</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FILE_DONE</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+
+    <span class="c1">;; print_space(num);</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; push num</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_SPACE</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">2</span>              <span class="c1">; pop the return value and the argument</span>
+
+    <span class="c1">;; printf("file: ");</span>
+    <span class="nf">LEA</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FILE_PROMPT</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_STRING</span>
+
+<span class="nf">PRINT_FILE_LOOP</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; while (next != NULL)</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_FILE_DONE</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; printf("%s ", next-&gt;filename);</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_STRING</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FILE_SPACE</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; next = next-&gt;nextfile;</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">BRnzp</span>   <span class="nv">PRINT_FILE_LOOP</span>
+
+<span class="nf">PRINT_FILE_DONE</span>
+<span class="c1">;;; tear down the frame and return</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_FILE_SAVE_R0</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; pop the local variable</span>
+    <span class="nf">LDR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the caller's frame pointer</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">LDR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; R6 -&gt; return-value slot</span>
+    <span class="nf">RET</span>
+
+<span class="nf">PRINT_FILE_SPACE</span>
+    <span class="nf">.FILL</span>   <span class="err">#</span><span class="mi">32</span>
+<span class="nf">PRINT_FILE_PROMPT</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"file: "</span>
+<span class="nf">PRINT_FILE_SAVE_R0</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span></code></pre></figure> <p>Saving R0 in a fixed memory location like <code>PRINT_FILE_SAVE_R0</code> only works because <code>print_file()</code> is <strong>not</strong> recursive. A recursive function would overwrite the saved value on each nested call, so it would have to save registers on the stack instead.</p> <h3 id="4-print_space">4. <code>print_space()</code></h3> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; -------------------------- PRINT_SPACE --------------------------------</span>
+<span class="c1">;;; void print_space(int n) {</span>
+<span class="c1">;;;     int i = 4 * n;</span>
+<span class="c1">;;;     while (i &gt; 0) {</span>
+<span class="c1">;;;         printf(" ");</span>
+<span class="c1">;;;         i--;</span>
+<span class="c1">;;;     }</span>
+<span class="c1">;;; }</span>
+<span class="c1">;;;</span>
+<span class="c1">;;; R0: temporary register (saved and restored by the callee here).</span>
+<span class="nf">PRINT_SPACE</span>
+<span class="c1">;;; bookkeeping: build the stack frame</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">2</span>
+    <span class="nf">STR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; save the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; save the caller's frame pointer</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>             <span class="c1">; allocate local variable `i`</span>
+    <span class="nf">ADD</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; R5 = new frame pointer</span>
+
+<span class="c1">;;; body</span>
+    <span class="nf">ST</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_SPACE_SAVE_R0</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>              <span class="c1">; int i = 4 * n;</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+
+<span class="nf">PRINT_SPACE_LOOP</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; while (i &gt; 0)</span>
+    <span class="nf">BRnz</span>    <span class="nv">PRINT_SPACE_DONE</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_SPACE_SPACE</span>   <span class="c1">; printf(" ");</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; i--;</span>
+    <span class="nf">ADD</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">STR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R5</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">BRnzp</span>   <span class="nv">PRINT_SPACE_LOOP</span>
+
+<span class="nf">PRINT_SPACE_DONE</span>
+<span class="c1">;;; tear down the frame and return</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_SPACE_SAVE_R0</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; pop the local variable</span>
+    <span class="nf">LDR</span> <span class="nv">R5</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the caller's frame pointer</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">LDR</span> <span class="nv">R7</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; restore the return address</span>
+    <span class="nf">ADD</span> <span class="nv">R6</span><span class="p">,</span> <span class="nv">R6</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>              <span class="c1">; R6 -&gt; return-value slot</span>
+    <span class="nf">RET</span>
+
+<span class="nf">PRINT_SPACE_SPACE</span>
+    <span class="nf">.FILL</span>   <span class="err">#</span><span class="mi">32</span>
+<span class="nf">PRINT_SPACE_SAVE_R0</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span></code></pre></figure> <h2 id="iii-print_a_char-and-print_a_string-system-calls">III. <code>PRINT_A_CHAR</code> and <code>PRINT_A_STRING</code> “system calls”</h2> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; ------------------------- PRINT_A_CHAR --------------------------------</span>
+<span class="c1">;;; Same as OUT: write the character in R0 to the display.</span>
+<span class="c1">;;; Polls the display status register (DSR) until the display is ready,</span>
+<span class="c1">;;; then writes R0 to the display data register (DDR).</span>
+<span class="nf">PRINT_A_CHAR</span>
+    <span class="nf">ST</span>  <span class="nv">R1</span><span class="p">,</span> <span class="nv">PRINT_A_CHAR_SAVE_R1</span>
+<span class="nf">PRINT_A_CHAR_POLL</span>
+    <span class="nf">LDI</span> <span class="nv">R1</span><span class="p">,</span> <span class="nb">DS</span><span class="nv">R</span>                 <span class="c1">; bit 15 of DSR = 1 when the display is ready</span>
+    <span class="nf">BRzp</span>    <span class="nv">PRINT_A_CHAR_POLL</span>
+    <span class="nf">STI</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">DDR</span>
+    <span class="nf">LD</span>  <span class="nv">R1</span><span class="p">,</span> <span class="nv">PRINT_A_CHAR_SAVE_R1</span>
+    <span class="nf">RET</span>
+
+<span class="nf">PRINT_A_CHAR_SAVE_R1</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span>
+<span class="nf">DSR</span>
+    <span class="nf">.FILL</span>   <span class="nv">xFE04</span>
+<span class="kd">DD</span><span class="nv">R</span>
+    <span class="nf">.FILL</span>   <span class="nv">xFE06</span>
+
+<span class="c1">;;; ------------------------ PRINT_A_STRING -------------------------------</span>
+<span class="c1">;;; Same as PUTS: write the null-terminated string starting at address R0.</span>
+<span class="c1">;;; It calls PRINT_A_CHAR, which overwrites R7, so R7 must be saved first.</span>
+<span class="nf">PRINT_A_STRING</span>
+    <span class="nf">ST</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R0</span>
+    <span class="nf">ST</span>  <span class="nv">R1</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R1</span>
+    <span class="nf">ST</span>  <span class="nv">R7</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R7</span>
+    <span class="nf">ADD</span> <span class="nv">R1</span><span class="p">,</span> <span class="nv">R0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>              <span class="c1">; R1 = pointer to the current character</span>
+
+<span class="nf">PRINT_A_STRING_LOOP</span>
+    <span class="nf">LDR</span> <span class="nv">R0</span><span class="p">,</span> <span class="nv">R1</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+    <span class="nf">BRz</span> <span class="nv">PRINT_A_STRING_DONE</span>     <span class="c1">; stop at the null terminator</span>
+    <span class="nf">JSR</span> <span class="nv">PRINT_A_CHAR</span>
+    <span class="nf">ADD</span> <span class="nv">R1</span><span class="p">,</span> <span class="nv">R1</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+    <span class="nf">BRnzp</span>   <span class="nv">PRINT_A_STRING_LOOP</span>
+
+<span class="nf">PRINT_A_STRING_DONE</span>
+    <span class="nf">LD</span>  <span class="nv">R0</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R0</span>
+    <span class="nf">LD</span>  <span class="nv">R1</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R1</span>
+    <span class="nf">LD</span>  <span class="nv">R7</span><span class="p">,</span> <span class="nv">PRINT_A_STRING_SAVE_R7</span>
+    <span class="nf">RET</span>
+
+<span class="nf">PRINT_A_STRING_SAVE_R0</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span>
+<span class="nf">PRINT_A_STRING_SAVE_R1</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span>
+<span class="nf">PRINT_A_STRING_SAVE_R7</span>
+    <span class="nf">.FILL</span>   <span class="nv">x0000</span></code></pre></figure> <h2 id="iv-data">IV. Data</h2> <figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"><span class="c1">;;; -------------------------folder_info-----------------------------------</span>
+<span class="nf">FOLDER_root</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_projects</span>       <span class="c1">; left</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_media</span>          <span class="c1">; right</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_root</span>             <span class="c1">; file</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_root</span>      <span class="c1">; foldername</span>
+<span class="nf">FOLDER_NAME_root</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"root"</span>
+
+<span class="nf">FOLDER_projects</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_c_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_blog</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_projects</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_projects</span>
+<span class="nf">FOLDER_NAME_projects</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"projects"</span>
+
+<span class="nf">FOLDER_c_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_utils</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_python_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_c_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_c_project</span>
+<span class="nf">FOLDER_NAME_c_project</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"c_project"</span>
+
+<span class="nf">FOLDER_utils</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_utils</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_utils</span>
+<span class="nf">FOLDER_NAME_utils</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"utils"</span>
+
+<span class="nf">FOLDER_blog</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_blog</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_blog</span>
+<span class="nf">FOLDER_NAME_blog</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"blog"</span>
+
+<span class="nf">FOLDER_media</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_documents</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_photos</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_media</span>
+<span class="nf">FOLDER_NAME_media</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"media"</span>
+
+<span class="nf">FOLDER_photos</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_travel</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_photos</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_photos</span>
+<span class="nf">FOLDER_NAME_photos</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"photos"</span>
+
+<span class="nf">FOLDER_travel</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_sub_travel</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_travel</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_travel</span>
+<span class="nf">FOLDER_NAME_travel</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"travel"</span>
+
+<span class="nf">FOLDER_python_project</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_python_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_python_project</span>
+<span class="nf">FOLDER_NAME_python_project</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">python_project</span><span class="err">"</span>
+
+<span class="nf">FOLDER_documents</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_reports</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_presentations</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_documents</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_documents</span>
+<span class="nf">FOLDER_NAME_documents</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">documents</span><span class="s">"
+
+FOLDER_reports
+    .FILL x0000
+    .FILL x0000
+    .FILL FILE_reports
+    .FILL FOLDER_NAME_reports
+FOLDER_NAME_reports
+    .STRINGZ "</span><span class="nv">reports</span><span class="err">"</span>
+
+<span class="nf">FOLDER_presentations</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_presentations</span>
+    <span class="nf">.FILL</span> <span class="nv">FOLDER_NAME_presentations</span>
+<span class="nf">FOLDER_NAME_presentations</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">presentations</span><span class="s">"
+
+FOLDER_sub_travel
+    .FILL x0000
+    .FILL x0000
+    .FILL FILE_sub_travel
+    .FILL FOLDER_NAME_sub_travel
+FOLDER_NAME_sub_travel
+    .STRINGZ "</span><span class="nv">sub_travel</span><span class="err">"</span>
+
+<span class="c1">;;; ------------------------file_info-------------------------------------</span>
+<span class="nf">FILE_root</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>                 <span class="c1">; nextfile</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_root</span>        <span class="c1">; filename</span>
+<span class="nf">FILE_NAME_root</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">config.sys</span><span class="s">"
+
+FILE_projects
+    .FILL x0000
+    .FILL FILE_NAME_projects
+FILE_NAME_projects
+    .STRINGZ "</span><span class="nv">README.md</span><span class="s">"
+
+FILE_c_project
+    .FILL FILE_c_project_2
+    .FILL FILE_NAME_c_project1
+FILE_NAME_c_project1
+    .STRINGZ "</span><span class="nv">main.c</span><span class="s">"
+
+FILE_c_project_2
+    .FILL x0000
+    .FILL FILE_NAME_c_project2
+FILE_NAME_c_project2
+    .STRINGZ "</span><span class="nv">Makefile</span><span class="s">"
+
+FILE_utils
+    .FILL x0000
+    .FILL FILE_NAME_utils
+FILE_NAME_utils
+    .STRINGZ "</span><span class="nv">helper.c</span><span class="s">"
+
+FILE_blog
+    .FILL x0000
+    .FILL FILE_NAME_blog
+FILE_NAME_blog
+    .STRINGZ "</span><span class="nv">index.md</span><span class="s">"
+
+FILE_photos
+    .FILL FILE_photos_2
+    .FILL FILE_NAME_photos1
+FILE_NAME_photos1
+    .STRINGZ "</span><span class="nv">IMG001.jpg</span><span class="s">"
+
+FILE_photos_2
+    .FILL x0000
+    .FILL FILE_NAME_photos2
+FILE_NAME_photos2
+    .STRINGZ "</span><span class="nv">IMG002.jpg</span><span class="s">"
+
+FILE_travel
+    .FILL FILE_travel_2
+    .FILL FILE_NAME_travel1
+FILE_NAME_travel1
+    .STRINGZ "</span><span class="nv">trip.txt</span><span class="s">"
+
+FILE_travel_2
+    .FILL x0000
+    .FILL FILE_NAME_travel2
+FILE_NAME_travel2
+    .STRINGZ "</span><span class="nv">map.png</span><span class="err">"</span>
+
+<span class="nf">FILE_python_project</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_python_project_2</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_python_project1</span>
+<span class="nf">FILE_NAME_python_project1</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">main.py</span><span class="err">"</span>
+
+<span class="nf">FILE_python_project_2</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_python_project2</span>
+<span class="nf">FILE_NAME_python_project2</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">requirements.txt</span><span class="err">"</span>
+
+<span class="nf">FILE_documents</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_documents_2</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_documents1</span>
+<span class="nf">FILE_NAME_documents1</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">meeting_notes.docx</span><span class="err">"</span>
+
+<span class="nf">FILE_documents_2</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_documents_2</span>
+<span class="nf">FILE_NAME_documents_2</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"todo_list.txt"</span>
+
+<span class="nf">FILE_reports</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_reports_2</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_reports1</span>
+<span class="nf">FILE_NAME_reports1</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"q1_report.pdf"</span>
+
+<span class="nf">FILE_reports_2</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_reports2</span>
+<span class="nf">FILE_NAME_reports2</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"budget_summary.xlsx"</span>
+
+<span class="nf">FILE_presentations</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_presentations1</span>
+<span class="nf">FILE_NAME_presentations1</span>
+    <span class="nf">.STRINGZ</span> <span class="s">"project_kickoff.pptx"</span>
+
+<span class="nf">FILE_sub_travel</span>
+    <span class="nf">.FILL</span> <span class="nv">x0000</span>
+    <span class="nf">.FILL</span> <span class="nv">FILE_NAME_sub_travel</span>
+<span class="nf">FILE_NAME_sub_travel</span>
+    <span class="nf">.STRINGZ</span> <span class="err">"</span><span class="nv">packing_list.md</span><span class="err">"</span>
+
+    <span class="nf">.END</span></code></pre></figure> <h2 id="references">References</h2> <div class="references"> <p>[1] Yale N. Patt and Sanjay J. Patel. <em>Introduction to Computing Systems: From Bits &amp; Gates to C/C++ &amp; Beyond</em>, 3rd edition. McGraw-Hill, 2019.</p> </div>]]></content><author><name></name></author><category term="lc3"/><category term="assembly"/><category term="recursion"/><category term="data-structures"/><summary type="html"><![CDATA[A review of LC-3 assembly, the run-time stack, recursion, linked lists, and binary trees, built around one complete program.]]></summary></entry><entry><title type="html">The Gaussian Integral</title><link href="https://hanbinzheng.github.io/blog/2025/gaussian-integral/" rel="alternate" type="text/html" title="The Gaussian Integral"/><published>2025-05-19T00:00:00+08:00</published><updated>2025-05-19T00:00:00+08:00</updated><id>https://hanbinzheng.github.io/blog/2025/gaussian-integral</id><content type="html" xml:base="https://hanbinzheng.github.io/blog/2025/gaussian-integral/"><![CDATA[<blockquote> <p>This post introduces the Gaussian integral, starting from basic integration and building up to a probabilistic and linear-algebraic view of it.</p> </blockquote> <h2 id="i-the-fundamental-integral">I. The fundamental integral</h2> <p>The most basic Gaussian integral is</p> \[\int_{-\infty}^{\infty} \exp \left(-\frac{1}{2}x^2 \right) dx = \sqrt{2\pi} ,\] <p>or equivalently, in the form of the <strong>standard Gaussian density</strong>,</p> \[\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \exp \left( -\frac{1}{2} x^2 \right) dx = 1 .\] <p>Here is how to compute it. Write \(I\) for the integral.</p> <h3 id="step-1-square-it">Step 1: square it</h3> \[\begin{align*} I^2 &amp;= \int_{-\infty}^{\infty} \exp \left( -\frac{1}{2} x^2 \right) dx \cdot \int_{-\infty}^{\infty} \exp \left( -\frac{1}{2} y^2 \right) dy \\[1ex] &amp;= \iint_{\mathbb{R}^2} \exp \left( -\frac{1}{2}(x^2 + y^2) \right) dx \, dy . \end{align*}\] <p>The integrand is positive, so Tonelli’s theorem allows us to combine the two integrals into a double integral.</p> <h3 id="step-2-switch-to-polar-coordinates">Step 2: switch to polar coordinates</h3> <p>Let</p> \[\left\{ \begin{aligned} x &amp;= r \cos \theta \\ y &amp;= r \sin \theta \end{aligned} \right. \qquad r \in [0, \infty), \ \theta \in [0, 2\pi) .\] <p>The <strong>Jacobian matrix</strong> of this map is</p> \[J(r, \theta) = \frac{\partial (x, y)}{\partial (r, \theta)} = \begin{bmatrix} \dfrac{\partial x}{\partial r} &amp; \dfrac{\partial x}{\partial \theta} \\[1.5ex] \dfrac{\partial y}{\partial r} &amp; \dfrac{\partial y}{\partial \theta} \end{bmatrix} = \begin{bmatrix} \cos \theta &amp; - r \sin \theta \\ \sin \theta &amp; r \cos \theta \end{bmatrix} ,\] <p>so the area element transforms as</p> \[\begin{align*} dx \, dy &amp;= \left\lvert \det J(r, \theta) \right\rvert \, dr \, d\theta \\[1ex] &amp;= r \left( \cos^2 \theta + \sin^2 \theta \right) dr \, d\theta \\[1ex] &amp;= r \, dr \, d\theta . \end{align*}\] <h3 id="step-3-integrate">Step 3: integrate</h3> \[\begin{align*} I^2 &amp;= \int_0^{2 \pi} \int_0^{\infty} \exp \left( -\frac{1}{2} r^2 \right) r \, dr \, d\theta \\[1ex] &amp;= \int_0^{2 \pi} \left[ -\exp \left( -\frac{1}{2} r^2 \right) \right]_0^{\infty} d\theta \\[1ex] &amp;= \int_0^{2 \pi} 1 \, d\theta = 2 \pi . \end{align*}\] <p>Since \(I &gt; 0\),</p> \[\int_{-\infty}^{\infty} \exp \left( -\frac{1}{2} x^2 \right) dx = \sqrt{2 \pi} .\] <p><strong>Shifting and scaling.</strong> Substituting \(x \mapsto (x - b)/\sqrt{a}\) gives, for any \(a &gt; 0\) and \(b \in \mathbb{R}\),</p> \[\int_{-\infty}^{\infty} \exp \left( -\frac{(x - b)^2}{2a} \right) dx = \sqrt{2 \pi a} ,\] <p>or, in the form of a Gaussian density,</p> \[\int_{-\infty}^{\infty} \frac{1}{\sqrt{2 \pi a}} \exp \left( -\frac{(x - b)^2}{2 a} \right) dx = 1 .\] <h2 id="ii-from-one-dimension-to-many">II. From one dimension to many</h2> <p>Now we generalize the univariate Gaussian integral to \(n\) dimensions.</p> <p><strong>Notation.</strong></p> <ol> <li>\(\boldsymbol{x} = (x_1, \dots, x_n)^\top \in \mathbb{R}^n\) is a column vector.</li> <li>\(d\boldsymbol{x}\) denotes the volume element \(dx_1 \cdots dx_n\).</li> <li>For \(f: \mathbb{R}^n \to \mathbb{R}\), \(\displaystyle \int_{\mathbb{R}^n} f(\boldsymbol{x}) \, d \boldsymbol{x} = \idotsint_{\mathbb{R}^n} f(x_1, \dots, x_n) \, dx_1 \cdots dx_n\).</li> </ol> <p><strong>Statement.</strong> Let \(A \in \mathbb{R}^{n \times n}\) be symmetric positive definite, and let \(\boldsymbol{b} \in \mathbb{R}^n\). Then</p> \[\begin{equation} \int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^\top A^{-1} (\boldsymbol{x} - \boldsymbol{b}) \right) d\boldsymbol{x} = \sqrt{ (2 \pi)^n \det A } . \label{eq:multivariate} \end{equation}\] <p>For \(n = 1\) and \(A = a\), this is exactly the shifted and scaled formula above.</p> <h3 id="step-1-diagonalize">Step 1: diagonalize</h3> <p>Since \(A\) is symmetric positive definite, so is \(A^{-1}\). By the spectral theorem [1],</p> \[A^{-1} = Q^\top \Lambda Q ,\] <p>where \(\Lambda = \mathrm{diag}(\lambda_1, \dots, \lambda_n)\) has <strong>positive</strong> diagonal entries and \(Q\) is <strong>orthogonal</strong> (\(Q^\top Q = Q Q^\top = I\)).</p> <p>Change variables to</p> \[\boldsymbol{y} = Q (\boldsymbol{x} - \boldsymbol{b}) , \qquad \text{i.e.} \quad y_i = \sum_{j = 1}^{n} Q_{ij} (x_j - b_j) .\] <p>Then \(\partial y_i / \partial x_k = Q_{ik}\), so the Jacobian matrix is \(\partial \boldsymbol{y} / \partial \boldsymbol{x} = Q\). An orthogonal matrix satisfies \(\det(Q)^2 = \det(Q^\top Q) = 1\), so \(\det Q = \pm 1\). (It can be \(-1\), for a reflection. That is why the absolute value matters.) Hence</p> \[d \boldsymbol{y} = \left\lvert \det Q \right\rvert d \boldsymbol{x} = d \boldsymbol{x} .\] <p>Substituting,</p> \[\begin{align*} &amp;\int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^\top A^{-1} (\boldsymbol{x} - \boldsymbol{b}) \right) d\boldsymbol{x} \\[1ex] ={} &amp;\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^\top Q^\top \Lambda Q (\boldsymbol{x} - \boldsymbol{b}) \right) d \boldsymbol{x} \\[1ex] ={} &amp;\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \big(Q (\boldsymbol{x} - \boldsymbol{b}) \big)^\top \Lambda \big(Q (\boldsymbol{x} - \boldsymbol{b}) \big) \right) d \boldsymbol{x} \\[1ex] ={} &amp;\int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \boldsymbol{y}^\top \Lambda \boldsymbol{y} \right) d \boldsymbol{y} . \end{align*}\] <h3 id="step-2-separate-the-variables">Step 2: separate the variables</h3> <p>Because \(\Lambda\) is diagonal,</p> \[\boldsymbol{y}^\top \Lambda \boldsymbol{y} = \begin{bmatrix} y_1 &amp; \cdots &amp; y_n \end{bmatrix} \begin{bmatrix} \lambda_1 &amp; &amp; \\ &amp; \ddots &amp; \\ &amp; &amp; \lambda_n \end{bmatrix} \begin{bmatrix} y_1 \\ \vdots \\ y_n \end{bmatrix} = \sum_{i=1}^{n} \lambda_i y_i^2 ,\] <p>so the exponential factors into a product, and so does the integral:</p> \[\begin{align*} \int_{\mathbb{R}^n} \exp \left( -\frac{1}{2} \boldsymbol{y}^\top \Lambda \boldsymbol{y} \right) d \boldsymbol{y} &amp;= \idotsint_{\mathbb{R}^n} \prod_{i=1}^{n} \exp \left( -\frac{1}{2} \lambda_i y_i^2 \right) dy_1 \cdots dy_n \\[1ex] &amp;= \prod_{i=1}^{n} \int_{-\infty}^{\infty} \exp \left( -\frac{1}{2} \lambda_i y_i^2 \right) dy_i . \end{align*}\] <h3 id="step-3-use-the-one-dimensional-result">Step 3: use the one-dimensional result</h3> <p>Each factor is a one-dimensional Gaussian integral with \(a = 1/\lambda_i\):</p> \[\prod_{i=1}^{n} \int_{-\infty}^{\infty} \exp \left( -\frac{y_i^2}{2 \lambda_i^{-1}} \right) dy_i = \prod_{i=1}^{n} \sqrt{\frac{2 \pi}{\lambda_i}} = \frac{(2 \pi)^{n/2}}{\sqrt{\det \Lambda}} .\] <p>Finally, from \(A^{-1} = Q^\top \Lambda Q\),</p> \[\frac{1}{\det A} = \det (A^{-1}) = \det(Q^\top) \det(\Lambda) \det(Q) = \det(Q)^2 \det \Lambda = \det \Lambda .\] <p>Putting everything together,</p> \[\int_{\mathbb{R}^n} \exp\left( -\frac{1}{2} (\boldsymbol{x} - \boldsymbol{b})^\top A^{-1} (\boldsymbol{x} - \boldsymbol{b}) \right) d\boldsymbol{x} = \frac{(2 \pi)^{n/2}}{\sqrt{\det \Lambda}} = \sqrt{ (2 \pi)^n \det A } ,\] <p>which proves \(\eqref{eq:multivariate}\). \(\blacksquare\)</p> <h2 id="iii-probability-and-linear-algebra">III. Probability and linear algebra</h2> <h3 id="1-the-univariate-gaussian-distribution">1. The univariate Gaussian distribution</h3> <p>If \(X \sim \mathcal{N}(\mu, \sigma^2)\), its density integrates to one:</p> \[\int_{-\infty}^{\infty} f_X(x) \, dx = \int_{-\infty}^{\infty} \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left( -\frac{(x - \mu)^2}{2 \sigma^2} \right) dx = 1 .\] <p>This is just the shifted and scaled formula from Part I: the mean \(\mu\) plays the role of the shift \(b\), and the variance \(\sigma^2\) plays the role of the scale \(a\).</p> <h3 id="2-the-multivariate-gaussian-distribution">2. The multivariate Gaussian distribution</h3> <p>We write a <strong>random vector</strong> in bold capitals, \(\boldsymbol{X} = (X_1, \dots, X_n)^\top\). Each component \(X_i\) is a random variable. A specific value of \(\boldsymbol{X}\) is written in bold lowercase, \(\boldsymbol{x}\).</p> <p>If \(\boldsymbol{X} \sim \mathcal{N}(\boldsymbol{\mu}, \Sigma)\) with a positive definite covariance matrix \(\Sigma\), then by \(\eqref{eq:multivariate}\) with \(A = \Sigma\) and \(\boldsymbol{b} = \boldsymbol{\mu}\),</p> \[\int_{\mathbb{R}^n} f_{\boldsymbol{X}}(\boldsymbol{x}) \, d \boldsymbol{x} = \int_{\mathbb{R}^n} \frac{1}{\sqrt{(2\pi)^n \det \Sigma}} \exp \left( -\frac{1}{2} (\boldsymbol{x}-\boldsymbol{\mu})^\top \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu})\right) d \boldsymbol{x} = 1 .\] <p>The interesting part is the change of variables that simplified the quadratic form in the exponent. It has a clear probabilistic meaning.</p> <h4 id="1-diagonalizing-sigma-1-the-pca-view">(1) Diagonalizing \(\Sigma^{-1}\): the PCA view</h4> <p>Write</p> \[\Sigma^{-1} = Q^\top \Lambda Q ,\] <p>where the <strong>rows</strong> of the orthogonal matrix \(Q\) are eigenvectors of \(\Sigma^{-1}\), and \(\Lambda\) holds the corresponding eigenvalues. The eigenvectors of \(\Sigma^{-1}\) are the same as those of \(\Sigma\), but each eigenvalue is inverted: \(\Sigma = Q^\top \Lambda^{-1} Q\).</p> <p>This is exactly the core idea of principal component analysis (PCA) [2]. We find the principal axes of the distribution and rotate the coordinate system to align with them. The variance along the \(i\)-th axis is \(1/\lambda_i\), so the direction of <strong>largest</strong> variance belongs to the <strong>smallest</strong> eigenvalue of \(\Sigma^{-1}\).</p> <h4 id="2-the-change-of-variables">(2) The change of variables</h4> <p>Apply</p> \[\boldsymbol{y} = Q (\boldsymbol{x} - \boldsymbol{\mu}) , \qquad \text{equivalently} \qquad \boldsymbol{Y} = Q (\boldsymbol{X} - \boldsymbol{\mu}) .\] <p>This centers and rotates the coordinate system, and the quadratic form becomes</p> \[(\boldsymbol{x} - \boldsymbol{\mu})^\top \Sigma^{-1} (\boldsymbol{x} - \boldsymbol{\mu}) = \boldsymbol{y}^\top \Lambda \boldsymbol{y} .\] <p>The covariance of the new random vector is</p> \[\mathrm{Cov}(\boldsymbol{Y}) = \mathbb{E}\left[\boldsymbol{Y} \boldsymbol{Y}^\top\right] = Q \, \Sigma \, Q^\top = Q \left( Q^\top \Lambda^{-1} Q \right) Q^\top = \Lambda^{-1} ,\] <p>which is <strong>diagonal</strong>. So the components \(Y_1, \dots, Y_n\) are <strong>uncorrelated</strong>, with \(\mathrm{Var}(Y_i) = 1/\lambda_i\). Going from \(\boldsymbol{X}\) to \(\boldsymbol{Y}\) decorrelates the coordinates.</p> <h4 id="3-uncorrelated-vs-independent">(3) Uncorrelated vs. independent</h4> <p>In general, uncorrelated random variables need not be independent. But <strong>for a jointly Gaussian random vector, uncorrelated components are independent.</strong> (Marginally Gaussian is not enough: the vector must be jointly Gaussian.) Here \(\boldsymbol{Y}\) is an affine function of a Gaussian vector, so it is jointly Gaussian.</p> <p>You can see this directly from the density, which factors into a product of one-dimensional Gaussians:</p> \[f_{\boldsymbol{Y}}(\boldsymbol{y}) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\lambda_i^{-1}}} \exp\left( -\frac{y_i^2}{2\lambda_i^{-1}} \right) = \prod_{i=1}^n \mathcal{N}\!\left(y_i;\, 0,\, \lambda_i^{-1}\right) .\] <p>This factorization is exactly what made the integral in Part II easy to compute.</p> <blockquote> <p>Thanks to ChatGPT, which helped me organize my words.</p> </blockquote> <h2 id="references">References</h2> <div class="references"> <p>[1] David Vogan. <a href="https://math.mit.edu/~dav/spectral.pdf">“Proof of the spectral theorem.”</a> Lecture notes, MIT, 2013.</p> <p>[2] Jonathon Shlens. <a href="https://www.cs.cmu.edu/~elaw/papers/pca.pdf">“A Tutorial on Principal Component Analysis.”</a> 2005.</p> </div>]]></content><author><name></name></author><category term="probability"/><category term="gaussian"/><category term="linear-algebra"/><category term="pca"/><summary type="html"><![CDATA[From the one-dimensional Gaussian integral to the multivariate case, with a probabilistic and linear-algebraic view.]]></summary></entry><entry><title type="html">The Central Limit Theorem</title><link href="https://hanbinzheng.github.io/blog/2025/central-limit-theorem/" rel="alternate" type="text/html" title="The Central Limit Theorem"/><published>2025-05-15T00:00:00+08:00</published><updated>2025-05-15T00:00:00+08:00</updated><id>https://hanbinzheng.github.io/blog/2025/central-limit-theorem</id><content type="html" xml:base="https://hanbinzheng.github.io/blog/2025/central-limit-theorem/"><![CDATA[<blockquote> <p>Thanks to <a href="https://www.zhihu.com/people/thegenius-16">子预</a>. <a href="https://zhuanlan.zhihu.com/p/85233692">His article</a> helped me a lot in understanding this topic [1].</p> </blockquote> <p>This post gives a short, mostly self-contained proof of the <strong>Central Limit Theorem (CLT)</strong>. It is not fully rigorous: I state two standard results from analysis without proving them.</p> <p>The CLT is one of the most important results in probability theory. It says that the normalized sum of many independent random variables tends to a normal distribution, whatever the distribution of each variable is. This is why the bell curve shows up so often in nature: many small, independent sources of randomness add up to a predictable pattern.</p> <h2 id="the-statement">The statement</h2> <p><strong>Theorem (Lindeberg–Lévy CLT).</strong> Let \(X_1, X_2, \dots\) be i.i.d. (independent and identically distributed) random variables with \(\mathbb{E}[X_j] = \mu\) and \(\mathrm{Var}(X_j) = \sigma^2\), where \(0 &lt; \sigma^2 &lt; \infty\). Define</p> \[Z_n = \frac{\sum_{j=1}^n X_j - n\mu}{\sigma\sqrt{n}} .\] <p>Then for every \(\tau \in \mathbb{R}\),</p> \[\lim_{n \to \infty} \mathbb{P}(Z_n \leq \tau) = \Phi(\tau) = \int_{-\infty}^{\tau} \frac{1}{\sqrt{2\pi}} e^{-x^2/2} \, dx ,\] <p>or, equivalently, \(Z_n \xrightarrow{D} \mathcal{N}(0, 1)\).</p> <p><strong>Notes.</strong></p> <ul> <li>The name <em>Lindeberg–Lévy</em> refers to this version of the theorem, which needs i.i.d. variables with finite variance.</li> <li>A more general version, the <em>Lindeberg–Feller</em> CLT, drops the “identically distributed” assumption and replaces it with the weaker Lindeberg condition.</li> </ul> <h2 id="1-the-road-map">1. The road map</h2> <p>We use <strong>characteristic functions</strong>. The characteristic function of a random variable \(X\) is</p> \[\varphi_X(t) = \mathbb{E}\left[e^{itX}\right], \qquad t \in \mathbb{R}.\] <p>It always exists, because \(\lvert e^{itX} \rvert = 1\). The proof rests on two classical facts, which I state without proof:</p> <blockquote> <ol> <li><strong>Uniqueness.</strong> The characteristic function determines the distribution: if \(\varphi_X(t) = \varphi_Y(t)\) for all \(t\), then \(X\) and \(Y\) have the same distribution. (This is the Fourier inversion theorem in disguise.)</li> <li><strong>Lévy’s continuity theorem.</strong> If \(\varphi_{Z_n}(t) \to \varphi_Z(t)\) for every \(t\), then \(Z_n \xrightarrow{D} Z\). (See Durrett [2], Section 3.3, for proofs of both facts.)</li> </ol> </blockquote> <p>Uniqueness alone is not enough. We never have \(\varphi_{Z_n} = \varphi_N\) exactly for a finite \(n\), so we need the continuity theorem to turn <em>pointwise convergence</em> of characteristic functions into convergence in distribution.</p> <p>So the plan is:</p> <ol> <li>compute the characteristic function of \(N \sim \mathcal{N}(0,1)\);</li> <li>show that \(\varphi_{Z_n}(t) \to \varphi_N(t)\) for every \(t\);</li> <li>apply Lévy’s continuity theorem.</li> </ol> <p>We use two simple properties of characteristic functions, which are proved in the <a href="#appendix-two-properties-of-characteristic-functions">appendix</a>:</p> <blockquote> <ol> <li><strong>Affine maps:</strong> \(\varphi_{aX + b}(t) = e^{ibt} \, \varphi_X(at)\).</li> <li><strong>Independence:</strong> if \(X\) and \(Y\) are independent, then \(\varphi_{X + Y}(t) = \varphi_X(t) \, \varphi_Y(t)\).</li> </ol> </blockquote> <h2 id="2-the-characteristic-function-of-mathcaln0-1">2. The characteristic function of \(\mathcal{N}(0, 1)\)</h2> <p>Let \(N \sim \mathcal{N}(0, 1)\). We want to show</p> \[\varphi_N(t) = \int_{-\infty}^{+\infty} e^{itx} \, \frac{1}{\sqrt{2\pi}} e^{-x^2/2} \, dx = e^{-t^2/2}.\] <p><strong>The quick (heuristic) way.</strong> Complete the square in the exponent:</p> \[\begin{align*} \varphi_N(t) &amp;= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} e^{-\frac{1}{2}x^2 + itx} \, dx \\[1ex] &amp;= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} e^{-\frac{1}{2}(x - it)^2 + \frac{1}{2}(it)^2} \, dx \\[1ex] &amp;= e^{-\frac{1}{2}t^2} \cdot \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} e^{-\frac{1}{2}(x - it)^2} \, dx . \end{align*}\] <p>The remaining integral is the Gaussian integral shifted by the imaginary constant \(it\). It still equals \(\sqrt{2\pi}\), but justifying this requires contour integration (Cauchy’s theorem). A plain real change of variables does not work.</p> <p><strong>A rigorous way without complex analysis.</strong> Since \(\mathbb{E}\lvert N \rvert &lt; \infty\), we may differentiate under the integral sign:</p> \[\begin{align*} \varphi_N'(t) &amp;= \int_{-\infty}^{+\infty} ix \, e^{itx} \, \frac{1}{\sqrt{2\pi}} e^{-x^2/2} \, dx \\[1ex] &amp;= \frac{i}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} e^{itx} \, d\!\left(-e^{-x^2/2}\right) \\[1ex] &amp;= \frac{i}{\sqrt{2\pi}} \left( \Big[-e^{itx} e^{-x^2/2}\Big]_{-\infty}^{+\infty} + \int_{-\infty}^{+\infty} it \, e^{itx} e^{-x^2/2} \, dx \right) \\[1ex] &amp;= -t \, \varphi_N(t). \end{align*}\] <p>This is a first-order linear ODE with \(\varphi_N(0) = 1\). Its unique solution is \(\varphi_N(t) = e^{-t^2/2}\).</p> <h2 id="3-the-characteristic-function-of-z_n">3. The characteristic function of \(Z_n\)</h2> <h3 id="step-1-standardize">Step 1: standardize</h3> <p>Define the standardized variables</p> \[Y_j = \frac{X_j - \mu}{\sigma}, \qquad \text{so that} \quad \mathbb{E}[Y_j] = 0, \quad \mathbb{E}[Y_j^2] = \mathrm{Var}(Y_j) = 1 .\] <p>Then</p> \[Z_n = \frac{1}{\sqrt{n}} \sum_{j=1}^n Y_j .\] <p>The \(Y_j\) are still i.i.d., so they share one characteristic function, which we write as \(\varphi_Y\).</p> <h3 id="step-2-expand-varphi_y-near-zero">Step 2: expand \(\varphi_Y\) near zero</h3> <p>The original version of this post expanded \(e^{itY}\) as an infinite Taylor series and swapped \(\mathbb{E}\) with the sum. That is not allowed here, because it needs <strong>all</strong> moments of \(Y\) to exist, and we only assumed a finite second moment.</p> <p>The correct tool is a second-order expansion. Since \(\mathbb{E}[Y^2] &lt; \infty\), \(\varphi_Y\) is twice continuously differentiable, with</p> \[\varphi_Y(0) = 1, \qquad \varphi_Y'(0) = i\,\mathbb{E}[Y] = 0, \qquad \varphi_Y''(0) = -\mathbb{E}[Y^2] = -1 .\] <p>Taylor’s theorem then gives</p> \[\varphi_Y(t) = 1 - \frac{t^2}{2} + o(t^2) \qquad \text{as } t \to 0 .\] <h3 id="step-3-multiply">Step 3: multiply</h3> <p>By the two properties of characteristic functions (independence, then the affine map with \(a = 1/\sqrt{n}\), \(b = 0\)):</p> \[\begin{align*} \varphi_{Z_n}(t) &amp;= \varphi_{\sum_j Y_j}\!\left( \frac{t}{\sqrt{n}} \right) = \left( \varphi_Y\!\left( \frac{t}{\sqrt{n}} \right) \right)^n \\[1ex] &amp;= \left( 1 - \frac{t^2}{2n} + o\!\left( \frac{1}{n} \right) \right)^n \qquad (n \to \infty,\ t \text{ fixed}). \end{align*}\] <h3 id="step-4-take-the-limit">Step 4: take the limit</h3> <p>For fixed \(t\), write \(c_n = n\left(\varphi_Y(t/\sqrt{n}) - 1\right)\). The expansion above shows \(c_n \to -t^2/2\). A standard fact (which also holds for complex \(c_n\)) is</p> \[c_n \to c \quad \Longrightarrow \quad \left( 1 + \frac{c_n}{n} \right)^n \to e^{c} .\] <p>Therefore</p> \[\lim_{n \to \infty} \varphi_{Z_n}(t) = e^{-t^2/2} = \varphi_N(t) \qquad \text{for every } t \in \mathbb{R} .\] <h2 id="4-conclusion">4. Conclusion</h2> <p>We have shown that \(\varphi_{Z_n}(t) \to \varphi_N(t)\) for every \(t\), and \(\varphi_N\) is the characteristic function of \(\mathcal{N}(0,1)\). By Lévy’s continuity theorem,</p> \[Z_n \xrightarrow{D} \mathcal{N}(0, 1) . \qquad \blacksquare\] <p>This completes the proof of the CLT for i.i.d. variables with finite, nonzero variance.</p> <h2 id="appendix-two-properties-of-characteristic-functions">Appendix: two properties of characteristic functions</h2> <p><strong>Affine maps.</strong> For constants \(a, b \in \mathbb{R}\),</p> \[\varphi_{aX+b}(t) = \mathbb{E}\left[e^{it(aX+b)}\right] = e^{itb} \, \mathbb{E}\left[e^{i(ta)X}\right] = e^{itb} \, \varphi_X(at) .\] <p><strong>Independence.</strong> If \(X\) and \(Y\) are independent with densities \(f_X, f_Y\), their joint density factors as \(f_{X,Y}(x, y) = f_X(x) f_Y(y)\). So for any (bounded, measurable) functions \(\alpha\) and \(\beta\),</p> \[\begin{align*} \mathbb{E}[\alpha(X)\beta(Y)] &amp;= \iint f_{X,Y}(x, y) \, \alpha(x) \beta(y) \, dx \, dy \\[1ex] &amp;= \iint f_X(x) f_Y(y) \, \alpha(x) \beta(y) \, dx \, dy \\[1ex] &amp;= \int f_X(x) \, \alpha(x) \, dx \cdot \int f_Y(y) \, \beta(y) \, dy \\[1ex] &amp;= \mathbb{E}[\alpha(X)] \cdot \mathbb{E}[\beta(Y)] . \end{align*}\] <p>The same identity holds without densities, but it is easiest to see in this case. Taking \(\alpha(x) = e^{itx}\) and \(\beta(y) = e^{ity}\),</p> \[\varphi_{X + Y}(t) = \mathbb{E}\left[e^{itX} e^{itY}\right] = \mathbb{E}\left[e^{itX}\right] \mathbb{E}\left[e^{itY}\right] = \varphi_X(t) \, \varphi_Y(t) .\] <p>By induction, the characteristic function of a sum of \(n\) independent variables is the product of their characteristic functions.</p> <h2 id="references">References</h2> <div class="references"> <p>[1] 子预. <a href="https://zhuanlan.zhihu.com/p/85233692">Article on the central limit theorem</a> (in Chinese). Zhihu.</p> <p>[2] Rick Durrett. <em>Probability: Theory and Examples</em>, 5th edition. Cambridge University Press, 2019.</p> </div>]]></content><author><name></name></author><category term="probability"/><category term="gaussian"/><summary type="html"><![CDATA[A short proof of the Lindeberg–Lévy central limit theorem using characteristic functions.]]></summary></entry></feed>

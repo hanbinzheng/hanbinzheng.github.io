@@ -1,0 +1,107 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <title>The Central Limit Theorem | Hanbin Zheng</title> <meta name="author" content="Hanbin Zheng"> <meta name="description" content="A short proof of the Lindeberg–Lévy central limit theorem using characteristic functions."> <link rel="canonical" href="https://hanbinzheng.github.io/blog/2025/central-limit-theorem/"> <link rel="alternate" type="application/atom+xml" title="Hanbin Zheng" href="/feed.xml"> <link rel="icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%A6%86&lt;/text&gt;&lt;/svg&gt;"> <script>
+      // Apply the saved theme before the page paints. Shares the "theme" key with al-folio,
+      // so the choice carries over between the blog and the rest of the site.
+      (function () {
+        var setting = null;
+        try {
+          setting = localStorage.getItem("theme");
+        } catch (e) {}
+        var dark = setting === "dark" || ((!setting || setting === "system") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script> <link rel="stylesheet" href="/assets/blog/blog.css"> <script>
+        window.MathJax = {
+          tex: {
+            tags: "ams",
+            inlineMath: [
+              ["$", "$"],
+              ["\\(", "\\)"],
+            ],
+            displayMath: [
+              ["$$", "$$"],
+              ["\\[", "\\]"],
+            ],
+            processEscapes: true,
+          },
+          options: {
+            skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+          },
+        };
+      </script> <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script> </head> <body> <header class="header"> <nav class="nav"> <div class="logo"> <a href="/">Hanbin <span class="light-name">Zheng</span></a> <button id="theme-toggle" type="button" title="Toggle light / dark (Alt + T)" aria-label="Toggle light / dark"> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <circle cx="12" cy="12" r="5"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line> </svg> </button> </div> <ul id="menu"> <li> <a href="/">about</a> </li> <li> <a href="/blog/" class="active">blog</a> </li> <li> <a href="https://github.com/hanbinzheng/cv/blob/main/main.pdf" rel="external nofollow noopener" target="_blank">CV</a> </li> </ul> </nav> </header> <main class="main"> <article class="post-single"> <header class="post-header"> <h1 class="post-title">The Central Limit Theorem</h1> <div class="post-meta"> Date: May 15, 2025  |  Estimated Reading Time: 5 min  |  Author: Hanbin Zheng </div> </header> <div class="toc" id="toc" hidden> <details> <summary accesskey="c" title="(Alt + C)"> <span class="details">Table of Contents</span> </summary> <div class="inner"></div> </details> </div> <div class="post-content"> <blockquote> <p>Thanks to <a href="https://www.zhihu.com/people/thegenius-16" rel="external nofollow noopener" target="_blank">子预</a>. <a href="https://zhuanlan.zhihu.com/p/85233692" rel="external nofollow noopener" target="_blank">His article</a> helped me a lot in understanding this topic [1].</p> </blockquote> <p>This post gives a short, mostly self-contained proof of the <strong>Central Limit Theorem (CLT)</strong>. It is not fully rigorous: I state two standard results from analysis without proving them.</p> <p>The CLT is one of the most important results in probability theory. It says that the normalized sum of many independent random variables tends to a normal distribution, whatever the distribution of each variable is. This is why the bell curve shows up so often in nature: many small, independent sources of randomness add up to a predictable pattern.</p> <h2 id="the-statement">The statement</h2> <p><strong>Theorem (Lindeberg–Lévy CLT).</strong> Let \(X_1, X_2, \dots\) be i.i.d. (independent and identically distributed) random variables with \(\mathbb{E}[X_j] = \mu\) and \(\mathrm{Var}(X_j) = \sigma^2\), where \(0 &lt; \sigma^2 &lt; \infty\). Define</p> \[Z_n = \frac{\sum_{j=1}^n X_j - n\mu}{\sigma\sqrt{n}} .\] <p>Then for every \(\tau \in \mathbb{R}\),</p> \[\lim_{n \to \infty} \mathbb{P}(Z_n \leq \tau) = \Phi(\tau) = \int_{-\infty}^{\tau} \frac{1}{\sqrt{2\pi}} e^{-x^2/2} \, dx ,\] <p>or, equivalently, \(Z_n \xrightarrow{D} \mathcal{N}(0, 1)\).</p> <p><strong>Notes.</strong></p> <ul> <li>The name <em>Lindeberg–Lévy</em> refers to this version of the theorem, which needs i.i.d. variables with finite variance.</li> <li>A more general version, the <em>Lindeberg–Feller</em> CLT, drops the “identically distributed” assumption and replaces it with the weaker Lindeberg condition.</li> </ul> <h2 id="1-the-road-map">1. The road map</h2> <p>We use <strong>characteristic functions</strong>. The characteristic function of a random variable \(X\) is</p> \[\varphi_X(t) = \mathbb{E}\left[e^{itX}\right], \qquad t \in \mathbb{R}.\] <p>It always exists, because \(\lvert e^{itX} \rvert = 1\). The proof rests on two classical facts, which I state without proof:</p> <blockquote> <ol> <li> <strong>Uniqueness.</strong> The characteristic function determines the distribution: if \(\varphi_X(t) = \varphi_Y(t)\) for all \(t\), then \(X\) and \(Y\) have the same distribution. (This is the Fourier inversion theorem in disguise.)</li> <li> <strong>Lévy’s continuity theorem.</strong> If \(\varphi_{Z_n}(t) \to \varphi_Z(t)\) for every \(t\), then \(Z_n \xrightarrow{D} Z\). (See Durrett [2], Section 3.3, for proofs of both facts.)</li> </ol> </blockquote> <p>Uniqueness alone is not enough. We never have \(\varphi_{Z_n} = \varphi_N\) exactly for a finite \(n\), so we need the continuity theorem to turn <em>pointwise convergence</em> of characteristic functions into convergence in distribution.</p> <p>So the plan is:</p> <ol> <li>compute the characteristic function of \(N \sim \mathcal{N}(0,1)\);</li> <li>show that \(\varphi_{Z_n}(t) \to \varphi_N(t)\) for every \(t\);</li> <li>apply Lévy’s continuity theorem.</li> </ol> <p>We use two simple properties of characteristic functions, which are proved in the <a href="#appendix-two-properties-of-characteristic-functions">appendix</a>:</p> <blockquote> <ol> <li> <strong>Affine maps:</strong> \(\varphi_{aX + b}(t) = e^{ibt} \, \varphi_X(at)\).</li> <li> <strong>Independence:</strong> if \(X\) and \(Y\) are independent, then \(\varphi_{X + Y}(t) = \varphi_X(t) \, \varphi_Y(t)\).</li> </ol> </blockquote> <h2 id="2-the-characteristic-function-of-mathcaln0-1">2. The characteristic function of \(\mathcal{N}(0, 1)\)</h2> <p>Let \(N \sim \mathcal{N}(0, 1)\). We want to show</p> \[\varphi_N(t) = \int_{-\infty}^{+\infty} e^{itx} \, \frac{1}{\sqrt{2\pi}} e^{-x^2/2} \, dx = e^{-t^2/2}.\] <p><strong>The quick (heuristic) way.</strong> Complete the square in the exponent:</p> \[\begin{align*} \varphi_N(t) &amp;= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} e^{-\frac{1}{2}x^2 + itx} \, dx \\[1ex] &amp;= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} e^{-\frac{1}{2}(x - it)^2 + \frac{1}{2}(it)^2} \, dx \\[1ex] &amp;= e^{-\frac{1}{2}t^2} \cdot \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} e^{-\frac{1}{2}(x - it)^2} \, dx . \end{align*}\] <p>The remaining integral is the Gaussian integral shifted by the imaginary constant \(it\). It still equals \(\sqrt{2\pi}\), but justifying this requires contour integration (Cauchy’s theorem). A plain real change of variables does not work.</p> <p><strong>A rigorous way without complex analysis.</strong> Since \(\mathbb{E}\lvert N \rvert &lt; \infty\), we may differentiate under the integral sign:</p> \[\begin{align*} \varphi_N'(t) &amp;= \int_{-\infty}^{+\infty} ix \, e^{itx} \, \frac{1}{\sqrt{2\pi}} e^{-x^2/2} \, dx \\[1ex] &amp;= \frac{i}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} e^{itx} \, d\!\left(-e^{-x^2/2}\right) \\[1ex] &amp;= \frac{i}{\sqrt{2\pi}} \left( \Big[-e^{itx} e^{-x^2/2}\Big]_{-\infty}^{+\infty} + \int_{-\infty}^{+\infty} it \, e^{itx} e^{-x^2/2} \, dx \right) \\[1ex] &amp;= -t \, \varphi_N(t). \end{align*}\] <p>This is a first-order linear ODE with \(\varphi_N(0) = 1\). Its unique solution is \(\varphi_N(t) = e^{-t^2/2}\).</p> <h2 id="3-the-characteristic-function-of-z_n">3. The characteristic function of \(Z_n\)</h2> <h3 id="step-1-standardize">Step 1: standardize</h3> <p>Define the standardized variables</p> \[Y_j = \frac{X_j - \mu}{\sigma}, \qquad \text{so that} \quad \mathbb{E}[Y_j] = 0, \quad \mathbb{E}[Y_j^2] = \mathrm{Var}(Y_j) = 1 .\] <p>Then</p> \[Z_n = \frac{1}{\sqrt{n}} \sum_{j=1}^n Y_j .\] <p>The \(Y_j\) are still i.i.d., so they share one characteristic function, which we write as \(\varphi_Y\).</p> <h3 id="step-2-expand-varphi_y-near-zero">Step 2: expand \(\varphi_Y\) near zero</h3> <p>The original version of this post expanded \(e^{itY}\) as an infinite Taylor series and swapped \(\mathbb{E}\) with the sum. That is not allowed here, because it needs <strong>all</strong> moments of \(Y\) to exist, and we only assumed a finite second moment.</p> <p>The correct tool is a second-order expansion. Since \(\mathbb{E}[Y^2] &lt; \infty\), \(\varphi_Y\) is twice continuously differentiable, with</p> \[\varphi_Y(0) = 1, \qquad \varphi_Y'(0) = i\,\mathbb{E}[Y] = 0, \qquad \varphi_Y''(0) = -\mathbb{E}[Y^2] = -1 .\] <p>Taylor’s theorem then gives</p> \[\varphi_Y(t) = 1 - \frac{t^2}{2} + o(t^2) \qquad \text{as } t \to 0 .\] <h3 id="step-3-multiply">Step 3: multiply</h3> <p>By the two properties of characteristic functions (independence, then the affine map with \(a = 1/\sqrt{n}\), \(b = 0\)):</p> \[\begin{align*} \varphi_{Z_n}(t) &amp;= \varphi_{\sum_j Y_j}\!\left( \frac{t}{\sqrt{n}} \right) = \left( \varphi_Y\!\left( \frac{t}{\sqrt{n}} \right) \right)^n \\[1ex] &amp;= \left( 1 - \frac{t^2}{2n} + o\!\left( \frac{1}{n} \right) \right)^n \qquad (n \to \infty,\ t \text{ fixed}). \end{align*}\] <h3 id="step-4-take-the-limit">Step 4: take the limit</h3> <p>For fixed \(t\), write \(c_n = n\left(\varphi_Y(t/\sqrt{n}) - 1\right)\). The expansion above shows \(c_n \to -t^2/2\). A standard fact (which also holds for complex \(c_n\)) is</p> \[c_n \to c \quad \Longrightarrow \quad \left( 1 + \frac{c_n}{n} \right)^n \to e^{c} .\] <p>Therefore</p> \[\lim_{n \to \infty} \varphi_{Z_n}(t) = e^{-t^2/2} = \varphi_N(t) \qquad \text{for every } t \in \mathbb{R} .\] <h2 id="4-conclusion">4. Conclusion</h2> <p>We have shown that \(\varphi_{Z_n}(t) \to \varphi_N(t)\) for every \(t\), and \(\varphi_N\) is the characteristic function of \(\mathcal{N}(0,1)\). By Lévy’s continuity theorem,</p> \[Z_n \xrightarrow{D} \mathcal{N}(0, 1) . \qquad \blacksquare\] <p>This completes the proof of the CLT for i.i.d. variables with finite, nonzero variance.</p> <h2 id="appendix-two-properties-of-characteristic-functions">Appendix: two properties of characteristic functions</h2> <p><strong>Affine maps.</strong> For constants \(a, b \in \mathbb{R}\),</p> \[\varphi_{aX+b}(t) = \mathbb{E}\left[e^{it(aX+b)}\right] = e^{itb} \, \mathbb{E}\left[e^{i(ta)X}\right] = e^{itb} \, \varphi_X(at) .\] <p><strong>Independence.</strong> If \(X\) and \(Y\) are independent with densities \(f_X, f_Y\), their joint density factors as \(f_{X,Y}(x, y) = f_X(x) f_Y(y)\). So for any (bounded, measurable) functions \(\alpha\) and \(\beta\),</p> \[\begin{align*} \mathbb{E}[\alpha(X)\beta(Y)] &amp;= \iint f_{X,Y}(x, y) \, \alpha(x) \beta(y) \, dx \, dy \\[1ex] &amp;= \iint f_X(x) f_Y(y) \, \alpha(x) \beta(y) \, dx \, dy \\[1ex] &amp;= \int f_X(x) \, \alpha(x) \, dx \cdot \int f_Y(y) \, \beta(y) \, dy \\[1ex] &amp;= \mathbb{E}[\alpha(X)] \cdot \mathbb{E}[\beta(Y)] . \end{align*}\] <p>The same identity holds without densities, but it is easiest to see in this case. Taking \(\alpha(x) = e^{itx}\) and \(\beta(y) = e^{ity}\),</p> \[\varphi_{X + Y}(t) = \mathbb{E}\left[e^{itX} e^{itY}\right] = \mathbb{E}\left[e^{itX}\right] \mathbb{E}\left[e^{itY}\right] = \varphi_X(t) \, \varphi_Y(t) .\] <p>By induction, the characteristic function of a sum of \(n\) independent variables is the product of their characteristic functions.</p> <h2 id="references">References</h2> <div class="references"> <p>[1] 子预. <a href="https://zhuanlan.zhihu.com/p/85233692" rel="external nofollow noopener" target="_blank">Article on the central limit theorem</a> (in Chinese). Zhihu.</p> <p>[2] Rick Durrett. <em>Probability: Theory and Examples</em>, 5th edition. Cambridge University Press, 2019.</p> </div> </div> <footer class="post-footer"> <ul class="post-tags"> <li> <a href="/blog/tags/#probability">probability</a> </li> <li> <a href="/blog/tags/#gaussian">gaussian</a> </li> </ul> <nav class="paginav"> <a class="prev" href="/blog/2025/gaussian-integral/"> <span class="title">« Prev</span> <span>The Gaussian Integral</span> </a> </nav> </footer> </article> <script>
+  // Runs before MathJax (which is deferred), so math copied into the TOC is typeset too.
+  (function () {
+    var content = document.querySelector(".post-content");
+    var headings = content.querySelectorAll("h2[id], h3[id]");
+
+    // Table of contents: nested list of h2 / h3.
+    var toc = document.getElementById("toc");
+    if (toc && headings.length > 1) {
+      var root = document.createElement("ul");
+      var currentSub = null;
+      headings.forEach(function (h) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = "#" + h.id;
+        a.innerHTML = h.innerHTML;
+        li.appendChild(a);
+        if (h.tagName === "H2" || !root.lastElementChild) {
+          root.appendChild(li);
+          currentSub = null;
+        } else {
+          if (!currentSub) {
+            currentSub = document.createElement("ul");
+            root.lastElementChild.appendChild(currentSub);
+          }
+          currentSub.appendChild(li);
+        }
+      });
+      toc.querySelector(".inner").appendChild(root);
+      toc.hidden = false;
+    }
+
+    // "#" anchor shown when hovering a heading.
+    content.querySelectorAll("h2[id], h3[id], h4[id], h5[id]").forEach(function (h) {
+      var a = document.createElement("a");
+      a.className = "anchor";
+      a.href = "#" + h.id;
+      a.setAttribute("aria-hidden", "true");
+      a.textContent = "#";
+      h.appendChild(a);
+    });
+
+    // "copy" button on code blocks.
+    content.querySelectorAll("pre").forEach(function (pre) {
+      var box = pre.closest(".highlight") || pre;
+      if (box.querySelector(".copy-code")) return;
+      var btn = document.createElement("button");
+      btn.className = "copy-code";
+      btn.type = "button";
+      btn.textContent = "copy";
+      btn.addEventListener("click", function () {
+        var code = pre.querySelector("code") || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = "copied!";
+          setTimeout(function () {
+            btn.textContent = "copy";
+          }, 2000);
+        });
+      });
+      box.appendChild(btn);
+    });
+  })();
+</script> </main> <footer class="footer"> <span>© 2026 Hanbin Zheng</span> · <span>Powered by <a href="https://jekyllrb.com/" rel="noopener noreferrer" target="_blank">Jekyll</a></span> · <a href="/feed.xml">RSS</a> </footer> <script>
+      // Theme toggle (light <-> dark).
+      (function () {
+        function toggle() {
+          var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", next);
+          try {
+            localStorage.setItem("theme", next);
+          } catch (e) {}
+        }
+        document.getElementById("theme-toggle").addEventListener("click", toggle);
+        document.addEventListener("keydown", function (e) {
+          if (e.altKey && (e.key === "t" || e.key === "T" || e.code === "KeyT")) toggle();
+        });
+      })();
+    </script> </body> </html>
