@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="{{ '/assets/blog/header.css' | relative_url }}">
+
 <style>
   /* Use the same plain background as the blog (assets/blog/blog.css). */
   html[data-theme="dark"] {
@@ -17,22 +19,11 @@
     color: inherit !important;
   }
 
-  /* Two-state theme toggle: the icon shows the current mode (moon = dark, sun = light). */
-  #light-toggle-system {
-    display: none !important;
-  }
-  html[data-theme="dark"] #light-toggle-dark,
-  html:not([data-theme="dark"]) #light-toggle-light {
-    display: inline-block !important;
-  }
-  html[data-theme="dark"] #light-toggle-light,
-  html:not([data-theme="dark"]) #light-toggle-dark {
-    display: none !important;
-  }
 </style>
 
 <script>
   // al-folio cycles system -> light -> dark. Switch between light and dark only.
+  // (theme.js binds this to the #light-toggle button in _includes/site-header.liquid.)
   toggleThemeSetting = () => {
     setThemeSetting(determineComputedTheme() === "dark" ? "light" : "dark");
   };

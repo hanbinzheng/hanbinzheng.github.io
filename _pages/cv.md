@@ -1,5 +1,5 @@
 ---
-title: CV
+title: cv
 permalink: https://github.com/hanbinzheng/cv/blob/main/main.pdf
 nav: true
 nav_order: 3
