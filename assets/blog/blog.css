@@ -407,9 +407,59 @@ html[data-theme="dark"] .toc {
   text-align: center;
 }
 
+/* inline SVG diagrams: drawn with currentColor, coloured by these classes */
+
+.post-content svg.diagram {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  color: var(--primary);
+  --fig-c1: #2563eb;
+  --fig-c2: #dc5a1e;
+  --fig-c3: #15803d;
+  overflow: visible;
+}
+
+html[data-theme="dark"] .post-content svg.diagram {
+  --fig-c1: #6ea8fe;
+  --fig-c2: #ff9a5c;
+  --fig-c3: #5fd38d;
+}
+
+.post-content svg.diagram text {
+  font-family: "Times New Roman", "STIX Two Text", Times, serif;
+  font-style: italic;
+}
+
+.post-content svg.diagram text[font-style="normal"] {
+  font-family: inherit;
+  font-style: normal;
+}
+
+.post-content svg.diagram .muted {
+  color: var(--secondary);
+}
+
+.post-content svg.diagram .c1 {
+  color: var(--fig-c1);
+}
+
+.post-content svg.diagram .c2 {
+  color: var(--fig-c2);
+}
+
+.post-content svg.diagram .c3 {
+  color: var(--fig-c3);
+}
+
 /* math */
 
 .post-content mjx-container[display="true"] {
+  /* numbered equations get an inline min-width from MathJax, which would widen the
+     whole page on phones; cap them so they scroll inside their own box instead */
+  min-width: 0 !important;
+  max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   padding: 2px 0;
