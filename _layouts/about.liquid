@@ -4,7 +4,7 @@ layout: default
 {% comment %}
   Site-local replacement for al_folio_core's about layout:
   the name, subtitle and bio sit in one column, vertically centered next to the portrait,
-  followed by the latest posts. No news, papers or social icons.
+  followed by a list of all blog posts (newest first). No news, papers or social icons.
 {% endcomment %}
 <style>
   .about-intro {
@@ -122,7 +122,7 @@ layout: default
     {% if page.latest_posts and page.latest_posts.enabled %}
       <div class="about-posts">
         <h2>
-          <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>
+          <a href="{{ '/blog/' | relative_url }}" style="color: inherit">posts</a>
         </h2>
         {% include latest_posts.liquid %}
       </div>

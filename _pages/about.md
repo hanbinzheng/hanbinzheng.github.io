@@ -9,9 +9,9 @@ profile:
   image_circular: false # crops the image to make it circular
 
 latest_posts:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
-  limit: 3 # leave blank to include all the blog posts
+  enabled: true # lists every blog post, newest first
+  scrollable: false
+  limit: # blank = all posts
 ---
 
 Hi! I'm Hanbin Zheng, an undergraduate in the [Zhejiang University – University of Illinois Urbana-Champaign Institute](https://zjui.intl.zju.edu.cn/en) (ZJUI). I study **Computer Engineering** (UIUC) and **Electronic and Computer Engineering** (ZJU), and I expect to graduate in 2028.
