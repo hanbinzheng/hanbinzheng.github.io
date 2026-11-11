@@ -53,6 +53,27 @@
           options: {
             skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
           },
+          startup: {
+            // MathJax 3 cannot line-break inline math. An inline formula wider than its
+            // line would widen the whole page on phones, so give it its own scrolling line.
+            pageReady: function () {
+              return MathJax.startup.defaultPageReady().then(function () {
+                function markWide() {
+                  document.querySelectorAll('.post-content mjx-container:not([display="true"])').forEach(function (m) {
+                    m.classList.remove("wide-inline");
+                    var box = m.parentElement.closest("p, li, td, th, blockquote, figcaption, div");
+                    if (box && m.getBoundingClientRect().width > box.clientWidth) m.classList.add("wide-inline");
+                  });
+                }
+                markWide();
+                var timer;
+                window.addEventListener("resize", function () {
+                  clearTimeout(timer);
+                  timer = setTimeout(markWide, 200);
+                });
+              });
+            },
+          },
         };
       </script>
       <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
