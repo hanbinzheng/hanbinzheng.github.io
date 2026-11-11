@@ -465,6 +465,16 @@ html[data-theme="dark"] .post-content svg.diagram {
   padding: 2px 0;
 }
 
+/* an inline formula wider than its line (marked by a script in blog-base.liquid) */
+.post-content mjx-container.wide-inline {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 0.3em 0;
+  padding: 2px 0;
+}
+
 /* inline code */
 
 .post-content code {
