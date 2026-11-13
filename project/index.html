@@ -1,0 +1,52 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <title>Hanbin Zheng | project</title> <meta name="author" content="Hanbin Zheng"> <meta name="description" content="Project pages by Hanbin Zheng."> <link rel="canonical" href="https://hanbinzheng.github.io/project/"> <meta property="og:title" content="project"> <meta property="og:description" content="Project pages by Hanbin Zheng."> <meta property="og:type" content="website"> <meta property="og:url" content="https://hanbinzheng.github.io/project/"> <link rel="icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;&lt;/text&gt;&lt;/svg&gt;"> <script>
+      // Apply the saved theme before the page paints (same "theme" key as the blog and al-folio).
+      (function () {
+        var setting = null;
+        try {
+          setting = localStorage.getItem("theme");
+        } catch (e) {}
+        var dark = setting === "dark" || ((!setting || setting === "system") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Noto+Sans:400,400i,700|Castoro&amp;display=swap" rel="stylesheet"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> <link rel="stylesheet" href="/assets/blog/header.css"> <link rel="stylesheet" href="/assets/project/project.css"> </head> <body> <header class="site-header"> <nav class="site-nav"> <div class="site-logo"> <a href="/">Hanbin Zheng</a> <button id="light-toggle" class="site-theme-toggle" type="button" title="Toggle light / dark (Alt + T)" aria-label="Toggle light / dark"> <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <circle cx="12" cy="12" r="5"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line> </svg> </button> </div> <ul class="site-menu"> <li> <a href="/">about</a> </li> <li> <a href="/blog/">blog</a> </li> <li> <a href="/project/" class="active">project</a> </li> <li> <a href="https://github.com/hanbinzheng/cv/blob/main/main.pdf" rel="external nofollow noopener" target="_blank">cv</a> </li> </ul> </nav> </header> <main class="pj-main"> <div class="pj-container"> <header class="pj-index-header"> <h1>Projects</h1> <p>Course and research projects, each with its own project page.</p> </header> <div class="pj-cards"> <article class="pj-card"> <div class="pj-card-media"> <video src="/assets/project/crazy_drone/teaser.mp4" poster="/assets/project/crazy_drone/poster_mpcc.jpg" autoplay loop muted playsinline preload="metadata" aria-hidden="true"></video> </div> <div class="pj-card-body"> <div class="pj-card-meta">ECE 484 Principles of Safe Autonomy · Fall 2026 · Team ZJUI Meta</div> <h2 class="pj-card-title">Crazy Drone: Contouring MPC and a Distilled Neural Tracker for Crazyflie Racing</h2> <p class="pj-card-desc">A Crazyflie 2.1 races through gates under wind, shifted gates and partial observability. A model predictive contouring controller finishes 90/90 simulated races; a 67k-parameter network ensemble distilled from it finishes 88/90 at 5x lower cost per step.</p> <ul class="pj-tags"> <li>quadrotor</li> <li>model predictive control</li> <li>imitation learning</li> <li>DAgger</li> <li>acados</li> </ul> </div> <a class="pj-card-link" href="/project/crazy_drone/" aria-label="Crazy Drone: Contouring MPC and a Distilled Neural Tracker for Crazyflie Racing"></a> </article> </div> </div> </main> <footer class="pj-footer"> <span>© 2026 Hanbin Zheng</span> · <span>Powered by <a href="https://jekyllrb.com/" rel="noopener noreferrer" target="_blank">Jekyll</a></span> </footer> <script>
+      // Theme toggle (light <-> dark).
+      (function () {
+        function toggle() {
+          var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", next);
+          try {
+            localStorage.setItem("theme", next);
+          } catch (e) {}
+        }
+        document.getElementById("light-toggle").addEventListener("click", toggle);
+        document.addEventListener("keydown", function (e) {
+          if (e.altKey && (e.key === "t" || e.key === "T" || e.code === "KeyT")) toggle();
+        });
+      })();
+
+      // Click-to-play YouTube embeds: show a local poster first, load the player only on click.
+      document.querySelectorAll(".pj-yt").forEach(function (box) {
+        box.addEventListener("click", function () {
+          var iframe = document.createElement("iframe");
+          iframe.src = "https://www.youtube-nocookie.com/embed/" + box.dataset.id + "?autoplay=1&rel=0";
+          iframe.title = box.getAttribute("aria-label") || "YouTube video";
+          iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+          iframe.allowFullscreen = true;
+          box.replaceChildren(iframe);
+          box.classList.add("is-playing");
+        }, { once: true });
+      });
+
+      // "Copy" button for the BibTeX block.
+      document.querySelectorAll(".pj-copy").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var pre = document.getElementById(btn.dataset.target);
+          navigator.clipboard.writeText(pre.innerText).then(function () {
+            btn.textContent = "copied!";
+            setTimeout(function () {
+              btn.textContent = "copy";
+            }, 2000);
+          });
+        });
+      });
+    </script> </body> </html>
