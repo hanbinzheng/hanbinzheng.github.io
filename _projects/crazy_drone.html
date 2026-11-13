@@ -282,7 +282,7 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
         To show that the tracker works for <em>any</em> path, we train only on <strong>procedurally generated tracks</strong> (3&ndash;6 gates, random
         headings and heights, 0&ndash;3 obstacles placed near the path, nominal / shifted / shifted&nbsp;+&nbsp;wind conditions). The three provided tracks
         are held out for testing. Behaviour cloning alone reaches only 32&nbsp;% success on held-out random tracks, because small errors compound into states the
-        expert never visited. With <strong>DAgger</strong> [3], the student flies and MPCC labels every visited state in shadow mode. If the student leaves
+        expert never visited [6]. With <strong>DAgger</strong> [3], the student flies and MPCC labels every visited state in shadow mode. If the student leaves
         the corridor by more than 2&nbsp;cm, MPCC takes over for 1&nbsp;s, still labelling, which yields exactly the recovery data the student needs. A fifth of the episodes are MPCC flights with correlated command noise (DART [4]).
         Success rises to about 79&nbsp;% after four iterations.
       </p>
@@ -465,6 +465,10 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
       <li>
         J. Schulman, F. Wolski, P. Dhariwal, A. Radford, O. Klimov. <a href="https://arxiv.org/abs/1707.06347">Proximal Policy Optimization
         Algorithms</a>. arXiv:1707.06347, 2017.
+      </li>
+      <li>
+        S. Levine. <a href="https://rail.eecs.berkeley.edu/deeprlcourse/">CS 285: Deep Reinforcement Learning</a>. Lecture course, University of
+        California, Berkeley. Lecture 2 (behaviour cloning, distribution shift, DAgger).
       </li>
       <li>
         <a href="https://safeautonomy-illinois.github.io/ece484-site/fall-2026/projects/quadrotor/">ECE 484 Fall 2026 Quadrotor Project</a>, University of
