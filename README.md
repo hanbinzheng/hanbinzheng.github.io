@@ -14,8 +14,7 @@ Built with [Jekyll](https://jekyllrb.com/) and the [al-folio](https://github.com
 | Blog posts                   | `_posts/YYYY-MM-DD-title.html`        |
 | Blog list / tags pages       | `_pages/blog.html`, `_pages/blog-tags.html` |
 | Blog look (layouts, CSS)     | `_layouts/blog-*.liquid`, `assets/blog/blog.css` |
-| Projects                     | `_projects/*.md`                      |
-| Project pages (`/project/`)  | `_pages/project.html` (list), `_pages/crazy_drone.html`; look: `_layouts/project-base.liquid`, `assets/project/project.css`; media: `assets/project/<name>/` |
+| Project pages (`/project/`)  | `_pages/project.html` (list), `_projects/<name>.html` (one page each, served at `/project/<name>/`); look: `_layouts/project-base.liquid`, `assets/project/project.css`; media: `assets/project/<name>/` |
 | CV link in the navbar        | `_pages/cv.md` (links to the PDF in the `cv` repo) |
 | Social links (home footer)   | `_data/socials.yml`                   |
 | Images / videos for posts    | `assets/img/`, `assets/video/`        |
@@ -24,7 +23,7 @@ Built with [Jekyll](https://jekyllrb.com/) and the [al-folio](https://github.com
 The navbar shows the home page plus every page in `_pages/` with `nav: true`, sorted by `nav_order`.
 A page whose `permalink` is a full URL (like `_pages/cv.md`) becomes an external link.
 
-The about and projects pages use the al-folio theme. The blog uses its own layouts,
+The about page uses the al-folio theme. The blog uses its own layouts,
 styled after [Lil'Log](https://lilianweng.github.io/).
 
 ## Writing a blog post

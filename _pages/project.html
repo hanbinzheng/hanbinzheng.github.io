@@ -7,15 +7,14 @@ nav: true
 nav_order: 2
 ---
 {% comment %}
-  Lists every page with `project_card: true` in its front matter (newest first).
+  Lists every project page in `_projects/` (newest first).
   Card fields: title, card_title (optional), card_meta, card_image, card_video (optional), description, card_tags.
 {% endcomment %}
-{% assign cards = site.pages | where_exp: 'p', 'p.project_card' | sort: 'date' | reverse %}
+{% assign cards = site.projects | sort: 'date' | reverse %}
 
 <div class="pj-container">
   <header class="pj-index-header">
     <h1>Projects</h1>
-    <p>Course and research projects, each with its own project page.</p>
   </header>
 
   <div class="pj-cards">
