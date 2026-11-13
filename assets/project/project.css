@@ -704,11 +704,6 @@ html:not([data-theme="dark"]) .only-dark {
   color: var(--pj-title);
 }
 
-.pj-index-header p {
-  margin: 6px 0 0;
-  color: var(--pj-muted);
-}
-
 .pj-cards {
   display: grid;
   gap: 22px;
