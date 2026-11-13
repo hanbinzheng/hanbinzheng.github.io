@@ -1,0 +1,132 @@
+<!doctype html>
+{% comment %}
+  Page shell for the project pages (/project/ and every page under it).
+  Same site header and theme toggle as the blog; the page body follows the
+  academic project-page style of https://nerfies.github.io/.
+  Styles: assets/project/project.css (kept outside assets/css/ so PurgeCSS leaves it alone).
+
+  Front matter:
+    title, description     (standard)
+    math: true             load MathJax
+    og_image               preview image for link cards (path under the site)
+{% endcomment %}
+{% assign full_name = site.first_name | append: ' ' | append: site.last_name %}
+<html lang="{{ site.lang | default: 'en' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% if page.title and page.permalink != '/project/' %}{{ page.title }} | {% endif %}{{ full_name }}{% if page.permalink == '/project/' %} | project{% endif %}</title>
+    <meta name="author" content="{{ full_name }}">
+    <meta name="description" content="{{ page.description | strip_html | strip_newlines | escape }}">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    <meta property="og:title" content="{{ page.title | escape }}">
+    <meta property="og:description" content="{{ page.description | strip_html | strip_newlines | escape }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    {% if page.og_image %}
+      <meta property="og:image" content="{{ page.og_image | absolute_url }}">
+      <meta name="twitter:card" content="summary_large_image">
+    {% endif %}
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ site.icon }}</text></svg>"
+    >
+
+    <script>
+      // Apply the saved theme before the page paints (same "theme" key as the blog and al-folio).
+      (function () {
+        var setting = null;
+        try {
+          setting = localStorage.getItem("theme");
+        } catch (e) {}
+        var dark = setting === "dark" || ((!setting || setting === "system") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Noto+Sans:400,400i,700|Castoro&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ '/assets/blog/header.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/project/project.css' | relative_url }}">
+
+    {% if page.math %}
+      <script>
+        window.MathJax = {
+          tex: {
+            inlineMath: [["\\(", "\\)"]],
+            displayMath: [["\\[", "\\]"]],
+            processEscapes: true,
+          },
+          options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+        };
+      </script>
+      <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+    {% endif %}
+  </head>
+
+  <body>
+    {% include site-header.liquid %}
+
+    <main class="pj-main">
+      {{ content }}
+    </main>
+
+    <footer class="pj-footer">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ full_name }}</span>
+      &middot;
+      <span>Powered by <a href="https://jekyllrb.com/" rel="noopener noreferrer" target="_blank">Jekyll</a></span>
+      {% if page.nerfies_credit %}
+        <br>
+        <span
+          >Page layout adapted from the <a href="https://nerfies.github.io/" rel="noopener noreferrer" target="_blank">Nerfies</a> project page, licensed under
+          <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer" target="_blank">CC BY-SA 4.0</a>.</span
+        >
+      {% endif %}
+    </footer>
+
+    <script>
+      // Theme toggle (light <-> dark).
+      (function () {
+        function toggle() {
+          var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", next);
+          try {
+            localStorage.setItem("theme", next);
+          } catch (e) {}
+        }
+        document.getElementById("light-toggle").addEventListener("click", toggle);
+        document.addEventListener("keydown", function (e) {
+          if (e.altKey && (e.key === "t" || e.key === "T" || e.code === "KeyT")) toggle();
+        });
+      })();
+
+      // Click-to-play YouTube embeds: show a local poster first, load the player only on click.
+      document.querySelectorAll(".pj-yt").forEach(function (box) {
+        box.addEventListener("click", function () {
+          var iframe = document.createElement("iframe");
+          iframe.src = "https://www.youtube-nocookie.com/embed/" + box.dataset.id + "?autoplay=1&rel=0";
+          iframe.title = box.getAttribute("aria-label") || "YouTube video";
+          iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+          iframe.allowFullscreen = true;
+          box.replaceChildren(iframe);
+          box.classList.add("is-playing");
+        }, { once: true });
+      });
+
+      // "Copy" button for the BibTeX block.
+      document.querySelectorAll(".pj-copy").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var pre = document.getElementById(btn.dataset.target);
+          navigator.clipboard.writeText(pre.innerText).then(function () {
+            btn.textContent = "copied!";
+            setTimeout(function () {
+              btn.textContent = "copy";
+            }, 2000);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

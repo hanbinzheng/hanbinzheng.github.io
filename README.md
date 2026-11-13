@@ -15,6 +15,7 @@ Built with [Jekyll](https://jekyllrb.com/) and the [al-folio](https://github.com
 | Blog list / tags pages       | `_pages/blog.html`, `_pages/blog-tags.html` |
 | Blog look (layouts, CSS)     | `_layouts/blog-*.liquid`, `assets/blog/blog.css` |
 | Projects                     | `_projects/*.md`                      |
+| Project pages (`/project/`)  | `_pages/project.html` (list), `_pages/crazy_drone.html`; look: `_layouts/project-base.liquid`, `assets/project/project.css`; media: `assets/project/<name>/` |
 | CV link in the navbar        | `_pages/cv.md` (links to the PDF in the `cv` repo) |
 | Social links (home footer)   | `_data/socials.yml`                   |
 | Images / videos for posts    | `assets/img/`, `assets/video/`        |

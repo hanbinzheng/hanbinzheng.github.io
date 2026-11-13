@@ -1,0 +1,45 @@
+---
+layout: project-base
+permalink: /project/
+title: project
+description: Project pages by Hanbin Zheng.
+nav: true
+nav_order: 2
+---
+{% comment %}
+  Lists every page with `project_card: true` in its front matter (newest first).
+  Card fields: title, card_title (optional), card_meta, card_image, card_video (optional), description, card_tags.
+{% endcomment %}
+{% assign cards = site.pages | where_exp: 'p', 'p.project_card' | sort: 'date' | reverse %}
+
+<div class="pj-container">
+  <header class="pj-index-header">
+    <h1>Projects</h1>
+    <p>Course and research projects, each with its own project page.</p>
+  </header>
+
+  <div class="pj-cards">
+    {% for p in cards %}
+      <article class="pj-card">
+        <div class="pj-card-media">
+          {% if p.card_video %}
+            <video src="{{ p.card_video | relative_url }}" poster="{{ p.card_image | relative_url }}" autoplay loop muted playsinline preload="metadata" aria-hidden="true"></video>
+          {% else %}
+            <img src="{{ p.card_image | relative_url }}" alt="" loading="lazy">
+          {% endif %}
+        </div>
+        <div class="pj-card-body">
+          <div class="pj-card-meta">{{ p.card_meta }}</div>
+          <h2 class="pj-card-title">{{ p.card_title | default: p.title }}</h2>
+          <p class="pj-card-desc">{{ p.description }}</p>
+          {% if p.card_tags %}
+            <ul class="pj-tags">
+              {% for t in p.card_tags %}<li>{{ t }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+        <a class="pj-card-link" href="{{ p.url | relative_url }}" aria-label="{{ p.card_title | default: p.title | escape }}"></a>
+      </article>
+    {% endfor %}
+  </div>
+</div>
