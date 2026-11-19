@@ -39,7 +39,6 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
       <a class="pj-btn" href="{{ A }}mpcc_report.pdf"><i class="fa-solid fa-file-pdf"></i><span>MPCC Report</span></a>
       <a class="pj-btn" href="{{ A }}mpcc_solver_tutorial.pdf"><i class="fa-solid fa-file-pdf"></i><span>Solver Tutorial</span></a>
       <a class="pj-btn" href="{{ A }}distill_report.pdf"><i class="fa-solid fa-file-pdf"></i><span>Distillation Report</span></a>
-      <a class="pj-btn" href="{{ A }}rl_pure_report.pdf"><i class="fa-solid fa-file-pdf"></i><span>Pure-RL Report</span></a>
       <a class="pj-btn" href="https://safeautonomy-illinois.github.io/ece484-site/fall-2026/projects/quadrotor/"><i class="fa-solid fa-graduation-cap"></i><span>Course Project</span></a>
     </div>
   </div>
@@ -233,9 +232,10 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
         result of the optimization, the drone slows down for tight turns and gates and speeds up on straights, and it may cut corners between gates.
       </p>
 
-      <h3 class="pj-sub">Adapting the paper to a 43&nbsp;g Crazyflie</h3>
+      <h3 class="pj-sub">Adapting the paper to our Crazyflie drone</h3>
       <p>
-        Romero et al. [1] control a 0.85&nbsp;kg racing quadrotor through its four rotor thrusts. We can only command attitude and collective thrust, so
+        Romero et al. [1] control a 0.85&nbsp;kg racing quadrotor through its four rotor thrusts. Our Crazyflie weighs 43&nbsp;g and only accepts attitude and
+        collective-thrust commands, so
         we use the model the simulator integrates, which is a <strong>system-identified model of the closed loop</strong> &ldquo;Crazyflie + onboard
         attitude controller&rdquo;:
       </p>
@@ -324,7 +324,8 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
     <div class="pj-narrow pj-text" style="margin: 0 auto; padding: 0">
       <h3 class="pj-sub">Distill only the optimizer</h3>
       <p>
-        The planning half of MPCC is cheap and has nothing to learn, so we keep it exactly and let a network replace only the nonlinear program. The
+        We distill the MPCC solver into a network by imitation learning: behaviour cloning, followed by DAgger. The planning half of MPCC is cheap and
+        has nothing to learn, so we keep it exactly and let the network replace only the nonlinear program. The
         network is a <strong>path tracker</strong>. It sees 20 samples of the path ahead, 0.14&nbsp;m apart (2.8&nbsp;m, as far as MPCC's horizon reaches
         at top speed), the contour weight, corridor radius and speed cap at those samples, the drone state, the previous command, both disturbance
         estimates and the two nearest obstacles (with a flag for whether each is still unrevealed). All of these are expressed in a heading frame centred
@@ -365,8 +366,7 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
       <h3 class="pj-sub">What did not pay off</h3>
       <p>
         PPO fine-tuning [5] of an earlier version did not improve it (two runs of about 1M steps): rare near-misses at gate frames are too noisy a signal at
-        that budget. A pure-RL policy trained from scratch with PPO in a JAX copy of the environment flies the provided tracks fast but does not generalize
-        to new layouts (<a href="{{ A }}rl_pure_report.pdf">report</a>). An ensemble of five 128&times;128 networks was better on validation tracks at
+        that budget. An ensemble of five 128&times;128 networks was better on validation tracks at
         full speed but not on the test at speed 0.8, so the single network is the default. In the earlier version, an ensemble of five 64&times;64
         networks (67k parameters) had finished 88 of 90 races with shifted gates and wind only.
       </p>
@@ -448,8 +448,9 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
         <caption>
           Lap times: mean &plusmn; std of the 5-lap time over the 10 <em>base</em> runs. Step: the whole <code>compute_control</code> call (state estimation,
           observers, replanning, features and solver or network) on one core, one 5-lap flight per track, about 7,000 steps per controller; the network's
-          forward pass alone takes about 10&nbsp;&mu;s. Gate offset: largest distance from the gate centre right after a gate is passed, over all finished
-          stress-test races on the provided tracks (the opening's half-width is 0.2&nbsp;m). MPCC at full speed, the network at speed 0.8.
+          forward pass alone takes about 10&nbsp;&mu;s. Gate offset: 3D distance from the drone to the gate centre at the first control step after a gate
+          is passed (the drone is then up to about 3&nbsp;cm behind the gate plane), maximum over all gates of all finished stress-test races on the
+          provided tracks; the opening's half-width is 0.2&nbsp;m. MPCC at full speed, the network at speed 0.8.
         </caption>
       </table>
     </div>
@@ -472,10 +473,6 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
           close to the 3&nbsp;ms budget we set ourselves (worst: 2.3&nbsp;ms for MPCC, 0.8&nbsp;ms for the network). At its default speed command 0.8 its laps are
           4&ndash;17&nbsp;% slower; at full speed it is clearly less safe than MPCC, so we trade lap time for margin.
         </li>
-        <li>
-          <strong>Reproducible.</strong> Re-running both full suites on the current code gave, race for race, the same outcomes as the final runs behind
-          the reports (MPCC 495/506, network 468/506).
-        </li>
       </ul>
     </div>
   </div>
@@ -489,14 +486,20 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
       <li>
         <strong>Sim-to-real.</strong> Radio and estimator delay are not modelled. Forward-predicting the initial state over the known delay before solving
         (or before querying the network) is the standard remedy, and delay and estimator noise should be added as randomizations before training.
+        The gate geometry is a second gap: the gate centres reported by motion capture are not exact, and the real gates (frame and stand) do not
+        have the same shape as the simulated ones, so the corridor and clearances computed from the model are biased, while the corridor leaves only
+        7&nbsp;cm inside an opening. The gate model and the margin have to be calibrated on the real gates.
       </li>
       <li>
         <strong>Impulses right before a gate.</strong> A 0.4&nbsp;N push 0.1&nbsp;s before a 0.13&nbsp;m-margin opening at full speed cannot be absorbed by a
         nominal MPC; a lower speed command removes most of these failures.
       </li>
       <li>
-        <strong>The network on hard layouts.</strong> It was never trained on the slow, curvature-limited references of the environment's random layouts.
-        Adding them to the DAgger distribution is the next step; the Hybrid A* planner also takes 1&ndash;35&nbsp;s before take-off on such layouts.
+        <strong>Hard layouts.</strong> The network was trained only on tracks whose ordinary spline reference is valid, so it never saw the slow,
+        curvature-limited Hybrid A* references of the environment's random layouts; adding them to the DAgger distribution is the next step. On
+        ordinary tracks planning takes about 1&nbsp;ms, but the Hybrid A* search runs in Python and takes 1&ndash;35&nbsp;s on a hard layout. It runs
+        once, before take-off, so it is not part of the step times above; hard layouts combined with in-flight replanning (shifted gates) have
+        not been tested yet.
       </li>
       <li>
         <strong>Supervision.</strong> A supervisor that hands control back to MPCC when the drone leaves the corridor, the same rule we used to collect
