@@ -2,7 +2,7 @@
 layout: project-base
 title: "Crazy Drone: Contouring MPC and a Distilled Neural Tracker for Crazyflie Racing"
 date: 2026-11-13
-description: A Crazyflie 2.1 races through gates under wind, shifted gates and partial observability. A model predictive contouring controller finishes 90/90 simulated races; a 67k-parameter network ensemble distilled from it finishes 88/90 at 5x lower cost per step.
+description: A Crazyflie 2.1 races through gates under every stress test of the course README (shifted gates, obstacles on the line, wind, collision impulses, battery sag, a weak motor). A model predictive contouring controller finishes 495/506 stress-test races; a 35k-parameter network distilled from it finishes 468/506 at 0.36 ms per step, with no solver on board.
 math: true
 nerfies_credit: true
 og_image: /assets/project/crazy_drone/poster_mpcc.jpg
@@ -37,7 +37,9 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
       <a class="pj-btn" href="{{ team_site }}"><i class="fa-solid fa-globe"></i><span>Team Site</span></a>
       <a class="pj-btn" href="#videos"><i class="fa-brands fa-youtube"></i><span>Videos</span></a>
       <a class="pj-btn" href="{{ A }}mpcc_report.pdf"><i class="fa-solid fa-file-pdf"></i><span>MPCC Report</span></a>
+      <a class="pj-btn" href="{{ A }}mpcc_solver_tutorial.pdf"><i class="fa-solid fa-file-pdf"></i><span>Solver Tutorial</span></a>
       <a class="pj-btn" href="{{ A }}distill_report.pdf"><i class="fa-solid fa-file-pdf"></i><span>Distillation Report</span></a>
+      <a class="pj-btn" href="{{ A }}rl_pure_report.pdf"><i class="fa-solid fa-file-pdf"></i><span>Pure-RL Report</span></a>
       <a class="pj-btn" href="https://safeautonomy-illinois.github.io/ece484-site/fall-2026/projects/quadrotor/"><i class="fa-solid fa-graduation-cap"></i><span>Course Project</span></a>
     </div>
   </div>
@@ -60,22 +62,24 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
     <h2 class="pj-section-title">Abstract</h2>
     <p>
       We race a <strong>Crazyflie&nbsp;2.1</strong> quadrotor through gate courses in the <em>crazyflow</em> MuJoCo simulator. The drone may only
-      send collective-thrust and attitude commands at 100&nbsp;Hz. It sees the true pose of a gate only when it is within 0.7&nbsp;m of it, and it has
-      to finish five laps without touching anything, under action noise, mass randomization, shifted gates, wind, gusts and battery sag.
+      send attitude and collective-thrust commands at 100&nbsp;Hz. It sees the true pose of a gate only when it is within 0.7&nbsp;m of it, and it has
+      to finish five laps without touching anything. We turned <strong>every challenge listed in the course README</strong> into a reproducible
+      stress test: a randomized start pose, shifted gates, obstacles on the racing line, wind and gusts, collision impulses, battery sag, a weak
+      motor, a shorter sensor range, all of them at once, and the environment's own random layouts.
     </p>
     <p>
       Our first controller adapts <strong>Model Predictive Contouring Control</strong> (MPCC) [1] to this interface. Instead of tracking a timed
       reference, the optimizer chooses its own progress along an arc-length path and trades speed against a gate-aware contouring error. It
-      uses the system-identified closed-loop attitude model of the drone, a soft safe corridor around gate frames and obstacles, a disturbance
-      observer, and replanning whenever a gate is revealed. Solved with acados [2] in about 1.3&nbsp;ms per step, it finishes
-      <strong>90 of 90</strong> simulated races on the three provided tracks.
+      uses the system-identified closed-loop attitude model of the drone, a soft safe corridor around gate frames and obstacles, two disturbance
+      observers, and replanning in about 1&nbsp;ms whenever a gate is revealed. Solved with acados [2] in 0.95&nbsp;ms per control step (median),
+      it finishes <strong>324 of 330</strong> stress-test races on the three provided tracks and 171 of 176 on held-out random tracks.
     </p>
     <p>
-      Our second controller <strong>distills the MPCC optimizer into small neural networks</strong>. The planner is kept unchanged; only the solver is
-      replaced. The networks are trained only on randomly generated tracks, first with behaviour cloning and then with DAgger, with the MPCC as expert
-      and safety pilot. Along the way we found and fixed a margin bug in the expert itself. An ensemble of five 64&times;64 networks (67k parameters)
-      finishes <strong>88 of 90</strong> races on the provided tracks, which it never saw in training, within 0.3&nbsp;s of MPCC's lap times, at
-      0.7&nbsp;ms per control step and with no optimizer on board.
+      Our second controller <strong>distills the MPCC optimizer into a small neural network</strong>. The planner is kept unchanged; only the solver is
+      replaced. The network (144-128-128-3, 35k parameters) is trained only on randomly generated tracks with randomly combined stress tests, first with
+      behaviour cloning and then with seven DAgger iterations, with the MPCC as expert and safety pilot. With speed command 0.8 it finishes
+      <strong>312 of 330</strong> races on the provided tracks, which it never saw in training, and 156 of 176 on random tracks, at
+      0.36&nbsp;ms per control step with numpy only.
     </p>
   </div>
 </section>
@@ -84,10 +88,10 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
 <section class="pj-section">
   <div class="pj-container">
     <div class="pj-stats">
-      <div class="pj-stat"><span class="num">90/90</span><span class="label">MPCC races finished on the 3 tracks &times; 3 conditions</span></div>
-      <div class="pj-stat"><span class="num">88/90</span><span class="label">Distilled network ensemble, on tracks never seen in training</span></div>
-      <div class="pj-stat"><span class="num">17.0&nbsp;s</span><span class="label">Mean time for 5 laps of the U-turn track (MPCC, nominal)</span></div>
-      <div class="pj-stat"><span class="num">0.7&nbsp;ms</span><span class="label">Network control step, vs. 3.5&nbsp;ms for MPCC (median, incl. features)</span></div>
+      <div class="pj-stat"><span class="num">324/330</span><span class="label">MPCC races finished on the 3 provided tracks &times; 11 stress conditions &times; 10 seeds</span></div>
+      <div class="pj-stat"><span class="num">312/330</span><span class="label">Distilled network, same races, on tracks never seen in training</span></div>
+      <div class="pj-stat"><span class="num">17.1&nbsp;s</span><span class="label">Mean time for 5 laps of the U-turn track (MPCC, no extra stress)</span></div>
+      <div class="pj-stat"><span class="num">0.36&nbsp;ms</span><span class="label">Network control step, vs. 0.95&nbsp;ms for MPCC (median, whole step, one core)</span></div>
     </div>
   </div>
 </section>
@@ -121,7 +125,7 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
           <a href="https://youtu.be/CASnObq0pI8"><i class="fa-brands fa-youtube"></i> YouTube</a>
           <a href="https://b23.tv/INTonYQ"><i class="fa-brands fa-bilibili"></i> Bilibili</a>
         </div>
-        <p>Five 64&times;64 MLPs, averaged; the green curve is the 2.8&nbsp;m of path the networks see.</p>
+        <p>Recorded with the earlier version (an ensemble of five 64&times;64 networks); the green curve is the 2.8&nbsp;m of path the network sees.</p>
       </div>
     </div>
   </div>
@@ -140,19 +144,51 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
     <ul>
       <li>
         <strong>Interface.</strong> At 100&nbsp;Hz the controller receives position, attitude, velocity and body rates, and returns
-        \([\phi_c, \vartheta_c, \psi_c, f_c]\): roll, pitch and yaw angles and the collective thrust. The Crazyflie's onboard attitude loop does the
-        rest. Physics runs at 500&nbsp;Hz.
+        \([\phi_c, \vartheta_c, \psi_c, f_c]\): roll, pitch and yaw angles in radians, then the collective thrust in newtons. Thrust comes
+        <em>last</em>, as in the environment's action space and the hardware driver (the course README listed it first). The Crazyflie's onboard
+        attitude loop does the rest. Physics runs at 500&nbsp;Hz.
       </li>
       <li>
         <strong>Partial observability.</strong> Gate and obstacle poses are reported at their <em>nominal</em> values until the drone comes within
-        0.7&nbsp;m. The hardware environment masks motion-capture poses in exactly the same way.
+        the sensor range (0.7&nbsp;m). The hardware environment masks motion-capture poses in exactly the same way.
       </li>
       <li>
-        <strong>Disturbances.</strong> Every run has action noise, random force noise of &plusmn;0.1&nbsp;N, &plusmn;5&nbsp;g mass and inertia
-        randomization and a random start pose. We also test with <em>shifted</em> gates (up to &plusmn;0.15&nbsp;m, &plusmn;0.15&nbsp;rad, revealed
-        late) and with <em>wind</em>: 1.1&nbsp;m/s steady, 0.8&nbsp;m/s gusts and 10&nbsp;% battery sag.
+        <strong>Default disturbances.</strong> Every run has action noise, random force noise of &plusmn;0.1&nbsp;N, &plusmn;5&nbsp;g mass and inertia
+        randomization and a random start pose.
       </li>
     </ul>
+
+    <h3 class="pj-sub">The README stress tests</h3>
+    <p>
+      The course README lists the challenges the hidden evaluation tracks may contain. We turned each of them into a test condition, added on top of
+      the default disturbances (<code>scripts/stress_test.py</code>; magnitudes are the README / <code>stress.py</code> example values):
+    </p>
+  </div>
+  <div class="pj-container">
+    <div class="pj-table-wrap">
+      <table class="pj-table">
+        <thead>
+          <tr><th>Condition</th><th style="text-align: left">Setting</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>base</td><td style="text-align: left">only the configs' default disturbances</td></tr>
+          <tr><td>start</td><td style="text-align: left">start pose &plusmn;0.4&nbsp;m in \(x/y\), any yaw</td></tr>
+          <tr><td>shift</td><td style="text-align: left">gates &plusmn;0.15&nbsp;m / &plusmn;0.15&nbsp;rad, obstacles &plusmn;0.15&nbsp;m, true pose revealed within 0.7&nbsp;m</td></tr>
+          <tr><td>obstacle</td><td style="text-align: left">two extra poles on the nominal racing line</td></tr>
+          <tr><td>wind</td><td style="text-align: left">1.5&nbsp;m/s steady wind (random direction) and 1.0&nbsp;m/s gusts</td></tr>
+          <tr><td>impulse</td><td style="text-align: left">0.4&nbsp;N pushes of 50&nbsp;ms every 3&nbsp;s, pseudo-random directions</td></tr>
+          <tr><td>battery</td><td style="text-align: left">thrust loss growing linearly to 15&nbsp;% at 30&nbsp;s</td></tr>
+          <tr><td>motor</td><td style="text-align: left">one (random) motor 10&nbsp;% weaker</td></tr>
+          <tr><td>shift+sensor</td><td style="text-align: left">shifted gates with the sensor range reduced to 0.4&nbsp;m</td></tr>
+          <tr><td>all</td><td style="text-align: left">all of the above at once</td></tr>
+          <tr><td>envrandom</td><td style="text-align: left">the environment's own random layout (<code>[env.track] randomize = true</code>): a different track</td></tr>
+        </tbody>
+        <caption>
+          Tight turns are covered by the U-turn track and the random tracks. Each condition is run with 10 seeds on each provided track (5 laps) and on
+          16 held-out random tracks (3 laps): 330 + 176 = 506 races per controller.
+        </caption>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -170,9 +206,9 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
       <div class="arrow"></div>
       <div class="step is-solver"><b>MPCC (acados)</b>SQP-RTI, \(N=25\), 1&nbsp;s horizon</div>
       <div class="arrow"></div>
-      <div class="step"><b>Command</b>\([\phi_c, \vartheta_c, 0, f_c]\) at 100&nbsp;Hz</div>
+      <div class="step"><b>Command</b>\([\phi_c, \vartheta_c, \psi_c, f_c]\) at 100&nbsp;Hz</div>
     </div>
-    <p class="pj-caption" style="text-align: center">The path is replanned whenever the true pose of a gate or obstacle is revealed.</p>
+    <p class="pj-caption" style="text-align: center">The path is replanned (in about 1&nbsp;ms) whenever the true pose of a gate or obstacle is revealed.</p>
 
     <div class="pj-narrow pj-text" style="margin: 0 auto; padding: 0">
       <h3 class="pj-sub">Contouring instead of tracking</h3>
@@ -206,13 +242,14 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
       \[
         \dot{\mathbf{v}} = \tfrac{1}{m} R(\boldsymbol\eta)\begin{bmatrix}0\\0\\c_f f\end{bmatrix} + \mathbf{g}
         + \tfrac{1}{m} R D R^\top \mathbf{v} + \hat{\mathbf{d}}, \qquad
-        \ddot{\boldsymbol\eta} = \mathbf{a}_\eta \odot \boldsymbol\eta + \mathbf{b}_\eta \odot \dot{\boldsymbol\eta} + \mathbf{c}_\eta \odot \boldsymbol\eta_c, \qquad
+        \ddot{\boldsymbol\eta} = \mathbf{a}_\eta \odot \boldsymbol\eta + \mathbf{b}_\eta \odot \dot{\boldsymbol\eta} + \mathbf{c}_\eta \odot \boldsymbol\eta_c + \hat{\mathbf{b}}, \qquad
         \dot f = \tfrac{1}{\tau_f}(f_c - f).
       \]
       <p>
         Each Euler angle responds like a damped spring to its command (roll/pitch: 13.7&nbsp;rad/s, damping 0.46, steady-state gain 0.73), and the
         thrust lags its command by 80&nbsp;ms. As in the paper, the optimizer chooses the <em>rates</em> of the commands, which keeps them smooth and
         bounded. The state has 18 dimensions: position, angles, velocity, angle rates, thrust, the three commands, \(\theta\) and \(v_\theta\).
+        The <a href="{{ A }}mpcc_solver_tutorial.pdf">solver tutorial</a> walks from a QP through SQP and RTI to how acados solves this problem.
       </p>
 
       <h3 class="pj-sub">What we added for safety</h3>
@@ -224,15 +261,33 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
         </li>
         <li>
           <strong>Soft safe corridor.</strong> At every stage the contour error must stay below the clearance to the nearest frame, pole or obstacle
-          minus the drone's radius, and obstacles get soft keep-out cylinders.
+          minus the drone's radius (0.13&nbsp;m: the collision box's 0.099&nbsp;m half-diagonal plus 3&nbsp;cm), and poles get soft keep-out cylinders,
+          larger while their pose is not revealed yet.
         </li>
         <li>
-          <strong>Caution near unrevealed gates.</strong> Progress speed is capped at 1.5&nbsp;m/s within 1&nbsp;m of a gate whose true pose is not known
-          yet. When the pose is revealed, the path is replanned.
+          <strong>Disturbance observer.</strong> A first-order observer estimates the unmodelled acceleration (wind, mass error, battery sag) from the
+          difference between the measured and the predicted acceleration,
+          \[ \hat{\mathbf{d}} \leftarrow (1-\alpha)\,\hat{\mathbf{d}} + \alpha\Big(\tfrac{\mathbf{v}_t - \mathbf{v}_{t-1}}{\delta} - \mathbf{a}_{\mathrm{model}}\Big),
+          \quad \alpha = 0.04 \;(\approx 0.25\ \mathrm{s}), \]
+          and feeds it into the model (offset-free MPC). When it is large, the controller slows down.
         </li>
         <li>
-          <strong>Disturbance observer.</strong> An estimate \(\hat{\mathbf{d}}\) of the unmodelled acceleration (wind, mass error, battery sag) enters
-          the model. When it is large, the controller slows down.
+          <strong>Attitude bias observer.</strong> A 10&nbsp;% weak motor tilts the drone by about 0.08&nbsp;rad at a level command. In the identified attitude
+          model this is a constant angular-acceleration bias \(\hat{\mathbf{b}}\), estimated from the one-step prediction error of the exactly discretized
+          model, so MPCC simply commands the tilt that compensates it.
+        </li>
+        <li>
+          <strong>Caution near unrevealed objects.</strong> Progress speed is capped at 1.5&nbsp;m/s near gates and poles whose true pose is not known yet,
+          scaled with the sensor range. When the pose is revealed, the path is replanned.
+        </li>
+        <li>
+          <strong>Yaw alignment and frame-aware crossings.</strong> The square collision box needs 0.099&nbsp;m of half-width through a gate rotated by
+          45&deg;, so MPCC yaws with the next gate. Crossings are also checked against neighbouring frames, and the planner routes detours around
+          poles on the racing line.
+        </li>
+        <li>
+          <strong>Hard layouts.</strong> The environment's own random layouts often put gates face to face or next to a wall. Their reference is planned with
+          curvature-bounded, clearance-aware Hybrid A* routes and a curvature speed limit.
         </li>
       </ul>
     </div>
@@ -255,12 +310,12 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
   <div class="pj-container">
     <h2 class="pj-section-title">Method II: Distilling MPCC into a Neural Tracker</h2>
 
-    <div class="pj-pipeline" role="img" aria-label="Distilled controller pipeline: same planner as MPCC, 140 features in the heading frame, ensemble of MLPs that outputs command changes, integrate and clip">
-      <div class="step"><b>Same planner</b>route, spline, \(q_c\), corridor, replanning</div>
+    <div class="pj-pipeline" role="img" aria-label="Distilled controller pipeline: same planner as MPCC, 144 features in the heading frame, MLP that outputs command changes, integrate and clip">
+      <div class="step"><b>Same planner</b>route, spline, \(q_c\), corridor, speed cap, replanning</div>
       <div class="arrow"></div>
-      <div class="step"><b>140 features</b>path ahead, weights, state, last command, \(\hat{\mathbf{d}}\)</div>
+      <div class="step"><b>144 features</b>path ahead, weights, state, last command, \(\hat{\mathbf{d}}\), \(\hat{\mathbf{b}}\)</div>
       <div class="arrow"></div>
-      <div class="step is-learned"><b>MLP ensemble</b>5 &times; (140-64-64-3), outputs averaged</div>
+      <div class="step is-learned"><b>MLP</b>144-128-128-3, tanh, 35k parameters</div>
       <div class="arrow"></div>
       <div class="step"><b>Integrate &amp; clip</b>\(\Delta[\phi_c, \vartheta_c, f_c]\) within MPCC's limits</div>
     </div>
@@ -271,37 +326,49 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
       <p>
         The planning half of MPCC is cheap and has nothing to learn, so we keep it exactly and let a network replace only the nonlinear program. The
         network is a <strong>path tracker</strong>. It sees 20 samples of the path ahead, 0.14&nbsp;m apart (2.8&nbsp;m, as far as MPCC's horizon reaches
-        at top speed), the contour weight, corridor radius and speed cap at those samples, the drone state, the previous command, the disturbance estimate
-        and the two nearest obstacles. All of these are expressed in a heading frame centred on the drone, so the network cannot memorize
-        where on the map it is. It outputs the <em>change</em> of the roll, pitch and thrust commands, which is MPCC's first optimal input. That makes its
-        commands as smooth and bounded as MPCC's by construction.
+        at top speed), the contour weight, corridor radius and speed cap at those samples, the drone state, the previous command, both disturbance
+        estimates and the two nearest obstacles (with a flag for whether each is still unrevealed). All of these are expressed in a heading frame centred
+        on the drone, so the network cannot memorize where on the map it is. It outputs the <em>change</em> of the roll, pitch and thrust commands, which
+        is MPCC's first optimal input. That makes its commands as smooth and bounded as MPCC's by construction; yaw is commanded 0.
+      </p>
+      <p>
+        <strong>Speed command.</strong> The speed enters only through the speed-cap features: the teacher flies with a random
+        <code>speed_scale</code> \(\in\{0.6, \dots, 1.0\}\) per training episode, its caps shrink accordingly, and the network sees the same caps. At deployment the
+        same knob trades lap time for safety margin without retraining.
       </p>
 
-      <h3 class="pj-sub">Random tracks, DAgger, and an expert-in-the-loop safety pilot</h3>
+      <h3 class="pj-sub">Random tracks, random stress, DAgger, and an expert-in-the-loop safety pilot</h3>
       <p>
         To show that the tracker works for <em>any</em> path, we train only on <strong>procedurally generated tracks</strong> (3&ndash;6 gates, random
-        headings and heights, 0&ndash;3 obstacles placed near the path, nominal / shifted / shifted&nbsp;+&nbsp;wind conditions). The three provided tracks
-        are held out for testing. Behaviour cloning alone reaches only 32&nbsp;% success on held-out random tracks, because small errors compound into states the
-        expert never visited [6]. With <strong>DAgger</strong> [3], the student flies and MPCC labels every visited state in shadow mode. If the student leaves
-        the corridor by more than 2&nbsp;cm, MPCC takes over for 1&nbsp;s, still labelling, which yields exactly the recovery data the student needs. A fifth of the episodes are MPCC flights with correlated command noise (DART [4]).
-        Success rises to about 79&nbsp;% after four iterations.
+        headings and heights, 0&ndash;3 obstacles placed near the path). Every training episode switches each README stress test on at random (shift 60&nbsp;%,
+        start, obstacle, wind, impulse and battery 30&nbsp;% each, motor 25&nbsp;%, short sensor range 20&nbsp;%) at 0.6, 1.0 or 1.25 times the README
+        magnitude. The three provided tracks are held out for testing.
+      </p>
+      <p>
+        Behaviour cloning alone suffers from distribution shift: small errors compound into states the expert never visited [6]. With <strong>DAgger</strong> [3],
+        the student flies and MPCC labels every visited state in shadow mode. If the student leaves the corridor by more than 2&nbsp;cm, MPCC takes over
+        for 1&nbsp;s, still labelling, which yields exactly the recovery data the student needs. A fifth of the episodes are MPCC flights with correlated
+        command noise (DART [4]). Behaviour cloning on 600 episodes plus seven DAgger iterations of 400 episodes give 3.7&nbsp;M samples in 78&nbsp;minutes on
+        one laptop CPU.
       </p>
 
       <div class="pj-note">
         <p>
-          <strong>Fixing the teacher.</strong> A student cannot beat its teacher, so we stress-tested MPCC itself on 60 random tracks. Every failure was a
-          gate-frame hit. The drone's collision box has a 0.099&nbsp;m half-diagonal, but the corridor reserved only \(r_{\mathrm{drone}} = 0.10\)&nbsp;m, which
-          left 1&nbsp;mm of margin inside a gate. With 0.13&nbsp;m the expert's success on random tracks rose from 53/60 to 59/60 (nominal), with
-          unchanged lap times on the provided tracks.
+          <strong>Fix the teacher first.</strong> A student cannot beat its teacher, so before training we ran MPCC through every stress test and fixed what
+          failed: the weak motor (attitude bias observer), late reveals with a short sensor range (speed cap scaled with the range), poles on the racing line
+          (detour waypoints), impulses at gates (the speed command), and later the remaining gate-frame contacts (yaw alignment, frame-aware crossings).
+          An earlier fix of the same kind: the corridor used to reserve only \(r_{\mathrm{drone}} = 0.10\)&nbsp;m for a 0.099&nbsp;m half-diagonal, 1&nbsp;mm of
+          margin inside a gate.
         </p>
       </div>
 
-      <h3 class="pj-sub">Ensembles, not RL, closed the gap</h3>
+      <h3 class="pj-sub">What did not pay off</h3>
       <p>
-        PPO fine-tuning [5] with a shaped reward and MPCC as a safety monitor did not improve the policy within our budget (two runs, about 1M steps each). The
-        remaining failures are rare near-misses at gate frames, and their signal was drowned in noise. What worked was averaging <strong>five independently
-        trained networks</strong>. Their imitation errors are partly independent and cancel in closed loop, exactly where single networks fail: a few centimetres
-        inside a gate.
+        PPO fine-tuning [5] of an earlier version did not improve it (two runs of about 1M steps): rare near-misses at gate frames are too noisy a signal at
+        that budget. A pure-RL policy trained from scratch with PPO in a JAX copy of the environment flies the provided tracks fast but does not generalize
+        to new layouts (<a href="{{ A }}rl_pure_report.pdf">report</a>). An ensemble of five 128&times;128 networks was better on validation tracks at
+        full speed but not on the test at speed 0.8, so the single network is the default. In the earlier version, an ensemble of five 64&times;64
+        networks (67k parameters) had finished 88 of 90 races with shifted gates and wind only.
       </p>
     </div>
   </div>
@@ -316,66 +383,73 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
       <img class="only-light" src="{{ A }}topview-light.svg" alt="Top views of five-lap flights on the circle, U-turn and lemniscate tracks; the MPCC and network trajectories nearly coincide" loading="lazy">
       <img class="only-dark" src="{{ A }}topview-dark.svg" alt="Top views of five-lap flights on the circle, U-turn and lemniscate tracks; the MPCC and network trajectories nearly coincide" loading="lazy">
       <figcaption>
-        Five laps on each provided track (top view, same seed, default disturbances). <strong>Blue</strong>: MPCC. <strong>Orange</strong>: the distilled
-        ensemble, which has never seen these tracks. Gate frames are drawn with the crossing direction as an arrow; &times; marks an obstacle. The two controllers fly
-        almost the same racing line and their 5-lap times differ by at most 0.32&nbsp;s.
+        Five laps on each provided track (top view, same seed, default disturbances). <strong>Blue</strong>: MPCC at full speed. <strong>Orange</strong>: the
+        distilled network at speed 0.8, which has never seen these tracks. Gate frames are drawn with the crossing direction as an arrow; &times; marks an
+        obstacle.
       </figcaption>
     </figure>
 
-    <h3 class="pj-sub" style="text-align: center">MPCC on the provided tracks</h3>
+    <h3 class="pj-sub" style="text-align: center">README stress tests</h3>
     <div class="pj-table-wrap">
       <table class="pj-table">
         <thead>
           <tr>
-            <th>Track</th>
-            <th>Condition</th>
-            <th>Success</th>
-            <th>5-lap time [s]</th>
-            <th>Best [s]</th>
-            <th>Max gate offset [m]</th>
-            <th>Solve, mean / max [ms]</th>
+            <th rowspan="2">Condition</th>
+            <th colspan="2">Provided tracks (of 30)</th>
+            <th colspan="2">Random test tracks (of 16)</th>
+          </tr>
+          <tr>
+            <th><span class="swatch" style="background: var(--pj-accent)"></span>MPCC</th>
+            <th><span class="swatch" style="background: var(--pj-accent-2)"></span>Network</th>
+            <th><span class="swatch" style="background: var(--pj-accent)"></span>MPCC</th>
+            <th><span class="swatch" style="background: var(--pj-accent-2)"></span>Network</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Circle</td><td>nominal</td><td>10/10</td><td>25.10 &plusmn; 0.31</td><td>24.70</td><td>0.109</td><td>1.29 / 6.65</td></tr>
-          <tr><td>Circle</td><td>shifted gates</td><td>10/10</td><td>24.86 &plusmn; 0.76</td><td>23.91</td><td>0.100</td><td>1.26 / 6.34</td></tr>
-          <tr><td>Circle</td><td>wind + battery</td><td>10/10</td><td>27.03 &plusmn; 0.59</td><td>26.44</td><td>0.120</td><td>1.23 / 6.71</td></tr>
-          <tr><td>U-turn</td><td>nominal</td><td>10/10</td><td>17.01 &plusmn; 0.18</td><td>16.82</td><td>0.079</td><td>1.31 / 3.32</td></tr>
-          <tr><td>U-turn</td><td>shifted gates</td><td>10/10</td><td>17.23 &plusmn; 0.39</td><td>16.67</td><td>0.105</td><td>1.24 / 5.74</td></tr>
-          <tr><td>U-turn</td><td>wind + battery</td><td>10/10</td><td>18.53 &plusmn; 0.57</td><td>17.96</td><td>0.098</td><td>1.20 / 5.83</td></tr>
-          <tr><td>Lemniscate</td><td>nominal</td><td>10/10</td><td>25.83 &plusmn; 0.44</td><td>25.36</td><td>0.108</td><td>1.25 / 3.72</td></tr>
-          <tr><td>Lemniscate</td><td>shifted gates</td><td>10/10</td><td>26.14 &plusmn; 0.64</td><td>25.14</td><td>0.119</td><td>1.23 / 4.89</td></tr>
-          <tr><td>Lemniscate</td><td>wind + battery</td><td>10/10</td><td>28.43 &plusmn; 1.08</td><td>27.49</td><td>0.115</td><td>1.19 / 4.67</td></tr>
+          <tr><td>base</td><td>30</td><td>30</td><td>16</td><td>16</td></tr>
+          <tr><td>start</td><td>30</td><td>30</td><td>16</td><td>16</td></tr>
+          <tr><td>shift</td><td>30</td><td><strong>29</strong></td><td><strong>15</strong></td><td><strong>12</strong></td></tr>
+          <tr><td>obstacle</td><td>30</td><td>30</td><td>16</td><td>16</td></tr>
+          <tr><td>wind</td><td>30</td><td>30</td><td>16</td><td><strong>15</strong></td></tr>
+          <tr><td>impulse</td><td><strong>28</strong></td><td><strong>29</strong></td><td><strong>15</strong></td><td><strong>15</strong></td></tr>
+          <tr><td>battery</td><td>30</td><td>30</td><td>16</td><td><strong>15</strong></td></tr>
+          <tr><td>motor</td><td>30</td><td>30</td><td>16</td><td>16</td></tr>
+          <tr><td>shift+sensor</td><td>30</td><td><strong>29</strong></td><td><strong>15</strong></td><td><strong>12</strong></td></tr>
+          <tr><td>all</td><td><strong>26</strong></td><td><strong>24</strong></td><td><strong>14</strong></td><td><strong>9</strong></td></tr>
+          <tr><td>envrandom</td><td>30</td><td><strong>21</strong></td><td>16</td><td><strong>14</strong></td></tr>
+          <tr class="is-best"><td>total</td><td>324/330</td><td>312/330</td><td>171/176</td><td>156/176</td></tr>
         </tbody>
         <caption>
-          10 seeds per row, 5 laps each, no solver failures. Gate offset: largest distance from the gate centre right after a gate is passed (the opening's
-          half-width is 0.2&nbsp;m). Worst-case solve times were measured with nine simulations in parallel; all are far below the 10&nbsp;ms budget.
+          Run on 2026-11-19 with the current code. Provided tracks: 3 tracks &times; 10 seeds per condition, 5 laps. Random tracks: 16 held-out tracks per
+          condition, 3 laps, seeds never used for training or model selection. MPCC at full speed, the network at its default speed command 0.8. A race
+          counts only if all laps are finished without any contact.
         </caption>
       </table>
     </div>
 
-    <h3 class="pj-sub" style="text-align: center">Learned controllers vs. the expert</h3>
+    <h3 class="pj-sub" style="text-align: center">Lap times and computation</h3>
     <div class="pj-table-wrap">
       <table class="pj-table">
         <thead>
           <tr>
             <th>Controller</th>
-            <th>Parameters</th>
-            <th>Provided tracks</th>
-            <th>Random test tracks<br><span style="font-weight: 400; font-size: 12.5px">nominal / shifted / +wind</span></th>
-            <th>Step time</th>
+            <th>Params</th>
+            <th>Circle [s]</th>
+            <th>U-turn [s]</th>
+            <th>Lemniscate [s]</th>
+            <th>Step [ms]<br><span style="font-weight: 400; font-size: 12.5px">median / p99 / max</span></th>
+            <th>Gate offset [m]</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td><span class="swatch" style="background: var(--pj-accent)"></span>MPCC (expert)</td><td>&mdash;</td><td>90/90</td><td>124/144 (47 / 39 / 38)</td><td>3.5 ms</td></tr>
-          <tr class="is-best"><td><span class="swatch" style="background: var(--pj-accent-2)"></span>Ensemble 5 &times; 64&times;64 (ours)</td><td>67k</td><td>88/90</td><td>117/144 (47 / 36 / 34)</td><td>0.7 ms</td></tr>
-          <tr><td>Single 128&times;128, distilled from the ensemble</td><td>35k</td><td>85/90</td><td>111/144 (46 / 35 / 30)</td><td>0.6 ms</td></tr>
-          <tr><td>Single 64&times;64, DAgger</td><td>13k</td><td>74/90</td><td>101/144 (44 / 32 / 25)</td><td>0.6 ms</td></tr>
-          <tr><td>Single 64&times;64, behaviour cloning only</td><td>13k</td><td>&mdash;</td><td>32&nbsp;% (validation)</td><td>0.6 ms</td></tr>
+          <tr><td><span class="swatch" style="background: var(--pj-accent)"></span>MPCC</td><td>&mdash;</td><td>25.60 &plusmn; 0.40</td><td>17.10 &plusmn; 0.18</td><td>25.87 &plusmn; 0.45</td><td>0.95 / 1.85 / 2.31</td><td>0.129</td></tr>
+          <tr class="is-best"><td><span class="swatch" style="background: var(--pj-accent-2)"></span>Network (ours)</td><td>35k</td><td>26.56 &plusmn; 0.39</td><td>19.94 &plusmn; 0.13</td><td>29.59 &plusmn; 0.28</td><td>0.36 / 0.62 / 0.84</td><td>0.136</td></tr>
         </tbody>
         <caption>
-          Provided tracks: 3 tracks &times; 3 conditions &times; 10 seeds, 5 laps. Random tracks: 48 held-out tracks &times; 3 conditions, 3 laps, on seeds never
-          used for any design decision. Step time is the median of the whole control step; the networks themselves take about 30&nbsp;&mu;s.
+          Lap times: mean &plusmn; std of the 5-lap time over the 10 <em>base</em> runs. Step: the whole <code>compute_control</code> call (state estimation,
+          observers, replanning, features and solver or network) on one core, one 5-lap flight per track, about 7,000 steps per controller; the network's
+          forward pass alone takes about 10&nbsp;&mu;s. Gate offset: largest distance from the gate centre right after a gate is passed, over all finished
+          stress-test races on the provided tracks (the opening's half-width is 0.2&nbsp;m). MPCC at full speed, the network at speed 0.8.
         </caption>
       </table>
     </div>
@@ -383,16 +457,24 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
     <div class="pj-narrow pj-text" style="margin: 26px auto 0; padding: 0">
       <ul>
         <li>
-          <strong>Same speed as the expert.</strong> On the nominal provided tracks the ensemble's 5-lap times are within 0.3&nbsp;s of MPCC (circle 25.09 vs
-          25.21&nbsp;s, U-turn 17.39 vs 17.08&nbsp;s, lemniscate 26.36 vs 26.09&nbsp;s), and up to 1&nbsp;s slower in wind.
+          <strong>Every MPCC failure on the provided tracks followed a collision impulse.</strong> All six crashes (two <em>impulse</em> races on the circle,
+          four <em>all</em> races on the lemniscate) happen 0.13&ndash;0.48&nbsp;s after a 0.4&nbsp;N push that arrives just before a gate at 1.8&ndash;2.7&nbsp;m/s;
+          the push changes the velocity by about 0.47&nbsp;m/s and the drone grazes an inner plate of the opening (1.5&ndash;7.5&nbsp;mm penetration). With 13&nbsp;cm
+          of margin and a few tenths of a second left, a nominal MPC cannot recover; every other single README condition is 30/30.
         </li>
         <li>
-          <strong>Generalization.</strong> The networks never saw the provided tracks, yet they finish 98&nbsp;% of the races there and reach 94&nbsp;% of MPCC's
-          success on held-out random tracks.
+          <strong>The network is almost as safe on unseen tracks.</strong> On the provided tracks it passes every single README condition at least 29 of 30
+          times; it loses ground with all stresses at once (24/30) and on the environment's random layouts (21/30), a kind of reference it was never trained on.
+          On random tracks its failures concentrate on a few tight layouts with shifted gates revealed late.
         </li>
         <li>
-          <strong>Shared weak spot.</strong> The remaining failures of both controllers are mostly gates that are shifted and revealed late, where the
-          mid-flight replan bends the path at speed.
+          <strong>Cost and speed.</strong> The network needs 2.6&times; less time per step than MPCC and no solver; no step of either controller came
+          close to the 3&nbsp;ms budget we set ourselves (worst: 2.3&nbsp;ms for MPCC, 0.8&nbsp;ms for the network). At its default speed command 0.8 its laps are
+          4&ndash;17&nbsp;% slower; at full speed it is clearly less safe than MPCC, so we trade lap time for margin.
+        </li>
+        <li>
+          <strong>Reproducible.</strong> Re-running both full suites on the current code gave, race for race, the same outcomes as the final runs behind
+          the reports (MPCC 495/506, network 468/506).
         </li>
       </ul>
     </div>
@@ -409,15 +491,16 @@ card_tags: [quadrotor, model predictive control, imitation learning, DAgger, aca
         (or before querying the network) is the standard remedy, and delay and estimator noise should be added as randomizations before training.
       </li>
       <li>
-        <strong>Replanning latency.</strong> The spline planner runs inside the control step, so a gate reveal can cost 0.1&ndash;0.3&nbsp;s once. On
-        hardware it belongs in a background thread, with the drone flying the old path until the new one is ready.
+        <strong>Impulses right before a gate.</strong> A 0.4&nbsp;N push 0.1&nbsp;s before a 0.13&nbsp;m-margin opening at full speed cannot be absorbed by a
+        nominal MPC; a lower speed command removes most of these failures.
       </li>
       <li>
-        <strong>Supervision.</strong> The ensemble still crashes in 2 of 90 races. A supervisor that hands control back to MPCC when the drone leaves the
-        corridor, the same rule we used to collect data, would combine the network's speed with MPCC's recovery.
+        <strong>The network on hard layouts.</strong> It was never trained on the slow, curvature-limited references of the environment's random layouts.
+        Adding them to the DAgger distribution is the next step; the Hybrid A* planner also takes 1&ndash;35&nbsp;s before take-off on such layouts.
       </li>
       <li>
-        <strong>RL.</strong> Fine-tuning with PPO needs a far larger sample budget, such as GPU-vectorized simulation, or a lower-variance signal at the gates.
+        <strong>Supervision.</strong> A supervisor that hands control back to MPCC when the drone leaves the corridor, the same rule we used to collect
+        data, would combine the network's low cost with MPCC's recovery.
       </li>
     </ul>
   </div>
